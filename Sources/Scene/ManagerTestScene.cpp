@@ -15,6 +15,7 @@ void ManagerTestScene::Init()
 	textureBG = TextureManager::GetInstance().GetTexture("Resources/Sprite/controller_prompt_bg.png");
 	spriteBG.setTexture(textureBG);
 	spriteBG.setOrigin(textureBG.getSize().x * 0.5f, textureBG.getSize().y * 0.5f);
+	//spriteBG.setScale(1.9f, 1.8f);
 	spriteBG.setPosition(ViewManager::GetInstance().GetResolution().x * 0.5f, ViewManager::GetInstance().GetResolution().y * 0.5f);
 }
 
