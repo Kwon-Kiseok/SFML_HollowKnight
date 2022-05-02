@@ -8,10 +8,11 @@ using namespace sf;
 class TextureManager : public Singleton<TextureManager>
 {
 private:
+	std::map<std::string, Texture> mapTexture;
+public:
 	TextureManager() noexcept = default;
 	~TextureManager() noexcept = default;
 
-	std::map<std::string, Texture> mapTexture;
 public:
 	Texture& GetTexture(std::string filename);
 };

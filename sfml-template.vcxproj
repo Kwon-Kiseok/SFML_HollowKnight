@@ -79,11 +79,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\$(ProjectName)-bin</OutDir>
+    <OutDir>..\$(ProjectName)-bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\$(ProjectName)-bin</OutDir>
+    <OutDir>..\$(ProjectName)-bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Scene\ManagerTestScene.cpp" />
     <ClCompile Include="Sources\Managers\SoundManager.cpp" />
     <ClCompile Include="Sources\Framework\Game.cpp" />
     <ClCompile Include="Sources\HollowKnight.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Scene\ManagerTestScene.hpp" />
     <ClInclude Include="Sources\Managers\SoundManager.hpp" />
     <ClInclude Include="Sources\Scene\Scene.hpp" />
     <ClInclude Include="Sources\include\Singleton.hpp" />
