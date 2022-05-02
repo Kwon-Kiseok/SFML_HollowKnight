@@ -42,6 +42,9 @@
     <ClCompile Include="Sources\Managers\SoundManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Player\Player.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\include\Singleton.hpp">
@@ -72,6 +75,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Managers\SoundManager.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Player\Player.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
