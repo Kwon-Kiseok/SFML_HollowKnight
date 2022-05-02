@@ -61,4 +61,5 @@ void Game::Release()
 {
     ViewManager::GetInstance().ClearView();
     SceneManager::GetInstance().Release();
+    SoundManager::GetInstance().Release();
 }
