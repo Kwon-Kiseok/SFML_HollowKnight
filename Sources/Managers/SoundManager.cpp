@@ -43,3 +43,18 @@ void SoundManager::PlaySound(std::wstring id)
 	auto it = effectSounds.find(id);
 	it->second->play();
 }
+
+void SoundManager::Release()
+{
+	for (auto it = effectSounds.begin(); it != effectSounds.end(); ++it)
+	{
+		delete it->second;
+	}
+	effectSounds.clear();
+
+	for (auto it = soundBuffers.begin(); it != soundBuffers.end(); ++it)
+	{
+		delete it->second;
+	}
+	soundBuffers.clear();
+}

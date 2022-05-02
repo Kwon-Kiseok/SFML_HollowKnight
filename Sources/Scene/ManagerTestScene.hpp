@@ -6,6 +6,9 @@ class ManagerTestScene : public Scene
 private:
 	sf::Texture textureBG;
 	sf::Sprite spriteBG;
+	sf::Texture textureVignette;
+	sf::Sprite spriteVignette;
+
 public:
 	ManagerTestScene() noexcept;
 	~ManagerTestScene() noexcept;
