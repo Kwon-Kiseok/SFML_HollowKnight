@@ -4,26 +4,57 @@ SoundManager::~SoundManager() noexcept
 {
 }
 
-int SoundManager::AddSound(std::wstring name)
+void SoundManager::Init()
 {
-	auto iter = sounds.find(name);
-	if (iter != sounds.end())
+	// AddSound로 필요한 사운드들 등록
+
+}
+
+void SoundManager::AddSound(std::string path, std::wstring id)
+{
+	SoundBuffer* buffer = new SoundBuffer;
+	Sound* sound = new Sound;
+
+	buffer->loadFromFile(path);
+	sound->setBuffer(*buffer);
+
+	soundBuffers.insert(make_pair(id, buffer));
+	effectSounds.insert(make_pair(id, sound));
+}
+
+void SoundManager::PlayMusic(std::string path)
+{
+	// 현재 배경음악 상태가 재생중인 경우
+	if (music.getStatus() == Music::Status::Playing)
 	{
-		return -1;
+		music.stop();
 	}
 
-	// 작성중
+	if (!music.openFromFile(path))
+	{
+		return;
+	}
+	music.play();
+	music.setLoop(true);
 }
 
-void SoundManager::PlayMusic(std::wstring name)
+void SoundManager::PlaySound(std::wstring id)
 {
+	auto it = effectSounds.find(id);
+	it->second->play();
 }
 
-void SoundManager::Playeffect(std::wstring name)
+void SoundManager::Release()
 {
-}
+	for (auto it = effectSounds.begin(); it != effectSounds.end(); ++it)
+	{
+		delete it->second;
+	}
+	effectSounds.clear();
 
-std::unordered_map<SoundBuffer, Sound_Type>& SoundManager::getSoundBuffer()
-{
-	return soundBuffers;
+	for (auto it = soundBuffers.begin(); it != soundBuffers.end(); ++it)
+	{
+		delete it->second;
+	}
+	soundBuffers.clear();
 }

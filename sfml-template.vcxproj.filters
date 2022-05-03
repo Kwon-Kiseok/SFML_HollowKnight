@@ -52,6 +52,7 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Animation\PlayerAnimation.cpp">
+    <ClCompile Include="Sources\Scene\ManagerTestScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -99,6 +100,7 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Animation\PlayerAnimation.hpp">
+    <ClInclude Include="Sources\Scene\ManagerTestScene.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
