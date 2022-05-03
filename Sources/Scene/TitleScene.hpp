@@ -1,17 +1,25 @@
 #pragma once
 #include "Scene.hpp"
 
+using namespace sf;
 class TitleScene : public Scene
 {
 private:
-	sf::Texture textureBG;
-	sf::Sprite spriteBG;
+	float Cursor_selectY = 600.f;
 
-	sf::Texture textureBeamEffect;
-	sf::Sprite spriteBeamEffect;
+	Texture textureBackGround;
+	Sprite spriteBackGround;
 
-	sf::Texture textureTitle;
-	sf::Sprite spriteTitle;
+	Texture textureTitle;
+	Sprite spriteTitle;
+
+	Texture textureCursor;
+	Sprite spriteCursor;
+
+	Font fontArial;
+	Text textPlay;
+	Text textEditor;
+	Text textExit;
 
 public:
 	TitleScene() {}
