@@ -27,7 +27,10 @@ void EditingScene::Update(float dt)
 		Texture* tex = new Texture();
 		Sprite* spr = new Sprite();
 
-		tex->loadFromFile("Resources/Sprite/BG/Tutorial/tut_edge_02_0001_03.png");
+		if(listBoxUI->GetId() == "rock")
+			tex->loadFromFile("Resources/Sprite/BG/Tutorial/tut_edge_02_0001_03.png");
+		else if(listBoxUI->GetId() == "pole")
+			tex->loadFromFile("Resources/Sprite/BG/Tutorial/tutorial_poles_0008_a.png");
 		spr->setTexture(*tex);
 
 		spr->setPosition(listBoxUI->GetDropImage().getPosition());
