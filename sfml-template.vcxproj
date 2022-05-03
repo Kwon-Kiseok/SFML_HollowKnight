@@ -148,6 +148,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Animation\AnimationClip.cpp" />
+    <ClCompile Include="Sources\Animation\AnimationController.cpp" />
+    <ClCompile Include="Sources\Animation\PlayerAnimation.cpp" />
     <ClCompile Include="Sources\Managers\SoundManager.cpp" />
     <ClCompile Include="Sources\Framework\Game.cpp" />
     <ClCompile Include="Sources\HollowKnight.cpp" />
@@ -160,6 +163,10 @@
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Animation\AnimationClip.hpp" />
+    <ClInclude Include="Sources\Animation\AnimationController.hpp" />
+    <ClInclude Include="Sources\Animation\PlayerAnimation.hpp" />
+    <ClInclude Include="Sources\Animation\rapidcsv.hpp" />
     <ClInclude Include="Sources\Managers\SoundManager.hpp" />
     <ClInclude Include="Sources\Player\Player.hpp" />
     <ClInclude Include="Sources\Scene\Scene.hpp" />
