@@ -22,8 +22,8 @@ void SceneManager::Init()
 	Scenes[L"TestScene"] = new ManagerTestScene();
 	Scenes[L"Title"] = new TitleScene();
 	Scenes[L"Play"] = new PlayScene();
-  Scenes[L"Editor"] = new EditingScene();
-	currentScene = Scenes[L"Play"];
+	Scenes[L"Editor"] = new EditingScene();
+	currentScene = Scenes[L"Editor"];
 
 	currentScene->Init();
 }

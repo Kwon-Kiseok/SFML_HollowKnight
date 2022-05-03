@@ -9,7 +9,7 @@ using namespace std;
 class textureListBoxUI
 {
 private:
-	unordered_map<string, Texture*> textureMap;
+	Texture texture;
 	unordered_map<string, Sprite*> spriteMap;
 
 	RectangleShape ListBox;// 버튼이 클릭되면 나오는 텍스처 목록 박스
@@ -17,6 +17,7 @@ private:
 
 	button* testRockButton;
 	bool isActive;
+	bool isDrop;
 public:
 	textureListBoxUI();
 	~textureListBoxUI();
@@ -27,6 +28,8 @@ public:
 	void Render(RenderWindow& window);
 	void Release();
 
-	
+	Sprite& GetDropImage();
+	bool GetIsDrop();
+	void ResetIsDrop();
 };
 

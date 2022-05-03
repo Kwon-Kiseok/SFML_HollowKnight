@@ -47,7 +47,7 @@ void PlayScene::Render(sf::RenderWindow& window)
 
 	for (int i = 0; i < countLife; i++)
 	{
-		window.draw(spriteLife[i]);
+		//window.draw(spriteLife[i]);
 	}
 }
 

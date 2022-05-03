@@ -1,8 +1,13 @@
 #include "textureListBoxUI.hpp"
 #include "../Managers/InputManager.hpp"
 
+#include <iostream>
+
 textureListBoxUI::textureListBoxUI()
 {
+	isActive = false;
+	isDrop = false;
+
 	ListBox.setSize(Vector2f(700.f, 500.f));
 	ListBox.setOrigin(ListBox.getGlobalBounds().width / 2, ListBox.getGlobalBounds().height / 2);
 	ListBox.setPosition(1920.f * 0.5f, 1080.f * 0.5f);
@@ -24,16 +29,14 @@ void textureListBoxUI::Init()
 
 void textureListBoxUI::AddTexture(string path, Vector2f pos)
 {
-	Texture* texture = new Texture;
-	Sprite* sprite = new Sprite;
-
-	texture->loadFromFile(path);
-	sprite->setTexture(*texture);
+	texture.loadFromFile(path);
+	Sprite* sprite = new Sprite();
+	sprite->setTexture(texture);
 
 	sprite->setPosition(pos);
 	sprite->setOrigin(sprite->getLocalBounds().width / 2, sprite->getLocalBounds().height / 2);
-	textureMap.insert(make_pair(path, texture));
-	spriteMap.insert(make_pair("Temp", sprite));
+
+	spriteMap.insert(make_pair("id", sprite));
 }
 
 void textureListBoxUI::Update(bool* isOpen)
@@ -56,11 +59,19 @@ void textureListBoxUI::Update(bool* isOpen)
 		AddTexture("Resources/Sprite/BG/Tutorial/tut_edge_02_0001_03.png", InputManager::GetInstance().GetMouseWorldPosition());
 		isActive = true;
 	}
-
-	if (isActive)
+	else if (isActive)
 	{
-		spriteMap.find("Temp")->second->setPosition(InputManager::GetInstance().GetMouseWorldPosition());
+		spriteMap.find("id")->second->setPosition(InputManager::GetInstance().GetMouseWorldPosition());
+
+		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
+		{
+			std::cout << spriteMap.find("id")->second->getPosition().x << ", " << spriteMap.find("id")->second->getPosition().y << std::endl;
+			
+			isActive = false;
+			isDrop = true;
+		}
 	}
+
 }
 
 void textureListBoxUI::Render(RenderWindow& window)
@@ -71,8 +82,10 @@ void textureListBoxUI::Render(RenderWindow& window)
 
 	if (isActive)
 	{
-		auto it = spriteMap.find("Temp");
-		window.draw(*it->second);
+		for (auto& it : spriteMap)
+		{
+			window.draw(*it.second);
+		}
 	}
 }
 
@@ -80,12 +93,23 @@ void textureListBoxUI::Release()
 {
 	delete closeButton;
 
-	for (auto it = textureMap.begin(); it != textureMap.end(); ++it)
-	{
-		delete it->second;
-	}
-	textureMap.clear();
+}
 
+Sprite& textureListBoxUI::GetDropImage()
+{
+	auto it = spriteMap.find("id")->second;
+	return *it;
+}
+
+bool textureListBoxUI::GetIsDrop()
+{
+	return isDrop;
+}
+
+void textureListBoxUI::ResetIsDrop()
+{
+	isDrop = false;
+	
 	for (auto it = spriteMap.begin(); it != spriteMap.end(); ++it)
 	{
 		delete it->second;
