@@ -148,6 +148,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Utils\button.cpp" />
+    <ClCompile Include="Sources\Scene\EditingScene.cpp" />
     <ClCompile Include="Sources\Scene\ManagerTestScene.cpp" />
     <ClCompile Include="Sources\Managers\SoundManager.cpp" />
     <ClCompile Include="Sources\Framework\Game.cpp" />
@@ -158,8 +160,11 @@
     <ClCompile Include="Sources\Managers\InputManager.cpp" />
     <ClCompile Include="Sources\Managers\SceneManager.cpp" />
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
+    <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Utils\button.hpp" />
+    <ClInclude Include="Sources\Scene\EditingScene.hpp" />
     <ClInclude Include="Sources\Scene\ManagerTestScene.hpp" />
     <ClInclude Include="Sources\Managers\SoundManager.hpp" />
     <ClInclude Include="Sources\Scene\Scene.hpp" />
@@ -171,6 +176,7 @@
     <ClInclude Include="Sources\Managers\InputManager.hpp" />
     <ClInclude Include="Sources\Managers\SceneManager.hpp" />
     <ClInclude Include="Sources\Scene\TitleScene.hpp" />
+    <ClInclude Include="Sources\Utils\textureListBoxUI.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

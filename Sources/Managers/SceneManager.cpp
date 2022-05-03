@@ -1,6 +1,7 @@
 #include "SceneManager.hpp"
 #include "../Scene/TitleScene.hpp"
 #include "../Scene/ManagerTestScene.hpp"
+#include "../Scene/EditingScene.hpp"
 
 
 SceneManager::~SceneManager() noexcept
@@ -19,8 +20,9 @@ void SceneManager::Init()
 {
 	Scenes[L"TestScene"] = new ManagerTestScene();
 	Scenes[L"Title"] = new TitleScene();
+	Scenes[L"Editor"] = new EditingScene();
 
-	currentScene = Scenes[L"TestScene"];
+	currentScene = Scenes[L"Editor"];
 	currentScene->Init();
 }
 
