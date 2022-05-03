@@ -42,6 +42,16 @@
     <ClCompile Include="Sources\Managers\SoundManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Player\Player.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Animation\AnimationClip.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Animation\AnimationController.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Animation\PlayerAnimation.cpp">
     <ClCompile Include="Sources\Scene\ManagerTestScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -52,6 +62,13 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Scene\PlayScene.cpp">
+    <ClCompile Include="Sources\Scene\EditingScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\button.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\textureListBoxUI.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,6 +103,19 @@
     <ClInclude Include="Sources\Managers\SoundManager.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Player\Player.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Animation\AnimationClip.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Animation\AnimationController.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Animation\rapidcsv.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Animation\PlayerAnimation.hpp">
     <ClInclude Include="Sources\Scene\ManagerTestScene.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -96,6 +126,13 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Scene\PlayScene.h">
+    <ClInclude Include="Sources\Scene\EditingScene.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\button.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\textureListBoxUI.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -151,22 +151,36 @@
     <ClCompile Include="Sources\Scene\PlayScene.cpp" />
     <ClCompile Include="Sources\Managers\UIManager.cpp" />
     <ClCompile Include="Sources\Utils\Inventory.cpp" />
+    <ClCompile Include="Sources\Utils\button.cpp" />
+    <ClCompile Include="Sources\Scene\EditingScene.cpp" />
+    <ClCompile Include="Sources\Animation\AnimationClip.cpp" />
+    <ClCompile Include="Sources\Animation\AnimationController.cpp" />
+    <ClCompile Include="Sources\Animation\PlayerAnimation.cpp" />
     <ClCompile Include="Sources\Scene\ManagerTestScene.cpp" />
     <ClCompile Include="Sources\Managers\SoundManager.cpp" />
     <ClCompile Include="Sources\Framework\Game.cpp" />
     <ClCompile Include="Sources\HollowKnight.cpp" />
+    <ClCompile Include="Sources\Player\Player.cpp" />
     <ClCompile Include="Sources\Utils\Utility.cpp" />
     <ClCompile Include="Sources\Managers\ViewManager.cpp" />
     <ClCompile Include="Sources\Managers\TextureManager.cpp" />
     <ClCompile Include="Sources\Managers\InputManager.cpp" />
     <ClCompile Include="Sources\Managers\SceneManager.cpp" />
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
+    <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
     <ClInclude Include="Sources\Utils\Inventory.h" />
+    <ClInclude Include="Sources\Utils\button.hpp" />
+    <ClInclude Include="Sources\Scene\EditingScene.hpp" />
+    <ClInclude Include="Sources\Animation\AnimationClip.hpp" />
+    <ClInclude Include="Sources\Animation\AnimationController.hpp" />
+    <ClInclude Include="Sources\Animation\PlayerAnimation.hpp" />
+    <ClInclude Include="Sources\Animation\rapidcsv.hpp" />
     <ClInclude Include="Sources\Scene\ManagerTestScene.hpp" />
     <ClInclude Include="Sources\Managers\SoundManager.hpp" />
+    <ClInclude Include="Sources\Player\Player.hpp" />
     <ClInclude Include="Sources\Scene\Scene.hpp" />
     <ClInclude Include="Sources\include\Singleton.hpp" />
     <ClInclude Include="Sources\Utils\Utility.hpp" />
@@ -177,6 +191,7 @@
     <ClInclude Include="Sources\Managers\SceneManager.hpp" />
     <ClInclude Include="Sources\Scene\TitleScene.hpp" />
     <ClInclude Include="Sources\Managers\UIManager.hpp" />
+    <ClInclude Include="Sources\Utils\textureListBoxUI.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

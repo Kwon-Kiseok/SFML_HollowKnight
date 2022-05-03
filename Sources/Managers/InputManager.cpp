@@ -54,6 +54,7 @@ void InputManager::ClearInput() noexcept
 	downKeys.clear();
 	upKeys.clear();
 	downButtons.clear();
+	upButtons.clear();
 }
 
 void InputManager::ProcessInput(const Event& event)
@@ -73,9 +74,16 @@ void InputManager::ProcessInput(const Event& event)
 		upKeys.push_back(event.key.code);
 		break;
 	case Event::MouseButtonPressed:
+	{
 		downButtons.push_back(event.mouseButton.button);
+		buttons.push_back(event.mouseButton.button);
+	}
 		break;
 	case Event::MouseButtonReleased:
+	{
+		buttons.remove(event.mouseButton.button);
+		upButtons.push_back(event.mouseButton.button);
+	}
 		break;
 	default:
 		break;
@@ -209,12 +217,12 @@ bool InputManager::GetMouseButtonDown(Mouse::Button button) noexcept
 
 bool InputManager::GetMouseButton(Mouse::Button button) noexcept
 {
-	auto it = find(downButtons.begin(), downButtons.end(), button);
+	auto it = find(buttons.begin(), buttons.end(), button);
 	return it != buttons.end();
 }
 
 bool InputManager::GetMouseButtonUp(Mouse::Button button) noexcept
 {
-	auto it = find(downButtons.begin(), downButtons.end(), button);
+	auto it = find(upButtons.begin(), upButtons.end(), button);
 	return it != upButtons.end();
 }
