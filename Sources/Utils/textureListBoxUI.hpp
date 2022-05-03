@@ -14,12 +14,19 @@ private:
 
 	RectangleShape ListBox;// 버튼이 클릭되면 나오는 텍스처 목록 박스
 	button* closeButton;
+
+	button* testRockButton;
+	bool isActive;
 public:
 	textureListBoxUI();
 	~textureListBoxUI();
 
+	void Init();
+	void AddTexture(string path, Vector2f pos);
 	void Update(bool* isOpen);
 	void Render(RenderWindow& window);
 	void Release();
+
+	
 };
 

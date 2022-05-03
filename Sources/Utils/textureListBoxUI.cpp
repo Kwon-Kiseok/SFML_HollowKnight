@@ -1,4 +1,5 @@
 #include "textureListBoxUI.hpp"
+#include "../Managers/InputManager.hpp"
 
 textureListBoxUI::textureListBoxUI()
 {
@@ -8,10 +9,31 @@ textureListBoxUI::textureListBoxUI()
 	ListBox.setFillColor(Color::White);
 
 	closeButton = new button("Close", Vector2f(ListBox.getPosition().x, ListBox.getPosition().y + (ListBox.getGlobalBounds().height / 2) - 20.f), Vector2f(80.f, 25.f));
+
+	testRockButton = new button("test", Vector2f(ListBox.getLocalBounds().width / 2, ListBox.getLocalBounds().height / 2), Vector2f(80.f, 40.f));
+	Init();
 }
 
 textureListBoxUI::~textureListBoxUI()
 {
+}
+
+void textureListBoxUI::Init()
+{
+}
+
+void textureListBoxUI::AddTexture(string path, Vector2f pos)
+{
+	Texture* texture = new Texture;
+	Sprite* sprite = new Sprite;
+
+	texture->loadFromFile(path);
+	sprite->setTexture(*texture);
+
+	sprite->setPosition(pos);
+	sprite->setOrigin(sprite->getLocalBounds().width / 2, sprite->getLocalBounds().height / 2);
+	textureMap.insert(make_pair(path, texture));
+	spriteMap.insert(make_pair("Temp", sprite));
 }
 
 void textureListBoxUI::Update(bool* isOpen)
@@ -21,11 +43,23 @@ void textureListBoxUI::Update(bool* isOpen)
 	{
 		// 클로즈 버튼 활성화
 		closeButton->update();
+		testRockButton->update();
 	}
 	if (closeButton->IsButtonClicked())
 	{
 		*isOpen = false;
 		closeButton->ResetIsClicked();
+	}
+
+	if (testRockButton->IsButtonClicked())
+	{
+		AddTexture("Resources/Sprite/BG/Tutorial/tut_edge_02_0001_03.png", InputManager::GetInstance().GetMouseWorldPosition());
+		isActive = true;
+	}
+
+	if (isActive)
+	{
+		spriteMap.find("Temp")->second->setPosition(InputManager::GetInstance().GetMouseWorldPosition());
 	}
 }
 
@@ -33,6 +67,13 @@ void textureListBoxUI::Render(RenderWindow& window)
 {
 	window.draw(ListBox);
 	closeButton->draw(window);
+	testRockButton->draw(window);
+
+	if (isActive)
+	{
+		auto it = spriteMap.find("Temp");
+		window.draw(*it->second);
+	}
 }
 
 void textureListBoxUI::Release()
