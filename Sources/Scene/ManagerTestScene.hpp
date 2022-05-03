@@ -7,11 +7,9 @@ private:
 	sf::Texture textureBG;
 	sf::Sprite spriteBG;
 
-	sf::Texture textureBeamEffect;
-	sf::Sprite spriteBeamEffect;
-	
-	sf::Texture textureTitle;
-	sf::Sprite spriteTitle;
+	sf::Texture textureVignette;
+	sf::Sprite spriteVignette;
+
 public:
 	ManagerTestScene() noexcept;
 	~ManagerTestScene() noexcept;
