@@ -14,8 +14,9 @@ ManagerTestScene::~ManagerTestScene() noexcept
 
 void ManagerTestScene::Init()
 {
-	textureBG = TextureManager::GetInstance().GetTexture("Resources/Sprite/controller_prompt_bg.png");
+	textureBG = TextureManager::GetInstance().GetTexture("Resources/Sprite/Voidheart_menu_BG.png");
 	spriteBG.setTexture(textureBG);
+
 	spriteBG.setOrigin(textureBG.getSize().x * 0.5f, textureBG.getSize().y * 0.5f);
 	spriteBG.setPosition(ViewManager::GetInstance().GetResolution().x * 0.5f, ViewManager::GetInstance().GetResolution().y * 0.5f);
 
