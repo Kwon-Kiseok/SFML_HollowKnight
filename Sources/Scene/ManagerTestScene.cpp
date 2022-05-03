@@ -15,7 +15,7 @@ void ManagerTestScene::Init()
 	textureBG = TextureManager::GetInstance().GetTexture("Resources/Sprite/Voidheart_menu_BG.png");
 	spriteBG.setTexture(textureBG);
 	spriteBG.setOrigin(textureBG.getSize().x , textureBG.getSize().y );
-	spriteBG.setPosition(ViewManager::GetInstance().GetResolution().x * 1.f , ViewManager::GetInstance().GetResolution().y *1.2f);
+	spriteBG.setPosition(ViewManager::GetInstance().GetResolution().x *1.f, ViewManager::GetInstance().GetResolution().y*1.25f);
 
 	textureBeamEffect = TextureManager::GetInstance().GetTexture("Resources/Sprite/Main_Menu_Beam.png");
 	spriteBeamEffect.setTexture(textureBeamEffect);
@@ -25,7 +25,7 @@ void ManagerTestScene::Init()
 	textureTitle = TextureManager::GetInstance().GetTexture("Resources/Sprite/title.png");
 	spriteTitle.setTexture(textureTitle);
 	spriteTitle.setOrigin(textureTitle.getSize().x, textureTitle.getSize().y);
-	spriteTitle.setPosition(ViewManager::GetInstance().GetResolution().x * 0.8f, ViewManager::GetInstance().GetResolution().y * 0.55f);
+	spriteTitle.setPosition(ViewManager::GetInstance().GetResolution().x * 0.8f, ViewManager::GetInstance().GetResolution().y * 0.5f);
 }
 
 void ManagerTestScene::Update(float dt)
