@@ -55,6 +55,13 @@
     <ClCompile Include="Sources\Scene\ManagerTestScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Utils\Inventory.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Managers\UIManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Scene\PlayScene.cpp">
     <ClCompile Include="Sources\Scene\EditingScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -112,6 +119,13 @@
     <ClInclude Include="Sources\Scene\ManagerTestScene.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Managers\UIManager.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\Inventory.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Scene\PlayScene.h">
     <ClInclude Include="Sources\Scene\EditingScene.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
