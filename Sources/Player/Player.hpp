@@ -1,9 +1,11 @@
 #pragma once
 #include "../Animation/AnimationController.hpp"
 #include <map>
-//#include "../DemoTile.hpp"
+#include "../Objects/GameObject.hpp"
+#include "../DemoTile.hpp"
 
-class Player
+
+class Player : public GameObject
 {
 private:
 	bool isWay;	// true면 왼쪽을 바라보는 상황
@@ -17,9 +19,6 @@ private:
 	bool isString;
 
 	float speed;
-
-	Sprite sprite;
-	Vector2f position;
 	AnimationController animation;
 
 	//Texture texture;
@@ -35,17 +34,12 @@ public:
 	void Update(float dt, FloatRect tile);
 	void Draw(RenderWindow& window);
 
-	void SetPosition(Vector2f pos);
 	int GetHP();
 	int GetMP();
 	void AddHP(int value);
 	void AddMP(int value);
 	const FloatRect GetGlobalBounds();	// 충돌체크 때 필요
 	bool UpdateCollision();	//  내가 때린 판정
-
-	const Vector2f GetPosition();
-	const Sprite GetSprite();
-
 	bool OnHitted(Time timeHit);	// 내가 맞은 판정
 };
 

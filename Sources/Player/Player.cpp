@@ -15,11 +15,8 @@ void Player::Init()
 	hp = PlayerDataManager::GetInstance().GetPlayerHP();
 	mp = PlayerDataManager::GetInstance().GetPlayerMP();
 
-	position.x = 1920.f / 2;
-	// position.y = 1080.f / 2;
-	position.y = 500.f;
+	SetTag(TAG::PLAYER);
 	sprite.setPosition(position);
-
 	sprite.setOrigin(31, 0);
 	// Animator 초기화
 	animation.SetTarget(&sprite);
@@ -68,7 +65,6 @@ void Player::Init()
 		animation.AddClip(clip);
 	}
 
-	//Queuestrig = "Idle";
 	animation.Play("Idle");
 }
 
@@ -259,11 +255,6 @@ const FloatRect Player::GetGlobalBounds()
 	return sprite.getGlobalBounds();
 }
 
-void Player::SetPosition(Vector2f pos)
-{
-	position = pos;
-}
-
 int Player::GetHP()
 {
 	return hp;
@@ -282,19 +273,11 @@ void Player::AddHP(int value)
 void Player::AddMP(int value)
 {
 	mp += value;
+}
+
 bool Player::UpdateCollision()
 {
 	return false;	// 정의
-}
-
-const Vector2f Player::GetPosition()
-{
-	return position;
-}
-
-const Sprite Player::GetSprite()
-{
-	return sprite;
 }
 
 bool Player::OnHitted(Time timeHit)

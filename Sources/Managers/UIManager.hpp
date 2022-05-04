@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "SceneManager.hpp"
 #include "../include/Singleton.hpp"
+#include "../Scene/InventoryScene.hpp"
 #include <vector>
 
 using namespace sf;
@@ -34,9 +35,8 @@ private:
 	Texture textureCoin;
 	Sprite spriteCoin;
 
-	Font fontCALIST;
 	Text textCoin;
-
+	InventoryScene inventory;
 public:
 	void Init();
 	void Update(float dt);
@@ -52,6 +52,6 @@ public:
 	void Render_PlayScene(sf::RenderWindow& window);
 	void Release_PlayScene();
 
-
+	bool GetInventoryIsOpen();
 };
 

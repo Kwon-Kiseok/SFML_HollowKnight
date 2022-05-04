@@ -25,7 +25,7 @@ private:
 	Font fontCALIST;
 	Text textInven;
 
-	bool visible = true;
+	bool visible = false;
 
 public:
 	InventoryScene() {}
@@ -36,7 +36,7 @@ public:
 	void Render(sf::RenderWindow & window);
 	void Release();
 
-	void SetVisible();
+	void SetVisible(bool is);
 	bool GetVisible();
 
 };

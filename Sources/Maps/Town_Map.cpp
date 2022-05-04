@@ -26,6 +26,7 @@ void Town_Map::Init()
 	player = new Player();
 	mob = new tempMob();
 	tile = new DemoTile(740, 900);
+	player->SetPosition(Vector2f(1920.f / 2, 500.f));
 	player->Init();
 	mob->Init();
 	mob->SetPosition(Vector2f(1920.f / 2.f, 850.f));
