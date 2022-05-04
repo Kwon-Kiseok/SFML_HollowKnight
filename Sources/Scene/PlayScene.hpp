@@ -1,10 +1,13 @@
 #pragma once
 #include "Scene.hpp"
+#include "../Player/Player.hpp"
+#include "../DemoTile.hpp"
 
 using namespace sf;
 class PlayScene	: public Scene
 {
 private:
+
 	Texture textureLife1;
 	Sprite spriteLife1;
 
@@ -22,6 +25,18 @@ private:
 
 	Texture textureCoin;
 	Sprite spriteCoin;
+
+
+	Texture textureLife;
+	Sprite spriteLife;
+	const int countLife = 5;
+
+	Font fontArial;
+	Text textCoin;
+
+	Player* player;
+	// Å×½ºÆ® Å¸ÀÏ
+	DemoTile* tile;
 
 	Font fontCALIST;
 	Text textCoin;
