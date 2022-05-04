@@ -3,8 +3,10 @@
 #include "../Managers/InputManager.hpp"
 
 Player::Player()
-	: isMove(true), isWay(true), isJump(true), isBottom(false), speed(200.f)
+	: isWay(true), isJump(true), isBottom(false), speed(200.f), isDash(false)
 {
+	string = "";
+	Queuestrig = "";
 }
 
 void Player::Init()
@@ -67,6 +69,9 @@ void Player::Init()
 
 void Player::UpdateInput()
 {
+
+	// 큐로 받아놓고
+
 	// 좌우 입력시 이미지 방향 변화
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right))
 	{
@@ -84,14 +89,18 @@ void Player::UpdateInput()
 			isWay = !isWay;
 		}
 	}
+
 	// 좌우 이동 이미지
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) ||
 		InputManager::GetInstance().GetKeyDown(Keyboard::Left))
 	{
 		if (isBottom)
 		{
-			animation.Play("StartMove");
-			animation.PlayQueue("Move");
+			string = "StartMove";
+			Queuestrig = "Move";
+			isString = true;
+			//animation.Play("StartMove");
+			//animation.PlayQueue("Move");
 		}
 	}
 	// 좌우 이동 -> 멈춤 이미지
@@ -100,26 +109,68 @@ void Player::UpdateInput()
 	{
 		if (isBottom)
 		{
-			animation.Play("RunToIdle");
-			animation.PlayQueue("Idle");
+			string = "RunToIdle";
+			Queuestrig = "Idle";
+			isString = true;
+			//animation.Play("RunToIdle");
+			//animation.PlayQueue("Idle");
 		}
 	}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
 	{
-		animation.Play("Jump");
+		string = "Jump";
+		//Queuestrig = "Jumping";
+		//animation.Play("Jump");
 		animation.PlayQueue("Jumping");
+
+		isString = true;
 		isJump = true;
-		if (isBottom)
-		{
-			//animation.PlayQueue("Idle");	// 이전 이미지로
-		}
 	}
+	/*if (!isBottom)
+	{
+		Queuestrig = "Jumping";
+		isString = true;
+		isJump = true;
+	}*/
+
 	// 공격 애니메이션 or 이전 이미지 저장하는 법????
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::X))
 	{
-		animation.Play("Slash");
-		animation.PlayQueue("Idle");	// 이전 이미지로
+		string = "Slash";
+		isString = true;
+		//Queuestrig = "Idle";
+		//animation.Play("Slash");
+		//animation.PlayQueue("Idle");	// 이전 이미지로
+	}
+
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash)
+	{
+		string = "Dash";
+		isString = true;
+		//Queuestrig = "Idle";
+		//animation.Play("Dash");
+		//animation.PlayQueue("Idle");	// 이전 이미지로
+	}
+
+	if (!isDash)
+	{
+		if (isString)
+		{
+			animation.Play(string);
+			animation.Play(Queuestrig);
+			isString = false;
+		}
+		/*if (string != "")
+		{
+			animation.Play(string);
+			string = "";
+		}
+		if (Queuestrig != "")
+		{
+			animation.Play(Queuestrig);
+			Queuestrig = "";
+		}*/
 	}
 }
 
@@ -127,41 +178,77 @@ void Player::Update(float dt, FloatRect tile)
 {
 	UpdateInput();
 
+
 	Vector2f positionTemp = position;
-	
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) ||
-		InputManager::GetInstance().GetKey(Keyboard::Right))
+	// 대쉬 입력
+	if (!isDash)
 	{
-		position.x += dt * speed;
-	}
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Left) ||
-		InputManager::GetInstance().GetKey(Keyboard::Left))
-	{
-		position.x -= dt * speed;
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::C))
+		{
+			dashTemp = position;
+			isDash = true;
+		}
+		// 좌우 키입력
+		if (InputManager::GetInstance().GetKey(Keyboard::Right))
+		{
+			position.x += dt * speed;
+		}
+		if (InputManager::GetInstance().GetKey(Keyboard::Left))
+		{
+			position.x -= dt * speed;
+		}
+		// 점프 입력
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z) ||
+			InputManager::GetInstance().GetKey(Keyboard::Z))
+		{
+			position.y -= dt * speed * 2.f;
+			isBottom = false;
+		}
+		else
+		{
+			position.y += dt * speed * 2.f;
+		}
+		// 바닥 충돌 체크
+		if ((float)position.y > tile.top &&
+			((float)position.x > tile.left && (float)position.x < tile.left + tile.width))
+		{
+			if (isJump)
+			{
+				animation.Play(Queuestrig);
+				isJump = false;
+			}
+			position.y = positionTemp.y;
+			isBottom = true;
+		}
 	}
 
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Z) ||
-		InputManager::GetInstance().GetKey(Keyboard::Z))
+	if (isDash)
 	{
-		position.y -= dt * speed * 2.f;
-		isBottom = false;
-	}
-	else
-	{
-		position.y += dt * speed * 2.f;
-	}
-	if ((float)position.y > tile.top &&
-		((float)position.x > tile.left && (float)position.x < tile.left + tile.width))
-	{
-		if (isJump)
+		if (isWay)
 		{
-			animation.Play("Idle");
-			isJump = false;
+			if (position.x > dashTemp.x - 300.f)
+			{
+				position.x -= dt * speed * 5.f;
+				position.y = dashTemp.y;
+			}
+			else
+			{
+				isDash = false;
+			}
 		}
-		position.y = positionTemp.y;
-		isBottom = true;
+		else
+		{
+			if (position.x < dashTemp.x + 300.f)
+			{
+				position.x += dt * speed * 5.f;
+				position.y = dashTemp.y;
+			}
+			else
+			{
+				isDash = false;
+			}
+		}
 	}
-	
 	sprite.setPosition(position);
 
 	animation.Update(dt);

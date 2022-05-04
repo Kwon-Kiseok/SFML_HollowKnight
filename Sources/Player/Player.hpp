@@ -6,10 +6,12 @@
 class Player
 {
 private:
-	bool isMove;
-	bool isWay;
+	bool isWay;	// true면 왼쪽을 바라보는 상황
 	bool isJump;
 	bool isBottom;
+
+	bool isDash;
+	bool isString;
 
 	float speed;
 
@@ -19,6 +21,11 @@ private:
 
 	//Texture texture;
 	std::map<std::string, Texture> texMap;
+
+	Vector2f dashTemp;
+
+	std::string string;
+	std::string Queuestrig;
 public:
 	Player();
 	void Init();
