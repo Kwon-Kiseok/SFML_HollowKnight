@@ -63,7 +63,6 @@ void PlayScene::Render(sf::RenderWindow& window)
 
 
 	window.draw(tile->GetShape());
-
 	window.draw(spriteLife1);
 	window.draw(spriteLife2);
 	window.draw(spriteLife3);
