@@ -11,7 +11,8 @@ class EditingScene : public Scene
 {
 private:
 	unordered_map<string, Texture*> textureMap;
-	unordered_map<string, Sprite*> spriteMap;
+	unordered_map<int, Sprite*> spriteMap;
+	int clickCount;
 
 	button* textureLoadButton;	// 텍스쳐 로드 버튼
 	bool isOpenTextureWindow; // 텍스처 윈도우가 열려있는지
@@ -19,7 +20,7 @@ private:
 	textureListBoxUI* listBoxUI;
 
 public:
-	EditingScene() noexcept = default;
+	EditingScene() noexcept;
 	~EditingScene() noexcept = default;
 
 	virtual void Init() override;

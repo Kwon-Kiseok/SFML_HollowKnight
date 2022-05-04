@@ -148,6 +148,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Scene\MapTestPlayScene.cpp" />
+    <ClCompile Include="Sources\Managers\MapManager.cpp" />
+    <ClCompile Include="Sources\Maps\CrossRoad_Map.cpp" />
+    <ClCompile Include="Sources\Maps\KingsPass_Map.cpp" />
+    <ClCompile Include="Sources\DemoTile.cpp" />
     <ClCompile Include="Sources\Scene\PlayScene.cpp" />
     <ClCompile Include="Sources\Managers\UIManager.cpp" />
     <ClCompile Include="Sources\Scene\InventoryScene.cpp" />
@@ -155,7 +160,6 @@
     <ClCompile Include="Sources\Scene\EditingScene.cpp" />
     <ClCompile Include="Sources\Animation\AnimationClip.cpp" />
     <ClCompile Include="Sources\Animation\AnimationController.cpp" />
-    <ClCompile Include="Sources\Animation\PlayerAnimation.cpp" />
     <ClCompile Include="Sources\Scene\ManagerTestScene.cpp" />
     <ClCompile Include="Sources\Managers\SoundManager.cpp" />
     <ClCompile Include="Sources\Framework\Game.cpp" />
@@ -169,15 +173,23 @@
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
     <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
     <ClCompile Include="Sources\Scene\TempUIScene.cpp" />
+    <ClCompile Include="Sources\Maps\Town_Map.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Scene\MapTestPlayScene.hpp" />
+    <ClInclude Include="Sources\Managers\MapManager.hpp" />
+    <ClInclude Include="Sources\Maps\CrossRoad_Map.hpp" />
+    <ClInclude Include="Sources\Maps\KingsPass_Map.hpp" />
+    <ClInclude Include="Sources\Maps\Map.hpp" />
+    <ClInclude Include="Sources\DemoTile.hpp" />
+    <ClInclude Include="Sources\Scene\PlayScene.h" />
+    <ClInclude Include="Sources\Utils\Inventory.h" />
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />
     <ClInclude Include="Sources\Scene\InventoryScene.hpp" />
     <ClInclude Include="Sources\Utils\button.hpp" />
     <ClInclude Include="Sources\Scene\EditingScene.hpp" />
     <ClInclude Include="Sources\Animation\AnimationClip.hpp" />
     <ClInclude Include="Sources\Animation\AnimationController.hpp" />
-    <ClInclude Include="Sources\Animation\PlayerAnimation.hpp" />
     <ClInclude Include="Sources\Animation\rapidcsv.hpp" />
     <ClInclude Include="Sources\Scene\ManagerTestScene.hpp" />
     <ClInclude Include="Sources\Managers\SoundManager.hpp" />
@@ -194,6 +206,7 @@
     <ClInclude Include="Sources\Managers\UIManager.hpp" />
     <ClInclude Include="Sources\Utils\textureListBoxUI.hpp" />
     <ClInclude Include="Sources\Scene\TempUIScene.h" />
+    <ClInclude Include="Sources\Maps\Town_Map.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

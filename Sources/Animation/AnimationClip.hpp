@@ -16,8 +16,10 @@ struct AnimationFrame
 {
 	Texture texture;
 	IntRect texCoord;
+	//오리진에 해당하는 값을 넣어줌 Vector2f origin;
+	Vector2f origin;
 
-	AnimationFrame(const Texture& tex, const IntRect& coord);
+	AnimationFrame(const Texture& tex, const IntRect& coord, const Vector2f& ori);
 };
 
 struct AnimationClip

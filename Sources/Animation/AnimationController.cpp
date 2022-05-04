@@ -68,6 +68,7 @@ void AnimationController::Update(float dt)
 	sprite->setTextureRect(currentClip->frames[currentFrame].texCoord);	//	어느 영역을 찍을건지
 
 	//sprite->setOrigin()	// 여기서 오리진을 바꾸라는데요....음 어려워요
+	sprite->setOrigin(currentClip->frames[currentFrame].origin);
 }
 
 void AnimationController::Play(std::string clipId, bool clear)

@@ -3,7 +3,7 @@
 #include "../Scene/ManagerTestScene.hpp"
 #include "../Scene/PlayScene.hpp"
 #include "../Scene/EditingScene.hpp"
-#include "../Scene/InventoryScene.hpp"
+#include "../Scene/MapTestPlayScene.hpp"
 
 
 SceneManager::~SceneManager() noexcept
@@ -25,7 +25,9 @@ void SceneManager::Init()
 	Scenes[L"Play"] = new PlayScene();
 	Scenes[L"Editor"] = new EditingScene();
 
-	currentScene = Scenes[L"Title"];
+	Scenes[L"MapTest"] = new MapTestPlayScene();
+	currentScene = Scenes[L"MapTest"];
+	//currentScene = Scenes[L"Play"];
 
 	currentScene->Init();
 }
