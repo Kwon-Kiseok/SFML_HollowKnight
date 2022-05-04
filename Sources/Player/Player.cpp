@@ -8,8 +8,6 @@ Player::Player()
 {
 	hp = 0;
 	mp = 0;
-	string = "";
-	Queuestrig = "";
 }
 
 void Player::Init()
@@ -23,7 +21,7 @@ void Player::Init()
 	sprite.setPosition(position);
 
 	sprite.setOrigin(31, 0);
-	// Animator ÃÊ±âÈ­
+	// Animator ì´ˆê¸°í™”
 	animation.SetTarget(&sprite);
 
 	/**************************************************************************/
@@ -64,120 +62,111 @@ void Player::Init()
 			clip.frames.push_back(AnimationFrame(texMap[colTexure[j]], IntRect(colL[j], colT[j], colW[j], colH[j]), Vector2f(colX[j], colY[j])));
 		}
 		//sprite.setOrigin(orgX, orgY);
-		// Animator ÃÊ±âÈ­		// AnimationController Update¿¡¼­ ¿À¸®Áø °ª º¯°æ
+		// Animator ì´ˆê¸°í™”		// AnimationController Updateì—ì„œ ì˜¤ë¦¬ì§„ ê°’ ë³€ê²½
 		//animation.SetTarget(&sprite);
 
 		animation.AddClip(clip);
 	}
 
+	//Queuestrig = "Idle";
 	animation.Play("Idle");
 }
 
 void Player::UpdateInput()
 {
 
-	// Å¥·Î ¹Þ¾Æ³õ°í
+	// íë¡œ ë°›ì•„ë†“ê³ 
 
-	// ÁÂ¿ì ÀÔ·Â½Ã ÀÌ¹ÌÁö ¹æÇâ º¯È­
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right))
+	// ì¢Œìš° ìž…ë ¥ì‹œ ì´ë¯¸ì§€ ë°©í–¥ ë³€í™”
+	if (!isDash)
 	{
-		if (isWay)
+		if (InputManager::GetInstance().GetKey(Keyboard::Right))
 		{
-			sprite.scale(-1, 1);
-			isWay = !isWay;
+			if (isWay)
+			{
+				sprite.scale(-1, 1);
+				isWay = !isWay;
+			}
 		}
-	}
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Left))
-	{
-		if (!isWay)
+		if (InputManager::GetInstance().GetKey(Keyboard::Left))
 		{
-			sprite.scale(-1, 1);
-			isWay = !isWay;
+			if (!isWay)
+			{
+				sprite.scale(-1, 1);
+				isWay = !isWay;
+			}
 		}
 	}
 
-	// ÁÂ¿ì ÀÌµ¿ ÀÌ¹ÌÁö
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) ||
-		InputManager::GetInstance().GetKeyDown(Keyboard::Left))
-	{
-		if (isBottom)
-		{
-			string = "StartMove";
-			Queuestrig = "Move";
-			isString = true;
-			//animation.Play("StartMove");
-			//animation.PlayQueue("Move");
-		}
-	}
-	// ÁÂ¿ì ÀÌµ¿ -> ¸ØÃã ÀÌ¹ÌÁö
+	// ì¢Œìš° ì´ë™ -> ë©ˆì¶¤ ì´ë¯¸ì§€
 	if ((InputManager::GetInstance().GetKeyUp(Keyboard::Right) ||
 		InputManager::GetInstance().GetKeyUp(Keyboard::Left)))
 	{
 		if (isBottom)
 		{
-			string = "RunToIdle";
+			/*string = "RunToIdle";
 			Queuestrig = "Idle";
-			isString = true;
-			//animation.Play("RunToIdle");
-			//animation.PlayQueue("Idle");
+			isString = true;*/
+			animation.Play("RunToIdle");
+			animation.PlayQueue("Idle");
+		}
+	}
+	// ì¢Œìš° ì´ë™ ì´ë¯¸ì§€
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) ||
+		InputManager::GetInstance().GetKeyDown(Keyboard::Left))
+	{
+		if (isBottom)
+		{
+			/*string = "StartMove";
+			Queuestrig = "Move";
+			isString = true;*/
+			animation.Play("StartMove");
+			animation.PlayQueue("Move");
 		}
 	}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
 	{
-		string = "Jump";
-		//Queuestrig = "Jumping";
-		//animation.Play("Jump");
+		/*string = "Jump";
+		Queuestrig = "Jumping";*/
+		animation.Play("Jump");
 		animation.PlayQueue("Jumping");
 
 		isString = true;
 		isJump = true;
 	}
-	/*if (!isBottom)
-	{
-		Queuestrig = "Jumping";
-		isString = true;
-		isJump = true;
-	}*/
 
-	// °ø°Ý ¾Ö´Ï¸ÞÀÌ¼Ç or ÀÌÀü ÀÌ¹ÌÁö ÀúÀåÇÏ´Â ¹ý????
+	// ê³µê²© ì• ë‹ˆë©”ì´ì…˜ or ì´ì „ ì´ë¯¸ì§€ ì €ìž¥í•˜ëŠ” ë²•????
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::X))
 	{
-		string = "Slash";
-		isString = true;
+		/*string = "Slash";
+		isString = true;*/
 		//Queuestrig = "Idle";
-		//animation.Play("Slash");
-		//animation.PlayQueue("Idle");	// ÀÌÀü ÀÌ¹ÌÁö·Î
+		animation.Play("Slash");
+		animation.PlayQueue("Idle");	// ì´ì „ ì´ë¯¸ì§€ë¡œ
 	}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash)
 	{
-		string = "Dash";
+		/*string = "Dash";
 		isString = true;
-		//Queuestrig = "Idle";
-		//animation.Play("Dash");
-		//animation.PlayQueue("Idle");	// ÀÌÀü ÀÌ¹ÌÁö·Î
+		Queuestrig = "Idle";*/
+		animation.Play("Dash");
+		animation.PlayQueue("Idle");	// ì´ì „ ì´ë¯¸ì§€ë¡œ
 	}
 
-	if (!isDash)
+	/*if (!isDash)
 	{
 		if (isString)
 		{
-			animation.Play(string);
-			animation.Play(Queuestrig);
+			if (!isJump)
+			{
+				animation.Play(string);
+				animation.Play(Queuestrig);
+			}
 			isString = false;
 		}
-		/*if (string != "")
-		{
-			animation.Play(string);
-			string = "";
-		}
-		if (Queuestrig != "")
-		{
-			animation.Play(Queuestrig);
-			Queuestrig = "";
-		}*/
-	}
+	}*/
 }
 
 void Player::Update(float dt, FloatRect tile)
@@ -186,7 +175,7 @@ void Player::Update(float dt, FloatRect tile)
 
 
 	Vector2f positionTemp = position;
-	// ´ë½¬ ÀÔ·Â
+	// ëŒ€ì‰¬ ìž…ë ¥
 	if (!isDash)
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::C))
@@ -194,7 +183,7 @@ void Player::Update(float dt, FloatRect tile)
 			dashTemp = position;
 			isDash = true;
 		}
-		// ÁÂ¿ì Å°ÀÔ·Â
+		// ì¢Œìš° í‚¤ìž…ë ¥
 		if (InputManager::GetInstance().GetKey(Keyboard::Right))
 		{
 			position.x += dt * speed;
@@ -203,7 +192,7 @@ void Player::Update(float dt, FloatRect tile)
 		{
 			position.x -= dt * speed;
 		}
-		// Á¡ÇÁ ÀÔ·Â
+		// ì í”„ ìž…ë ¥
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z) ||
 			InputManager::GetInstance().GetKey(Keyboard::Z))
 		{
@@ -214,13 +203,13 @@ void Player::Update(float dt, FloatRect tile)
 		{
 			position.y += dt * speed * 2.f;
 		}
-		// ¹Ù´Ú Ãæµ¹ Ã¼Å©
+		// ë°”ë‹¥ ì¶©ëŒ ì²´í¬
 		if ((float)position.y > tile.top &&
 			((float)position.x > tile.left && (float)position.x < tile.left + tile.width))
 		{
 			if (isJump)
 			{
-				animation.Play(Queuestrig);
+				animation.Play("Idle");
 				isJump = false;
 			}
 			position.y = positionTemp.y;
@@ -265,14 +254,9 @@ void Player::Draw(RenderWindow& window)
 	window.draw(sprite);
 }
 
-FloatRect Player::GetGlobalBounds()
+const FloatRect Player::GetGlobalBounds()
 {
 	return sprite.getGlobalBounds();
-}
-
-Vector2f Player::GetPosition()
-{
-	return position;
 }
 
 void Player::SetPosition(Vector2f pos)
@@ -298,4 +282,22 @@ void Player::AddHP(int value)
 void Player::AddMP(int value)
 {
 	mp += value;
+bool Player::UpdateCollision()
+{
+	return false;	// ì •ì˜
+}
+
+const Vector2f Player::GetPosition()
+{
+	return position;
+}
+
+const Sprite Player::GetSprite()
+{
+	return sprite;
+}
+
+bool Player::OnHitted(Time timeHit)
+{
+	return false;
 }
