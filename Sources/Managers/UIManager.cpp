@@ -50,6 +50,8 @@ void UIManager::Init_TitleScene()
 
 void UIManager::Update_TitleScene(float dt)
 {
+	spriteCursor.setPosition(1920 * 0.5f, Cursor_selectY);
+
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
 	{
 		Cursor_selectY -= 150;
@@ -57,7 +59,6 @@ void UIManager::Update_TitleScene(float dt)
 		{
 			Cursor_selectY = 900.f;
 		}
-		spriteCursor.setPosition(1920 * 0.5f, Cursor_selectY);
 	}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Down))
@@ -67,9 +68,7 @@ void UIManager::Update_TitleScene(float dt)
 		{
 			Cursor_selectY = 600.f;
 		}
-		spriteCursor.setPosition(1920 * 0.5f, Cursor_selectY);
 	}
-
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Enter))
 	{
 		if (Cursor_selectY == 600.f)
@@ -84,7 +83,11 @@ void UIManager::Update_TitleScene(float dt)
 		{
 			SceneManager::GetInstance().Load(L"Exit");
 		}
+	}
 
+	if (textPlay.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
+	{
+		Cursor_selectY = 600.f;
 	}
 }
 
@@ -103,6 +106,7 @@ void UIManager::Render_TitleScene(sf::RenderWindow& window)
 void UIManager::Init_PlayScene()
 {
 	textureLifes = new Texture[5];
+	spriteLifes = new Sprite[5];
 	
 	for (int i = 0; i < 5; i++)
 	{
@@ -125,14 +129,18 @@ void UIManager::Init_PlayScene()
 	textCoin.setCharacterSize(35);
 	textCoin.setFillColor(Color::White);
 	textCoin.setFont(fontCALIST);
+
+	inventory.Init();
 }
 
 void UIManager::Update_PlayScene(float dt)
 {
+	inventory.Update(dt);
 }
 
 void UIManager::Render_PlayScene(sf::RenderWindow& window)
 {
+
 	window.draw(spriteCharacterUI);
 	window.draw(spriteCoin);
 	window.draw(textCoin);
@@ -141,8 +149,17 @@ void UIManager::Render_PlayScene(sf::RenderWindow& window)
 	{
 		window.draw(spriteLifes[i]);
 	}
+
+	if (inventory.GetVisible())
+		inventory.Render(window);
 }
 
 void UIManager::Release_PlayScene()
 {
 }
+
+bool UIManager::GetInventoryIsOpen()
+{
+	return inventory.GetVisible();
+}
+

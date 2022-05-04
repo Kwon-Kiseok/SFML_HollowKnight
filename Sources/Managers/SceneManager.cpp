@@ -26,7 +26,7 @@ void SceneManager::Init()
 	Scenes[L"Editor"] = new EditingScene();
 
 	Scenes[L"MapTest"] = new MapTestPlayScene();
-	//currentScene = Scenes[L"MapTest"];
+	//currentScene = Scenes[L"Title"];
 	currentScene = Scenes[L"Play"];
 
 	currentScene->Init();

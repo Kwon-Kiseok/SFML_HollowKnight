@@ -7,7 +7,7 @@
 
 void InventoryScene::Init()
 {
-	textureBackUI = TextureManager::GetInstance().GetTexture("Resources/Sprite/credits vignette.png");
+	textureBackUI = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/credits vignette.png");
 	spriteBackUI.setTexture(textureBackUI);
 	spriteBackUI.setPosition(0, 0);
 
@@ -49,6 +49,10 @@ void InventoryScene::Init()
 
 void InventoryScene::Update(float dt)
 {
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::I))
+	{
+		visible = !visible;
+	}
 }
 
 void InventoryScene::Render(sf::RenderWindow& window)
@@ -68,8 +72,9 @@ void InventoryScene::Release()
 {
 }
 
-void InventoryScene::SetVisible()
+void InventoryScene::SetVisible(bool is)
 {
+	visible = is;
 }
 
 bool InventoryScene::GetVisible()

@@ -13,7 +13,7 @@ void TempUIScene::Update(float dt)
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::I))
 	{
 		// toggle() 
-		inventory.SetVisible();
+		//inventory.SetVisible();
 	}
 }
 
