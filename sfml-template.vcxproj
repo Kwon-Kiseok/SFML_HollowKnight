@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Attack\Attack.cpp" />
     <ClCompile Include="Sources\Scene\MapTestPlayScene.cpp" />
     <ClCompile Include="Sources\Managers\MapManager.cpp" />
     <ClCompile Include="Sources\Maps\CrossRoad_Map.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Sources\Maps\Town_Map.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Attack\Attack.hpp" />
     <ClInclude Include="Sources\Scene\MapTestPlayScene.hpp" />
     <ClInclude Include="Sources\Managers\MapManager.hpp" />
     <ClInclude Include="Sources\Maps\CrossRoad_Map.hpp" />

@@ -1,7 +1,7 @@
 #pragma once
 #include "../Animation/AnimationController.hpp"
 #include <map>
-#include "../DemoTile.hpp"
+//#include "../DemoTile.hpp"
 
 class Player
 {
@@ -24,8 +24,8 @@ private:
 
 	Vector2f dashTemp;
 
-	std::string string;
-	std::string Queuestrig;
+	//std::string string;
+	//std::string Queuestrig;
 public:
 	Player();
 	void Init();
@@ -34,6 +34,12 @@ public:
 	void Update(float dt, FloatRect tile);
 	void Draw(RenderWindow& window);
 
-	FloatRect GetGlobalBounds();
+	const FloatRect GetGlobalBounds();	// 충돌체크 때 필요
+	bool UpdateCollision();	//  내가 때린 판정
+
+	const Vector2f GetPosition();
+	const Sprite GetSprite();
+
+	bool OnHitted(Time timeHit);	// 내가 맞은 판정
 };
 
