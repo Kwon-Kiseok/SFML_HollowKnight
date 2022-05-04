@@ -26,21 +26,21 @@ void TitleScene::Init()
 
 	spriteCursor.setPosition(1920 * 0.5f, Cursor_selectY);
 	
-	fontArial.loadFromFile("Resources/Sprite/arial.ttf");
+	fontCALIST.loadFromFile("Resources/Fonts/CALIST.ttf");
 
-	textPlay.setFont(fontArial);
+	textPlay.setFont(fontCALIST);
 	textPlay.setString("Game Start");
 	textPlay.setCharacterSize(80);
 	textPlay.setFillColor(Color::White);
 	textPlay.setPosition(1920 * 0.5f, 600.f);
 
-	textEditor.setFont(fontArial);
+	textEditor.setFont(fontCALIST);
 	textEditor.setString("Editor Mode");
 	textEditor.setCharacterSize(80);
 	textEditor.setFillColor(Color::White);
 	textEditor.setPosition(1920 * 0.5f, 750.f);
 
-	textExit.setFont(fontArial);
+	textExit.setFont(fontCALIST);
 	textExit.setString("Exit");
 	textExit.setCharacterSize(80);
 	textExit.setFillColor(Color::White);

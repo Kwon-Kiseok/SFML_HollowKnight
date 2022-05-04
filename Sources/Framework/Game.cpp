@@ -39,7 +39,7 @@ void Game::Update()
             return;
         }
         InputManager::GetInstance().Update(dt.asSeconds(), *window, ViewManager::GetInstance().GetMainView());
-        SceneManager::GetInstance().Update();
+        SceneManager::GetInstance().Update(dt.asSeconds());
 
         Render();
     }

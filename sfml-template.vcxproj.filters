@@ -26,10 +26,15 @@
     <ClCompile Include="Sources\Maps\CrossRoad_Map.cpp" />
     <ClCompile Include="Sources\Managers\MapManager.cpp" />
     <ClCompile Include="Sources\Scene\MapTestPlayScene.cpp" />
+    <ClCompile Include="Sources\DemoTile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
     <ClInclude Include="Sources\Utils\Inventory.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sources\Scene\PlayScene.hpp" />
+    <ClInclude Include="Sources\Utils\Inventory.hpp" />
     <ClInclude Include="Sources\Utils\button.hpp" />
     <ClInclude Include="Sources\Scene\EditingScene.hpp" />
     <ClInclude Include="Sources\Animation\AnimationClip.hpp" />
@@ -56,5 +61,6 @@
     <ClInclude Include="Sources\Maps\CrossRoad_Map.hpp" />
     <ClInclude Include="Sources\Managers\MapManager.hpp" />
     <ClInclude Include="Sources\Scene\MapTestPlayScene.hpp" />
+    <ClInclude Include="Sources\DemoTile.hpp" />
   </ItemGroup>
 </Project>
