@@ -170,8 +170,8 @@
     <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\Scene\PlayScene.h" />
-    <ClInclude Include="Sources\Utils\Inventory.h" />
+    <ClInclude Include="Sources\Scene\PlayScene.hpp" />
+    <ClInclude Include="Sources\Utils\Inventory.hpp" />
     <ClInclude Include="Sources\Utils\button.hpp" />
     <ClInclude Include="Sources\Scene\EditingScene.hpp" />
     <ClInclude Include="Sources\Animation\AnimationClip.hpp" />

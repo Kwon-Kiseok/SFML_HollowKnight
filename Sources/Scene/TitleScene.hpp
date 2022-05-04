@@ -16,7 +16,7 @@ private:
 	Texture textureCursor;
 	Sprite spriteCursor;
 
-	Font fontArial;
+	Font fontCALIST;
 	Text textPlay;
 	Text textEditor;
 	Text textExit;
