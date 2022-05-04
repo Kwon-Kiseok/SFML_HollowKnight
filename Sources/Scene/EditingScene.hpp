@@ -20,7 +20,7 @@ private:
 	textureListBoxUI* listBoxUI;
 
 public:
-	EditingScene() noexcept = default;
+	EditingScene() noexcept;
 	~EditingScene() noexcept = default;
 
 	virtual void Init() override;

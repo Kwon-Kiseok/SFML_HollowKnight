@@ -38,12 +38,6 @@ void Game::Update()
             window->close();
             return;
         }
-    
-
-        if (InputManager::GetInstance().GetKeyDown(sf::Keyboard::A))
-        {
-            SceneManager::GetInstance().Load(L"Title");
-        }
         InputManager::GetInstance().Update(dt.asSeconds(), *window, ViewManager::GetInstance().GetMainView());
         SceneManager::GetInstance().Update();
 

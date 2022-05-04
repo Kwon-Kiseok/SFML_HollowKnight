@@ -5,6 +5,10 @@
 
 #include <iostream>
 
+EditingScene::EditingScene() noexcept
+{
+}
+
 void EditingScene::Init()
 {
 	textureLoadButton = new button("Texture", Vector2f(1850.f, 200.f), Vector2f(100.f, 25.f));
@@ -21,6 +25,13 @@ void EditingScene::Update(float dt)
 		isOpenTextureWindow = true;
 	}
 	listBoxUI->Update(&isOpenTextureWindow);
+
+	// 여기서 버튼을 눌렸는지 체크해야 함
+	// 버튼을 리스트로 받아오던가, -> 지금 ui보드가 필요가 없음.
+	// 1. 버튼을 클릭
+	// 2. 버튼 id별로 path를 리턴해줌
+	// 3. tex->loadFromFile( "리턴된 path" );
+	// 
 
 	if (listBoxUI->GetIsDrop())
 	{
