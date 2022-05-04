@@ -31,11 +31,7 @@ private:
 	Sprite spriteLife;
 	const int countLife = 5;
 
-	Font fontArial;
-	Text textCoin;
-
 	Player* player;
-	// Å×½ºÆ® Å¸ÀÏ
 	DemoTile* tile;
 
 	Font fontCALIST;

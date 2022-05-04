@@ -148,6 +148,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Objects\GameObject.cpp" />
+    <ClCompile Include="Sources\Managers\PlayerDataManager.cpp" />
     <ClCompile Include="Sources\Scene\MapTestPlayScene.cpp" />
     <ClCompile Include="Sources\Managers\MapManager.cpp" />
     <ClCompile Include="Sources\Maps\CrossRoad_Map.cpp" />
@@ -173,8 +175,11 @@
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
     <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
     <ClCompile Include="Sources\Maps\Town_Map.cpp" />
+    <ClCompile Include="Sources\Monster\tempMob.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Objects\GameObject.hpp" />
+    <ClInclude Include="Sources\Managers\PlayerDataManager.hpp" />
     <ClInclude Include="Sources\Scene\MapTestPlayScene.hpp" />
     <ClInclude Include="Sources\Managers\MapManager.hpp" />
     <ClInclude Include="Sources\Maps\CrossRoad_Map.hpp" />
@@ -205,6 +210,7 @@
     <ClInclude Include="Sources\Managers\UIManager.hpp" />
     <ClInclude Include="Sources\Utils\textureListBoxUI.hpp" />
     <ClInclude Include="Sources\Maps\Town_Map.hpp" />
+    <ClInclude Include="Sources\Monster\tempMob.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,6 +10,9 @@ private:
 	bool isJump;
 	bool isBottom;
 
+	int hp;
+	int mp;
+
 	bool isDash;
 	bool isString;
 
@@ -26,6 +29,7 @@ private:
 
 	std::string string;
 	std::string Queuestrig;
+
 public:
 	Player();
 	void Init();
@@ -35,5 +39,12 @@ public:
 	void Draw(RenderWindow& window);
 
 	FloatRect GetGlobalBounds();
+
+	Vector2f GetPosition();
+	void SetPosition(Vector2f pos);
+	int GetHP();
+	int GetMP();
+	void AddHP(int value);
+	void AddMP(int value);
 };
 

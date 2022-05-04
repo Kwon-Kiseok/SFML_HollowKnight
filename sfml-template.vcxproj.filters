@@ -8,7 +8,6 @@
     <ClCompile Include="Sources\Scene\EditingScene.cpp" />
     <ClCompile Include="Sources\Animation\AnimationClip.cpp" />
     <ClCompile Include="Sources\Animation\AnimationController.cpp" />
-    <ClCompile Include="Sources\Animation\PlayerAnimation.cpp" />
     <ClCompile Include="Sources\Scene\ManagerTestScene.cpp" />
     <ClCompile Include="Sources\Managers\SoundManager.cpp" />
     <ClCompile Include="Sources\Framework\Game.cpp" />
@@ -27,10 +26,16 @@
     <ClCompile Include="Sources\Managers\MapManager.cpp" />
     <ClCompile Include="Sources\Scene\MapTestPlayScene.cpp" />
     <ClCompile Include="Sources\DemoTile.cpp" />
+    <ClCompile Include="Sources\Managers\PlayerDataManager.cpp" />
+    <ClCompile Include="Sources\Objects\GameObject.cpp" />
+    <ClCompile Include="Sources\Monster\tempMob.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
     <ClInclude Include="Sources\Utils\Inventory.h" />
+    <ClInclude Include="Sources\Managers\PlayerDataManager.hpp" />
+    <ClInclude Include="Sources\Objects\GameObject.hpp" />
+    <ClInclude Include="Sources\Monster\tempMob.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />
@@ -39,7 +44,6 @@
     <ClInclude Include="Sources\Scene\EditingScene.hpp" />
     <ClInclude Include="Sources\Animation\AnimationClip.hpp" />
     <ClInclude Include="Sources\Animation\AnimationController.hpp" />
-    <ClInclude Include="Sources\Animation\PlayerAnimation.hpp" />
     <ClInclude Include="Sources\Animation\rapidcsv.hpp" />
     <ClInclude Include="Sources\Scene\ManagerTestScene.hpp" />
     <ClInclude Include="Sources\Managers\SoundManager.hpp" />

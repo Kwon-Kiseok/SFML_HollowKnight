@@ -5,7 +5,6 @@ class Map;
 class MapTestPlayScene : public Scene
 {
 private:
-
 public:
 	MapTestPlayScene();
 	~MapTestPlayScene() noexcept;

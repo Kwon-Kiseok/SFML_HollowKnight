@@ -1,16 +1,22 @@
 #include "Player.hpp"
 #include "../Animation/rapidcsv.hpp"
 #include "../Managers/InputManager.hpp"
+#include "../Managers/PlayerDataManager.hpp"
 
 Player::Player()
 	: isWay(true), isJump(true), isBottom(false), speed(200.f), isDash(false)
 {
+	hp = 0;
+	mp = 0;
 	string = "";
 	Queuestrig = "";
 }
 
 void Player::Init()
 {
+	hp = PlayerDataManager::GetInstance().GetPlayerHP();
+	mp = PlayerDataManager::GetInstance().GetPlayerMP();
+
 	position.x = 1920.f / 2;
 	// position.y = 1080.f / 2;
 	position.y = 500.f;
@@ -262,4 +268,34 @@ void Player::Draw(RenderWindow& window)
 FloatRect Player::GetGlobalBounds()
 {
 	return sprite.getGlobalBounds();
+}
+
+Vector2f Player::GetPosition()
+{
+	return position;
+}
+
+void Player::SetPosition(Vector2f pos)
+{
+	position = pos;
+}
+
+int Player::GetHP()
+{
+	return hp;
+}
+
+int Player::GetMP()
+{
+	return mp;
+}
+
+void Player::AddHP(int value)
+{
+	hp += value;
+}
+
+void Player::AddMP(int value)
+{
+	mp += value;
 }
