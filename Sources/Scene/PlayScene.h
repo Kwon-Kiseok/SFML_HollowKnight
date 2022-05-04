@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene.hpp"
+#include "../Player/Player.hpp"
+#include "../DemoTile.hpp"
 
 using namespace sf;
 class PlayScene	: public Scene
@@ -18,6 +20,9 @@ private:
 	Font fontArial;
 	Text textCoin;
 
+	Player* player;
+	// 테스트 타일
+	DemoTile* tile;
 public:
 	PlayScene() {}
 	virtual ~PlayScene() noexcept = default;

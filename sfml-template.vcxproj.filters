@@ -1,139 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="Sources\Scene\PlayScene.cpp" />
+    <ClCompile Include="Sources\Managers\UIManager.cpp" />
+    <ClCompile Include="Sources\Utils\Inventory.cpp" />
+    <ClCompile Include="Sources\Utils\button.cpp" />
+    <ClCompile Include="Sources\Scene\EditingScene.cpp" />
+    <ClCompile Include="Sources\Animation\AnimationClip.cpp" />
+    <ClCompile Include="Sources\Animation\AnimationController.cpp" />
+    <ClCompile Include="Sources\Scene\ManagerTestScene.cpp" />
+    <ClCompile Include="Sources\Managers\SoundManager.cpp" />
+    <ClCompile Include="Sources\Framework\Game.cpp" />
+    <ClCompile Include="Sources\HollowKnight.cpp" />
+    <ClCompile Include="Sources\Player\Player.cpp" />
+    <ClCompile Include="Sources\Utils\Utility.cpp" />
+    <ClCompile Include="Sources\Managers\ViewManager.cpp" />
+    <ClCompile Include="Sources\Managers\TextureManager.cpp" />
+    <ClCompile Include="Sources\Managers\InputManager.cpp" />
+    <ClCompile Include="Sources\Managers\SceneManager.cpp" />
+    <ClCompile Include="Sources\Scene\TitleScene.cpp" />
+    <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
+    <ClCompile Include="Sources\DemoTile.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\HollowKnight.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Utils\Utility.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Managers\ViewManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Managers\TextureManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Framework\Game.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Managers\InputManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Managers\SceneManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Scene\TitleScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Managers\SoundManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Player\Player.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Animation\AnimationClip.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Animation\AnimationController.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Animation\PlayerAnimation.cpp">
-    <ClCompile Include="Sources\Scene\ManagerTestScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Utils\Inventory.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Managers\UIManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Scene\PlayScene.cpp">
-    <ClCompile Include="Sources\Scene\EditingScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Utils\button.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Utils\textureListBoxUI.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Sources\include\Singleton.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Utils\Utility.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Managers\ViewManager.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Managers\TextureManager.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Framework\Game.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Managers\InputManager.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Managers\SceneManager.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Scene\Scene.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Scene\TitleScene.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Managers\SoundManager.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Player\Player.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Animation\AnimationClip.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Animation\AnimationController.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Animation\rapidcsv.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Animation\PlayerAnimation.hpp">
-    <ClInclude Include="Sources\Scene\ManagerTestScene.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Managers\UIManager.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Utils\Inventory.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Scene\PlayScene.h">
-    <ClInclude Include="Sources\Scene\EditingScene.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Utils\button.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Utils\textureListBoxUI.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
+    <ClInclude Include="Sources\Scene\PlayScene.h" />
+    <ClInclude Include="Sources\Utils\Inventory.h" />
+    <ClInclude Include="Sources\Utils\button.hpp" />
+    <ClInclude Include="Sources\Scene\EditingScene.hpp" />
+    <ClInclude Include="Sources\Animation\AnimationClip.hpp" />
+    <ClInclude Include="Sources\Animation\AnimationController.hpp" />
+    <ClInclude Include="Sources\Animation\rapidcsv.hpp" />
+    <ClInclude Include="Sources\Scene\ManagerTestScene.hpp" />
+    <ClInclude Include="Sources\Managers\SoundManager.hpp" />
+    <ClInclude Include="Sources\Player\Player.hpp" />
+    <ClInclude Include="Sources\Scene\Scene.hpp" />
+    <ClInclude Include="Sources\include\Singleton.hpp" />
+    <ClInclude Include="Sources\Utils\Utility.hpp" />
+    <ClInclude Include="Sources\Managers\ViewManager.hpp" />
+    <ClInclude Include="Sources\Managers\TextureManager.hpp" />
+    <ClInclude Include="Sources\Framework\Game.hpp" />
+    <ClInclude Include="Sources\Managers\InputManager.hpp" />
+    <ClInclude Include="Sources\Managers\SceneManager.hpp" />
+    <ClInclude Include="Sources\Scene\TitleScene.hpp" />
+    <ClInclude Include="Sources\Managers\UIManager.hpp" />
+    <ClInclude Include="Sources\Utils\textureListBoxUI.hpp" />
+    <ClInclude Include="Sources\DemoTile.hpp" />
   </ItemGroup>
 </Project>

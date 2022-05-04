@@ -31,11 +31,17 @@ void PlayScene::Init()
 	textCoin.setPosition(270, 160);
 	textCoin.setCharacterSize(35);
 	textCoin.setFillColor(Color::White);
-	textCoin.setFont(fontArial);
+	//textCoin.setFont(fontArial);
+
+	player = new Player();
+	player->Init();
+
+	tile = new DemoTile(740, 900);
 }
 
 void PlayScene::Update(float dt)
 {
+	player->Update(dt, tile->GetGlobalBounds());
 }
 
 void PlayScene::Render(sf::RenderWindow& window)
@@ -43,14 +49,18 @@ void PlayScene::Render(sf::RenderWindow& window)
 	window.draw(spriteCharacterUI);
 	window.draw(spriteLife);
 	window.draw(spriteCoin);
-	window.draw(textCoin);
+	player->Draw(window);
+	//window.draw(textCoin);
 
-	for (int i = 0; i < countLife; i++)
+	/*for (int i = 0; i < countLife; i++)
 	{
 		window.draw(spriteLife[i]);
-	}
+	}*/
+	window.draw(tile->GetShape());
 }
 
 void PlayScene::Release()
 {
+	delete player;
+	delete tile;
 }
