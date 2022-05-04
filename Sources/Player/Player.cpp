@@ -1,23 +1,27 @@
 #include "Player.hpp"
 #include "../Animation/rapidcsv.hpp"
 #include "../Managers/InputManager.hpp"
+#include "../Managers/PlayerDataManager.hpp"
 
 Player::Player()
 	: isWay(true), isJump(true), isBottom(false), speed(200.f), isDash(false)
 {
-	//string = "";
-	//Queuestrig = "";
+	hp = 0;
+	mp = 0;
 }
 
 void Player::Init()
 {
+	hp = PlayerDataManager::GetInstance().GetPlayerHP();
+	mp = PlayerDataManager::GetInstance().GetPlayerMP();
+
 	position.x = 1920.f / 2;
 	// position.y = 1080.f / 2;
 	position.y = 500.f;
 	sprite.setPosition(position);
 
 	sprite.setOrigin(31, 0);
-	// Animator ÃÊ±âÈ­
+	// Animator ì´ˆê¸°í™”
 	animation.SetTarget(&sprite);
 
 	/**************************************************************************/
@@ -58,7 +62,7 @@ void Player::Init()
 			clip.frames.push_back(AnimationFrame(texMap[colTexure[j]], IntRect(colL[j], colT[j], colW[j], colH[j]), Vector2f(colX[j], colY[j])));
 		}
 		//sprite.setOrigin(orgX, orgY);
-		// Animator ÃÊ±âÈ­		// AnimationController Update¿¡¼­ ¿À¸®Áø °ª º¯°æ
+		// Animator ì´ˆê¸°í™”		// AnimationController Updateì—ì„œ ì˜¤ë¦¬ì§„ ê°’ ë³€ê²½
 		//animation.SetTarget(&sprite);
 
 		animation.AddClip(clip);
@@ -71,9 +75,9 @@ void Player::Init()
 void Player::UpdateInput()
 {
 
-	// Å¥·Î ¹Þ¾Æ³õ°í
+	// íë¡œ ë°›ì•„ë†“ê³ 
 
-	// ÁÂ¿ì ÀÔ·Â½Ã ÀÌ¹ÌÁö ¹æÇâ º¯È­
+	// ì¢Œìš° ìž…ë ¥ì‹œ ì´ë¯¸ì§€ ë°©í–¥ ë³€í™”
 	if (!isDash)
 	{
 		if (InputManager::GetInstance().GetKey(Keyboard::Right))
@@ -94,7 +98,7 @@ void Player::UpdateInput()
 		}
 	}
 
-	// ÁÂ¿ì ÀÌµ¿ -> ¸ØÃã ÀÌ¹ÌÁö
+	// ì¢Œìš° ì´ë™ -> ë©ˆì¶¤ ì´ë¯¸ì§€
 	if ((InputManager::GetInstance().GetKeyUp(Keyboard::Right) ||
 		InputManager::GetInstance().GetKeyUp(Keyboard::Left)))
 	{
@@ -107,7 +111,7 @@ void Player::UpdateInput()
 			animation.PlayQueue("Idle");
 		}
 	}
-	// ÁÂ¿ì ÀÌµ¿ ÀÌ¹ÌÁö
+	// ì¢Œìš° ì´ë™ ì´ë¯¸ì§€
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) ||
 		InputManager::GetInstance().GetKeyDown(Keyboard::Left))
 	{
@@ -132,14 +136,14 @@ void Player::UpdateInput()
 		isJump = true;
 	}
 
-	// °ø°Ý ¾Ö´Ï¸ÞÀÌ¼Ç or ÀÌÀü ÀÌ¹ÌÁö ÀúÀåÇÏ´Â ¹ý????
+	// ê³µê²© ì• ë‹ˆë©”ì´ì…˜ or ì´ì „ ì´ë¯¸ì§€ ì €ìž¥í•˜ëŠ” ë²•????
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::X))
 	{
 		/*string = "Slash";
 		isString = true;*/
 		//Queuestrig = "Idle";
 		animation.Play("Slash");
-		animation.PlayQueue("Idle");	// ÀÌÀü ÀÌ¹ÌÁö·Î
+		animation.PlayQueue("Idle");	// ì´ì „ ì´ë¯¸ì§€ë¡œ
 	}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash)
@@ -148,7 +152,7 @@ void Player::UpdateInput()
 		isString = true;
 		Queuestrig = "Idle";*/
 		animation.Play("Dash");
-		animation.PlayQueue("Idle");	// ÀÌÀü ÀÌ¹ÌÁö·Î
+		animation.PlayQueue("Idle");	// ì´ì „ ì´ë¯¸ì§€ë¡œ
 	}
 
 	/*if (!isDash)
@@ -171,7 +175,7 @@ void Player::Update(float dt, FloatRect tile)
 
 
 	Vector2f positionTemp = position;
-	// ´ë½¬ ÀÔ·Â
+	// ëŒ€ì‰¬ ìž…ë ¥
 	if (!isDash)
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::C))
@@ -179,7 +183,7 @@ void Player::Update(float dt, FloatRect tile)
 			dashTemp = position;
 			isDash = true;
 		}
-		// ÁÂ¿ì Å°ÀÔ·Â
+		// ì¢Œìš° í‚¤ìž…ë ¥
 		if (InputManager::GetInstance().GetKey(Keyboard::Right))
 		{
 			position.x += dt * speed;
@@ -188,7 +192,7 @@ void Player::Update(float dt, FloatRect tile)
 		{
 			position.x -= dt * speed;
 		}
-		// Á¡ÇÁ ÀÔ·Â
+		// ì í”„ ìž…ë ¥
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z) ||
 			InputManager::GetInstance().GetKey(Keyboard::Z))
 		{
@@ -199,7 +203,7 @@ void Player::Update(float dt, FloatRect tile)
 		{
 			position.y += dt * speed * 2.f;
 		}
-		// ¹Ù´Ú Ãæµ¹ Ã¼Å©
+		// ë°”ë‹¥ ì¶©ëŒ ì²´í¬
 		if ((float)position.y > tile.top &&
 			((float)position.x > tile.left && (float)position.x < tile.left + tile.width))
 		{
@@ -255,9 +259,32 @@ const FloatRect Player::GetGlobalBounds()
 	return sprite.getGlobalBounds();
 }
 
+void Player::SetPosition(Vector2f pos)
+{
+	position = pos;
+}
+
+int Player::GetHP()
+{
+	return hp;
+}
+
+int Player::GetMP()
+{
+	return mp;
+}
+
+void Player::AddHP(int value)
+{
+	hp += value;
+}
+
+void Player::AddMP(int value)
+{
+	mp += value;
 bool Player::UpdateCollision()
 {
-	return false;	// Á¤ÀÇ
+	return false;	// ì •ì˜
 }
 
 const Vector2f Player::GetPosition()

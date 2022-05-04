@@ -6,9 +6,12 @@
 class Player
 {
 private:
-	bool isWay;	// true¸é ¿ŞÂÊÀ» ¹Ù¶óº¸´Â »óÈ²
+	bool isWay;	// trueë©´ ì™¼ìª½ì„ ë°”ë¼ë³´ëŠ” ìƒí™©
 	bool isJump;
 	bool isBottom;
+
+	int hp;
+	int mp;
 
 	bool isDash;
 	bool isString;
@@ -23,9 +26,7 @@ private:
 	std::map<std::string, Texture> texMap;
 
 	Vector2f dashTemp;
-
-	//std::string string;
-	//std::string Queuestrig;
+  
 public:
 	Player();
 	void Init();
@@ -34,12 +35,17 @@ public:
 	void Update(float dt, FloatRect tile);
 	void Draw(RenderWindow& window);
 
-	const FloatRect GetGlobalBounds();	// Ãæµ¹Ã¼Å© ¶§ ÇÊ¿ä
-	bool UpdateCollision();	//  ³»°¡ ¶§¸° ÆÇÁ¤
+	void SetPosition(Vector2f pos);
+	int GetHP();
+	int GetMP();
+	void AddHP(int value);
+	void AddMP(int value);
+	const FloatRect GetGlobalBounds();	// ì¶©ëŒì²´í¬ ë•Œ í•„ìš”
+	bool UpdateCollision();	//  ë‚´ê°€ ë•Œë¦° íŒì •
 
 	const Vector2f GetPosition();
 	const Sprite GetSprite();
 
-	bool OnHitted(Time timeHit);	// ³»°¡ ¸ÂÀº ÆÇÁ¤
+	bool OnHitted(Time timeHit);	// ë‚´ê°€ ë§ì€ íŒì •
 };
 

@@ -27,11 +27,17 @@
     <ClCompile Include="Sources\Managers\MapManager.cpp" />
     <ClCompile Include="Sources\Scene\MapTestPlayScene.cpp" />
     <ClCompile Include="Sources\DemoTile.cpp" />
+    <ClCompile Include="Sources\Managers\PlayerDataManager.cpp" />
+    <ClCompile Include="Sources\Objects\GameObject.cpp" />
+    <ClCompile Include="Sources\Monster\tempMob.cpp" />
     <ClCompile Include="Sources\Attack\Attack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
     <ClInclude Include="Sources\Utils\Inventory.h" />
+    <ClInclude Include="Sources\Managers\PlayerDataManager.hpp" />
+    <ClInclude Include="Sources\Objects\GameObject.hpp" />
+    <ClInclude Include="Sources\Monster\tempMob.hpp" />
     <ClInclude Include="Sources\Attack\Attack.hpp" />
   </ItemGroup>
   <ItemGroup>

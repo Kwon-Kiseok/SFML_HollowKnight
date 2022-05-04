@@ -7,9 +7,10 @@ DemoTile::DemoTile()
 DemoTile::DemoTile(float x, float y)
 	: position(x, y)
 {
-	shape.setSize(Vector2f(500, 20));
+	shape.setSize(Vector2f(3600, 20));
 	shape.setPosition(position);
 	shape.setFillColor(Color::White);
+	shape.setOrigin(shape.getLocalBounds().width / 2, shape.getLocalBounds().height / 2);
 }
 
 FloatRect DemoTile::GetGlobalBounds()
