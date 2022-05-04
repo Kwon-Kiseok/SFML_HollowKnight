@@ -148,9 +148,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Utils\Inventories.cpp" />
     <ClCompile Include="Sources\Scene\PlayScene.cpp" />
     <ClCompile Include="Sources\Managers\UIManager.cpp" />
-    <ClCompile Include="Sources\Utils\Inventory.cpp" />
+    <ClCompile Include="Sources\Scene\InventoryScene.cpp" />
     <ClCompile Include="Sources\Utils\button.cpp" />
     <ClCompile Include="Sources\Scene\EditingScene.cpp" />
     <ClCompile Include="Sources\Animation\AnimationClip.cpp" />
@@ -170,8 +171,9 @@
     <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Utils\Inventories.hpp" />
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />
-    <ClInclude Include="Sources\Utils\Inventory.hpp" />
+    <ClInclude Include="Sources\Scene\InventoryScene.hpp" />
     <ClInclude Include="Sources\Utils\button.hpp" />
     <ClInclude Include="Sources\Scene\EditingScene.hpp" />
     <ClInclude Include="Sources\Animation\AnimationClip.hpp" />

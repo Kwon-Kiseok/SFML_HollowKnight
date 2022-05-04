@@ -3,7 +3,7 @@
   <ItemGroup>
     <ClCompile Include="Sources\Scene\PlayScene.cpp" />
     <ClCompile Include="Sources\Managers\UIManager.cpp" />
-    <ClCompile Include="Sources\Utils\Inventory.cpp" />
+    <ClCompile Include="Sources\Scene\InventoryScene.cpp" />
     <ClCompile Include="Sources\Utils\button.cpp" />
     <ClCompile Include="Sources\Scene\EditingScene.cpp" />
     <ClCompile Include="Sources\Animation\AnimationClip.cpp" />
@@ -21,10 +21,11 @@
     <ClCompile Include="Sources\Managers\SceneManager.cpp" />
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
     <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
+    <ClCompile Include="Sources\Utils\Inventories.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />
-    <ClInclude Include="Sources\Utils\Inventory.hpp" />
+    <ClInclude Include="Sources\Scene\InventoryScene.hpp" />
     <ClInclude Include="Sources\Utils\button.hpp" />
     <ClInclude Include="Sources\Scene\EditingScene.hpp" />
     <ClInclude Include="Sources\Animation\AnimationClip.hpp" />
@@ -45,5 +46,6 @@
     <ClInclude Include="Sources\Scene\TitleScene.hpp" />
     <ClInclude Include="Sources\Managers\UIManager.hpp" />
     <ClInclude Include="Sources\Utils\textureListBoxUI.hpp" />
+    <ClInclude Include="Sources\Utils\Inventories.hpp" />
   </ItemGroup>
 </Project>
