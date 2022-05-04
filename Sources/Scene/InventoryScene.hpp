@@ -1,10 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Scene.hpp"
 
 using namespace sf;
 
-class InventoryScene : public Scene
+class InventoryScene 
 {
 private:
 	Texture textureBackUI;
@@ -26,14 +25,19 @@ private:
 	Font fontCALIST;
 	Text textInven;
 
+	bool visible = true;
+
 public:
 	InventoryScene() {}
 	virtual ~InventoryScene() noexcept = default;
 
-	virtual void Init() override;
-	virtual void Update(float dt) override;
-	virtual void Render(sf::RenderWindow & window) override;
-	virtual void Release() override;
+	void Init();
+	void Update(float dt);
+	void Render(sf::RenderWindow & window);
+	void Release();
+
+	void SetVisible();
+	bool GetVisible();
 
 };
 

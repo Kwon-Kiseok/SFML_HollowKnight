@@ -38,7 +38,6 @@ void Game::Update()
             window->close();
             return;
         }
-    
 
         if (InputManager::GetInstance().GetKeyDown(sf::Keyboard::A))
         {

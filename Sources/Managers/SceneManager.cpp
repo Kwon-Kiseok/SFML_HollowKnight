@@ -24,9 +24,8 @@ void SceneManager::Init()
 	Scenes[L"Title"] = new TitleScene();
 	Scenes[L"Play"] = new PlayScene();
 	Scenes[L"Editor"] = new EditingScene();
-	Scenes[L"Inventory"] = new InventoryScene();
 
-	currentScene = Scenes[L"Inventory"];
+	currentScene = Scenes[L"Title"];
 
 	currentScene->Init();
 }

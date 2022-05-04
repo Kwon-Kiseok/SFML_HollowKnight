@@ -1,14 +1,15 @@
 #pragma once
 #include "Scene.hpp"
+#include "InventoryScene.hpp"
 
-using namespace sf;
-class PlayScene	: public Scene
+class TempUIScene : public Scene
 {
 private:
+	InventoryScene inventory;
 
 public:
-	PlayScene() {}
-	virtual ~PlayScene() noexcept = default;
+	TempUIScene() {}
+	virtual ~TempUIScene() noexcept = default;
 
 	virtual void Init() override;
 	virtual void Update(float dt) override;

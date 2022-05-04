@@ -148,7 +148,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\Utils\Inventories.cpp" />
     <ClCompile Include="Sources\Scene\PlayScene.cpp" />
     <ClCompile Include="Sources\Managers\UIManager.cpp" />
     <ClCompile Include="Sources\Scene\InventoryScene.cpp" />
@@ -169,9 +168,9 @@
     <ClCompile Include="Sources\Managers\SceneManager.cpp" />
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
     <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
+    <ClCompile Include="Sources\Scene\TempUIScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\Utils\Inventories.hpp" />
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />
     <ClInclude Include="Sources\Scene\InventoryScene.hpp" />
     <ClInclude Include="Sources\Utils\button.hpp" />
@@ -194,6 +193,7 @@
     <ClInclude Include="Sources\Scene\TitleScene.hpp" />
     <ClInclude Include="Sources\Managers\UIManager.hpp" />
     <ClInclude Include="Sources\Utils\textureListBoxUI.hpp" />
+    <ClInclude Include="Sources\Scene\TempUIScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

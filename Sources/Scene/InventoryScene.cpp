@@ -67,3 +67,12 @@ void InventoryScene::Render(sf::RenderWindow& window)
 void InventoryScene::Release()
 {
 }
+
+void InventoryScene::SetVisible()
+{
+}
+
+bool InventoryScene::GetVisible()
+{
+	return visible;
+}
