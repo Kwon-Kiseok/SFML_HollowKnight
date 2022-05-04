@@ -5,8 +5,8 @@
 Player::Player()
 	: isWay(true), isJump(true), isBottom(false), speed(200.f), isDash(false)
 {
-	string = "";
-	Queuestrig = "";
+	//string = "";
+	//Queuestrig = "";
 }
 
 void Player::Init()
@@ -64,6 +64,7 @@ void Player::Init()
 		animation.AddClip(clip);
 	}
 
+	//Queuestrig = "Idle";
 	animation.Play("Idle");
 }
 
@@ -73,105 +74,95 @@ void Player::UpdateInput()
 	// 큐로 받아놓고
 
 	// 좌우 입력시 이미지 방향 변화
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right))
+	if (!isDash)
 	{
-		if (isWay)
+		if (InputManager::GetInstance().GetKey(Keyboard::Right))
 		{
-			sprite.scale(-1, 1);
-			isWay = !isWay;
+			if (isWay)
+			{
+				sprite.scale(-1, 1);
+				isWay = !isWay;
+			}
 		}
-	}
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Left))
-	{
-		if (!isWay)
+		if (InputManager::GetInstance().GetKey(Keyboard::Left))
 		{
-			sprite.scale(-1, 1);
-			isWay = !isWay;
+			if (!isWay)
+			{
+				sprite.scale(-1, 1);
+				isWay = !isWay;
+			}
 		}
 	}
 
-	// 좌우 이동 이미지
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) ||
-		InputManager::GetInstance().GetKeyDown(Keyboard::Left))
-	{
-		if (isBottom)
-		{
-			string = "StartMove";
-			Queuestrig = "Move";
-			isString = true;
-			//animation.Play("StartMove");
-			//animation.PlayQueue("Move");
-		}
-	}
 	// 좌우 이동 -> 멈춤 이미지
 	if ((InputManager::GetInstance().GetKeyUp(Keyboard::Right) ||
 		InputManager::GetInstance().GetKeyUp(Keyboard::Left)))
 	{
 		if (isBottom)
 		{
-			string = "RunToIdle";
+			/*string = "RunToIdle";
 			Queuestrig = "Idle";
-			isString = true;
-			//animation.Play("RunToIdle");
-			//animation.PlayQueue("Idle");
+			isString = true;*/
+			animation.Play("RunToIdle");
+			animation.PlayQueue("Idle");
+		}
+	}
+	// 좌우 이동 이미지
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) ||
+		InputManager::GetInstance().GetKeyDown(Keyboard::Left))
+	{
+		if (isBottom)
+		{
+			/*string = "StartMove";
+			Queuestrig = "Move";
+			isString = true;*/
+			animation.Play("StartMove");
+			animation.PlayQueue("Move");
 		}
 	}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
 	{
-		string = "Jump";
-		//Queuestrig = "Jumping";
-		//animation.Play("Jump");
+		/*string = "Jump";
+		Queuestrig = "Jumping";*/
+		animation.Play("Jump");
 		animation.PlayQueue("Jumping");
 
 		isString = true;
 		isJump = true;
 	}
-	/*if (!isBottom)
-	{
-		Queuestrig = "Jumping";
-		isString = true;
-		isJump = true;
-	}*/
 
 	// 공격 애니메이션 or 이전 이미지 저장하는 법????
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::X))
 	{
-		string = "Slash";
-		isString = true;
+		/*string = "Slash";
+		isString = true;*/
 		//Queuestrig = "Idle";
-		//animation.Play("Slash");
-		//animation.PlayQueue("Idle");	// 이전 이미지로
+		animation.Play("Slash");
+		animation.PlayQueue("Idle");	// 이전 이미지로
 	}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash)
 	{
-		string = "Dash";
+		/*string = "Dash";
 		isString = true;
-		//Queuestrig = "Idle";
-		//animation.Play("Dash");
-		//animation.PlayQueue("Idle");	// 이전 이미지로
+		Queuestrig = "Idle";*/
+		animation.Play("Dash");
+		animation.PlayQueue("Idle");	// 이전 이미지로
 	}
 
-	if (!isDash)
+	/*if (!isDash)
 	{
 		if (isString)
 		{
-			animation.Play(string);
-			animation.Play(Queuestrig);
+			if (!isJump)
+			{
+				animation.Play(string);
+				animation.Play(Queuestrig);
+			}
 			isString = false;
 		}
-		/*if (string != "")
-		{
-			animation.Play(string);
-			string = "";
-		}
-		if (Queuestrig != "")
-		{
-			animation.Play(Queuestrig);
-			Queuestrig = "";
-		}*/
-	}
+	}*/
 }
 
 void Player::Update(float dt, FloatRect tile)
@@ -214,7 +205,7 @@ void Player::Update(float dt, FloatRect tile)
 		{
 			if (isJump)
 			{
-				animation.Play(Queuestrig);
+				animation.Play("Idle");
 				isJump = false;
 			}
 			position.y = positionTemp.y;
@@ -259,7 +250,27 @@ void Player::Draw(RenderWindow& window)
 	window.draw(sprite);
 }
 
-FloatRect Player::GetGlobalBounds()
+const FloatRect Player::GetGlobalBounds()
 {
 	return sprite.getGlobalBounds();
+}
+
+bool Player::UpdateCollision()
+{
+	return false;	// 정의
+}
+
+const Vector2f Player::GetPosition()
+{
+	return position;
+}
+
+const Sprite Player::GetSprite()
+{
+	return sprite;
+}
+
+bool Player::OnHitted(Time timeHit)
+{
+	return false;
 }

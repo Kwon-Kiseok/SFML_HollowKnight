@@ -17,5 +17,11 @@ public:
 	const RectangleShape& GetShape();
 
 	void Update(float dt);
+
+	Vector2f GetPosition();
+
+	bool OnHitted(Time timeHit);
+
+	//bool UpdateCollision();	//  충돌체크
 };
 

@@ -39,7 +39,7 @@ private:
 	DemoTile* tile;
 
 	Font fontCALIST;
-	Text textCoin;
+	//Text textCoin;
 
 public:
 	PlayScene() {}
