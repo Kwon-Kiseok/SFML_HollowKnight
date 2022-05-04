@@ -21,7 +21,7 @@ private:
 	Text textCoin;
 
 	Player* player;
-	// �׽�Ʈ Ÿ��
+	// Å×½ºÆ® Å¸ÀÏ
 	DemoTile* tile;
 public:
 	PlayScene() {}
