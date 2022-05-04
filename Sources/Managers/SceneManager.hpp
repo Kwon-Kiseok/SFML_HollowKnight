@@ -4,14 +4,6 @@
 #include <string>
 #include <unordered_map>
 
-enum class SCENE_TYPE
-{
-	TITLE,
-	PLAY,
-	PAUSE,
-	NONE
-};
-
 class Scene;
 class SceneManager : public Singleton<SceneManager>
 {
