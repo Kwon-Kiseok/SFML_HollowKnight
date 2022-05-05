@@ -17,13 +17,13 @@ void PlayScene::Init()
 void PlayScene::Update(float dt)
 {
 	if(!UIManager::GetInstance().GetInventoryIsOpen())
-		player->Update(dt, tile->GetGlobalBounds());
+		player->Update(dt);
 	UIManager::GetInstance().Update_PlayScene(dt);
 }
 
 void PlayScene::Render(sf::RenderWindow& window)
 {
-	player->Draw(window);
+	player->Render(window);
 	window.draw(tile->GetShape());
 	UIManager::GetInstance().Render_PlayScene(window);
 }

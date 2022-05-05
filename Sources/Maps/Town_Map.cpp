@@ -4,63 +4,34 @@
 #include "../Player/Player.hpp"
 #include "../Managers/ViewManager.hpp"
 #include "../Managers/PlayerDataManager.hpp"
-
 #include <iostream>
 
-Town_Map::Town_Map()
+Town_Map::Town_Map(Player* player)
+	: Map(player)
 {
-}
-
-void Town_Map::Init()
-{
-	textureBG.loadFromFile("Resources/Sprite/BG/Town/town_bench.png");
-	spriteBG.setTexture(textureBG);
-	spriteBG.setPosition(990.f, 820.f);
-	spriteBG.setOrigin(spriteBG.getLocalBounds().width / 2, spriteBG.getLocalBounds().height / 2);
-
-	texturePortal.loadFromFile("Resources/Sprite/BG/Tutorial/tut_door_large_0007_04.png");
-	spritePortal.setTexture(texturePortal);
-	spritePortal.setPosition(2500.f, 820.f);
-	spritePortal.setOrigin(spritePortal.getLocalBounds().width / 2, spritePortal.getLocalBounds().height / 2);
-
-	player = new Player();
 	mob = new tempMob();
-	tile = new DemoTile(740, 900);
-	player->SetPosition(Vector2f(1920.f / 2, 500.f));
-	player->Init();
+	ground_1 = new Ground();
+	ground_2 = new Ground();
+	portal = new Portal();
+
+	ground_1->SetPosition(990.f, 820.f);
+	ground_1->SetOriginCenter();
+	ground_1->GetSprite().setPosition(ground_1->GetPosition());
+
+	ground_2->SetPosition(1300.f, 820.f);
+	ground_2->SetOriginCenter();
+	ground_2->GetSprite().setPosition(ground_2->GetPosition());
+
+	portal->SetPosition(1600.f, 820.f);
+
+	this->player->SetPosition(Vector2f(1920.f / 2, 500.f));
+	this->player->Init();
 	mob->Init();
 	mob->SetPosition(Vector2f(1920.f / 2.f, 850.f));
-}
+	gameObjects.push_back(this->player);
+	gameObjects.push_back(mob);
 
-void Town_Map::Update(float dt)
-{
-	player->Update(dt, tile->GetGlobalBounds());
-	mob->Update(dt);
-
-	ViewManager::GetInstance().GetMainView().setCenter(player->GetPosition());
-
-	if (spritePortal.getGlobalBounds().intersects(player->GetGlobalBounds()))
-	{
-		player->AddHP(1000);
-		PlayerDataManager::GetInstance().SavePlayerData(*player);
-		MapManager::GetInstance().LoadMap(MAP_TYPE::KingsPass);
-	}
-
-}
-
-void Town_Map::Render(RenderWindow& window)
-{
-	window.draw(spriteBG);
-	window.draw(spritePortal);
-	window.draw(tile->GetShape());
-	player->Draw(window);
-	mob->Render(window);
-}
-
-void Town_Map::Release()
-{
-	delete player;
-	delete tile;
-	player = nullptr;
-	tile = nullptr;
+	stableObjects.push_back(ground_1);
+	stableObjects.push_back(ground_2);
+	stableObjects.push_back(portal);
 }
