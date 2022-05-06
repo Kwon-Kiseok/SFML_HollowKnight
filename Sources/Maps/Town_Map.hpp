@@ -10,8 +10,7 @@ class Town_Map : public Map
 {
 private:
 	tempMob* mob;
-	Ground* ground_1;
-	Ground* ground_2;
+	Ground* grounds[30];
 	Portal* portal;
 public:
 	Town_Map(Player* player_);

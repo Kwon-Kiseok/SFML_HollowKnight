@@ -43,7 +43,7 @@ void MapManager::LoadMap(MAP_TYPE type)
 void MapManager::Update(float dt)
 {
 	map->Update(dt);
-	map->CheckCollisions();
+	map->CheckCollisions(dt);
 }
 
 void MapManager::Render(sf::RenderWindow& window)

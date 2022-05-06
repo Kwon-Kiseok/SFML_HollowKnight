@@ -79,6 +79,11 @@ bool Character::Collision(GameObject* otherObj)
 	return this->GetSprite().getGlobalBounds().intersects(otherObj->GetSprite().getGlobalBounds());
 }
 
+bool Character::Collision_AttackBox(RectangleShape& attackBox)
+{
+	return this->sprite.getGlobalBounds().intersects(attackBox.getGlobalBounds());
+}
+
 void Character::Init()
 {
 }

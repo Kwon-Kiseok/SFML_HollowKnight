@@ -7,8 +7,7 @@ Portal::Portal()
 	collidable = true;
 	interactable = true;
 	type = Interaction_Type::PORTAL;
-	nextMap = MAP_TYPE::KingsPass;
-
+	
 	SetTexture("Resources/Sprite/light_effect_v02.png");
 	SetSprite();
 	SetOriginCenter();
@@ -19,6 +18,16 @@ Portal::Portal()
 
 Portal::~Portal()
 {
+}
+
+MAP_TYPE& Portal::GetCurrentMap()
+{
+	return currMap;
+}
+
+void Portal::SetNextMap(MAP_TYPE next)
+{
+	nextMap = next;
 }
 
 void Portal::Interaction()

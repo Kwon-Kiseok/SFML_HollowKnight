@@ -49,6 +49,10 @@ public:
 	void Move(Vector2f newPosition);
 
 	virtual bool Collision(GameObject* otherObj);
+	/// <summary>
+	/// 상대의 attackBox에 피격당했을 때
+	/// </summary>
+	virtual bool Collision_AttackBox(RectangleShape& attackBox);
 
 	virtual void Init();
 	virtual void Update(float dt);

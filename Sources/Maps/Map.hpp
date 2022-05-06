@@ -24,6 +24,6 @@ public:
 	virtual void Render(sf::RenderWindow& window);
 	virtual void Release();
 
-	virtual void CheckCollisions();
+	virtual void CheckCollisions(float dt);
 };
 
