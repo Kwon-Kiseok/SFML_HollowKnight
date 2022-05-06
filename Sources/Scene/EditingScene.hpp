@@ -1,23 +1,36 @@
 #pragma once
 #include "Scene.hpp"
 #include <unordered_map>
+#include <vector>
 #include <string>
 #include "../Utils/button.hpp"
-#include "../Utils/textureListBoxUI.hpp"
+#include "../Objects/GameObject.hpp"
+
 using namespace sf;
 using namespace std;
 // 맵 에디팅을 할 씬
 class EditingScene : public Scene
 {
 private:
-	unordered_map<string, Texture*> textureMap;
-	unordered_map<int, Sprite*> spriteMap;
-	int clickCount;
+	string inputLayer;
+	string inputIndex;
 
-	button* textureLoadButton;	// 텍스쳐 로드 버튼
-	bool isOpenTextureWindow; // 텍스처 윈도우가 열려있는지
+	int layer;
+	int inputImageIdx;
 
-	textureListBoxUI* listBoxUI;
+	int count = 0;
+	bool positionSetting;
+
+	vector<GameObject*> objects;
+
+	GameObject* object;
+
+	button* groundButton;		// 바닥
+	button* layeredButton;		// 
+	button* buildingButton;		//
+	button* backgroundButton;	// 뒷 배경
+
+	bool ClikedgroundButton;
 
 public:
 	EditingScene() noexcept;
@@ -27,5 +40,6 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Render(RenderWindow& window) override;
 	virtual void Release() override;
+	void MoveView();
 };
 

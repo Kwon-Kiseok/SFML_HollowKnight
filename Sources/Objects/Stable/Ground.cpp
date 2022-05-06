@@ -2,19 +2,18 @@
 #include "../../Utils/Utility.hpp"
 #include <string>
 
-Ground::Ground()
+Ground::Ground(int idx)
 	: Stable()
 {
 	SetTag(TAG::GROUND);
 	collidable = true;
 	interactable = false;
 	type = Interaction_Type::NONE;
-
+	imageIdx = idx;
 	std::string path = "Resources/Sprite/BG/Town/town_floor_";
 	std::string index;
-	int randNum = Utility::Random(1, 4);
 
-	switch (randNum)
+	switch (imageIdx)
 	{
 	case 1:
 		index = "01.png";
@@ -33,6 +32,11 @@ Ground::Ground()
 
 Ground::~Ground()
 {
+}
+
+void Ground::SetImageIdx(int idx)
+{
+	imageIdx = idx;
 }
 
 bool Ground::Collision(GameObject* otherObj)

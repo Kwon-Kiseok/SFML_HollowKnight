@@ -12,12 +12,14 @@ GameObject::~GameObject()
 void GameObject::SetPosition(Vector2f pos)
 {
 	position = pos;
+	sprite.setPosition(position);
 }
 
 void GameObject::SetPosition(float x, float y)
 {
 	position.x = x;
 	position.y = y;
+	sprite.setPosition(Vector2f(x, y));
 }
 
 Vector2f GameObject::GetPosition()
