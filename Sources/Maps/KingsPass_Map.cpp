@@ -4,49 +4,43 @@
 #include "../Player/Player.hpp"
 #include "../Managers/ViewManager.hpp"
 #include "../Managers/PlayerDataManager.hpp"
+#include "../Objects/Stable/Ground.hpp"
+#include "../Objects/Stable/Portal.hpp"
 
 #include <iostream>
 
-void KingsPass_Map::Init()
+KingsPass_Map::KingsPass_Map(Player* player_)
+	: Map(player_)
 {
-	textureBG.loadFromFile("Resources/Sprite/BG/Tutorial/tut_tab_ancient_0001_2.png");
-	spriteBG.setTexture(textureBG);
-	spriteBG.setPosition(990.f, 820.f);
-	spriteBG.setOrigin(spriteBG.getLocalBounds().width / 2, spriteBG.getLocalBounds().height / 2);
+	portal = new Portal();
 
-	player = new Player();
-	tile = new DemoTile(740, 900);
-	player->Init();
-
-	std::cout << player->GetHP() << std::endl;
-}
-
-void KingsPass_Map::Update(float dt)
-{
-	player->Update(dt, tile->GetGlobalBounds());
-	ViewManager::GetInstance().GetMainView().setCenter(player->GetPosition());
-
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Space))
+	float groundsLength = 0.f;
+	for (int i = 0; i < 30; ++i)
 	{
-		MapManager::GetInstance().LoadMap(MAP_TYPE::CrossRoad);
+		grounds[i] = new Ground();
+		if (i == 0)
+		{
+			grounds[i]->SetPosition(0.f, 820.f);
+		}
+		else
+		{
+			grounds[i]->SetPosition(groundsLength + (grounds[i - 1]->GetSprite().getLocalBounds().width), 820.f);
+			groundsLength += grounds[i - 1]->GetSprite().getLocalBounds().width - 4.f;
+		}
+		grounds[i]->GetSprite().setPosition(grounds[i]->GetPosition());
 	}
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::BackSpace))
+
+	portal->SetPosition(0.f, 820.f);
+	portal->GetSprite().setPosition(portal->GetPosition());
+	portal->SetNextMap(MAP_TYPE::Town);
+
+	this->player->SetPosition(Vector2f(300.f / 2, 500.f));
+	//player->Init();
+	gameObjects.push_back(player);
+
+	for (int i = 0; i < 30; ++i)
 	{
-		MapManager::GetInstance().LoadMap(MAP_TYPE::Town);
+		stableObjects.push_back(grounds[i]);
 	}
-}
-
-void KingsPass_Map::Render(sf::RenderWindow& window)
-{
-	window.draw(spriteBG);
-	window.draw(tile->GetShape());
-	player->Draw(window);
-}
-
-void KingsPass_Map::Release()
-{
-	delete player;
-	delete tile;
-	player = nullptr;
-	tile = nullptr;
+	stableObjects.push_back(portal);
 }

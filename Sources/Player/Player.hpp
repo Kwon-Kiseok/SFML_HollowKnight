@@ -1,11 +1,9 @@
 #pragma once
 #include "../Animation/AnimationController.hpp"
+#include "../Objects/Moveable/Character.hpp"
 #include <map>
-#include "../Objects/GameObject.hpp"
-#include "../DemoTile.hpp"
 
-
-class Player : public GameObject
+class Player : public Character
 {
 private:
 	const float ATTACK_DELAY = 0.3f;
@@ -36,12 +34,12 @@ private:
 	Vector2f hitBoxPosition;
 public:
 	Player();
-	void Init();
+	virtual void Init() override;
 
 	void UpdateInput();
-	void Update(float dt, FloatRect tile);
-	void Draw(RenderWindow& window);
-
+	virtual void Update(float dt) override;
+	virtual void Render(RenderWindow& window) override;
+	virtual void Release() override;
 	int GetHP();
 	int GetMP();
 	void AddHP(int value);

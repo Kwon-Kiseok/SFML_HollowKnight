@@ -7,6 +7,7 @@ void tempMob::Init()
 	SetSprite();
 	SetOriginCenter(); // 임시 idle 애니메이션 들어가면 지양
 	SetLayer(0); // 임시
+	SetName("tempMob");
 	
 	DebugCollision(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
 }

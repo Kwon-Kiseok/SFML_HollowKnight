@@ -1,7 +1,7 @@
 #include "GameObject.hpp"
 
 GameObject::GameObject()
-	:isVisible(false), layer(0), tag(TAG::NONE)
+	:isVisible(true), layer(0), tag(TAG::NONE)
 {
 }
 
@@ -14,9 +14,20 @@ void GameObject::SetPosition(Vector2f pos)
 	position = pos;
 }
 
+void GameObject::SetPosition(float x, float y)
+{
+	position.x = x;
+	position.y = y;
+}
+
 Vector2f GameObject::GetPosition()
 {
 	return position;
+}
+
+Texture& GameObject::GetTexture()
+{
+	return this->texture;
 }
 
 void GameObject::SetHidden()
@@ -71,7 +82,7 @@ void GameObject::SetSprite()
 	sprite.setTexture(texture);
 }
 
-Sprite GameObject::GetSprite()
+Sprite& GameObject::GetSprite()
 {
 	return sprite;
 }
@@ -104,4 +115,9 @@ bool GameObject::CollisionBox(FloatRect box)
 	if (boundingBox.intersects(box))
 		return true;
 	return false;
+}
+
+bool GameObject::CheckCollision(GameObject* otherObj)
+{
+	return this->GetSprite().getGlobalBounds().intersects(otherObj->GetSprite().getGlobalBounds());
 }

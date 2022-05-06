@@ -7,10 +7,15 @@
 
 MapManager::~MapManager() noexcept
 {
+	delete player;
+	player = nullptr;
 }
 
 void MapManager::Init()
 {
+	player = new Player();
+	std::cout << "player create" << std::endl;
+	player->Init();
 }
 
 void MapManager::LoadMap(MAP_TYPE type)
@@ -20,13 +25,13 @@ void MapManager::LoadMap(MAP_TYPE type)
 	switch (type)
 	{
 	case MAP_TYPE::Town:
-		map = new Town_Map();
+		map = new Town_Map(player);
 		break;
 	case MAP_TYPE::KingsPass:
-		map = new KingsPass_Map();
+		map = new KingsPass_Map(player);
 		break;
 	case MAP_TYPE::CrossRoad:
-		map = new CrossRoad_Map();
+		map = new CrossRoad_Map(player);
 		break;
 	default:
 		break;
@@ -38,6 +43,7 @@ void MapManager::LoadMap(MAP_TYPE type)
 void MapManager::Update(float dt)
 {
 	map->Update(dt);
+	map->CheckCollisions(dt);
 }
 
 void MapManager::Render(sf::RenderWindow& window)

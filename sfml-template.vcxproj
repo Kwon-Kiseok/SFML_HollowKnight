@@ -148,6 +148,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Objects\Stable\Portal.cpp" />
+    <ClCompile Include="Sources\Maps\Map.cpp" />
+    <ClCompile Include="Sources\Objects\Moveable\Monster\Monster.cpp" />
+    <ClCompile Include="Sources\Objects\Moveable\Character.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Ground.cpp" />
     <ClCompile Include="Sources\Objects\GameObject.cpp" />
     <ClCompile Include="Sources\Managers\PlayerDataManager.cpp" />
     <ClCompile Include="Sources\Attack\Attack.cpp" />
@@ -177,9 +182,14 @@
     <ClCompile Include="Sources\Utils\textureListBoxUI.cpp" />
     <ClCompile Include="Sources\Scene\TempUIScene.cpp" />
     <ClCompile Include="Sources\Maps\Town_Map.cpp" />
-    <ClCompile Include="Sources\Monster\tempMob.cpp" />
+    <ClCompile Include="Sources\Objects\Moveable\Monster\tempMob.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Stable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Objects\Stable\Portal.hpp" />
+    <ClInclude Include="Sources\Objects\Moveable\Monster\Monster.hpp" />
+    <ClInclude Include="Sources\Objects\Moveable\Character.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Ground.hpp" />
     <ClInclude Include="Sources\Objects\GameObject.hpp" />
     <ClInclude Include="Sources\Managers\PlayerDataManager.hpp" />
     <ClInclude Include="Sources\Attack\Attack.hpp" />
@@ -214,7 +224,8 @@
     <ClInclude Include="Sources\Utils\textureListBoxUI.hpp" />
     <ClInclude Include="Sources\Scene\TempUIScene.h" />
     <ClInclude Include="Sources\Maps\Town_Map.hpp" />
-    <ClInclude Include="Sources\Monster\tempMob.hpp" />
+    <ClInclude Include="Sources\Objects\Moveable\Monster\tempMob.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Stable.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
