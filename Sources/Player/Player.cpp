@@ -4,7 +4,7 @@
 #include "../Managers/PlayerDataManager.hpp"
 
 Player::Player()
-	: isWay(true), isJump(true), isBottom(false), speed(200.f), isDash(false)
+	: isWay(true), isJump(true), isBottom(false), speed(200.f), isDash(false), isAttack(false), attackDelay(ATTACK_DELAY)
 {
 	hp = 0;
 	mp = 0;
@@ -16,10 +16,28 @@ void Player::Init()
 	mp = PlayerDataManager::GetInstance().GetPlayerMP();
 
 	SetTag(TAG::PLAYER);
+	position.x = 1920 * 0.5f;
+	position.y = 500.f;
 	sprite.setPosition(position);
-	sprite.setOrigin(31, 0);
+	//sprite.setOrigin(31, 0);
 	// Animator 초기화
 	animation.SetTarget(&sprite);
+
+	// 공격 히트박스
+	attackBox.setSize(Vector2f(140, 100));
+	attackBox.setOrigin(Vector2f(0, 100));
+	attackBoxPosition.x = position.x;
+	attackBoxPosition.y = position.y - 10;
+	attackBox.setPosition(attackBoxPosition);
+	attackBox.scale(-1, 1);
+	// 플레이어 히트박스
+	hitBox.setSize(Vector2f(30, 80));
+	hitBox.setOrigin(Vector2f(15, 80));
+	attackBoxPosition.x = position.x;
+	attackBoxPosition.y = position.y - 10;
+	hitBox.setPosition(attackBoxPosition);
+	hitBox.setFillColor(Color::Red);
+
 
 	/**************************************************************************/
 
@@ -58,9 +76,6 @@ void Player::Init()
 			}
 			clip.frames.push_back(AnimationFrame(texMap[colTexure[j]], IntRect(colL[j], colT[j], colW[j], colH[j]), Vector2f(colX[j], colY[j])));
 		}
-		//sprite.setOrigin(orgX, orgY);
-		// Animator 초기화		// AnimationController Update에서 오리진 값 변경
-		//animation.SetTarget(&sprite);
 
 		animation.AddClip(clip);
 	}
@@ -71,7 +86,7 @@ void Player::Init()
 void Player::UpdateInput()
 {
 
-	// 큐로 받아놓고
+	// 큐로 받아놓고 선입력 처리
 
 	// 좌우 입력시 이미지 방향 변화
 	if (!isDash)
@@ -81,6 +96,7 @@ void Player::UpdateInput()
 			if (isWay)
 			{
 				sprite.scale(-1, 1);
+				attackBox.scale(-1, 1);
 				isWay = !isWay;
 			}
 		}
@@ -89,6 +105,7 @@ void Player::UpdateInput()
 			if (!isWay)
 			{
 				sprite.scale(-1, 1);
+				attackBox.scale(-1, 1);
 				isWay = !isWay;
 			}
 		}
@@ -100,9 +117,6 @@ void Player::UpdateInput()
 	{
 		if (isBottom)
 		{
-			/*string = "RunToIdle";
-			Queuestrig = "Idle";
-			isString = true;*/
 			animation.Play("RunToIdle");
 			animation.PlayQueue("Idle");
 		}
@@ -113,9 +127,6 @@ void Player::UpdateInput()
 	{
 		if (isBottom)
 		{
-			/*string = "StartMove";
-			Queuestrig = "Move";
-			isString = true;*/
 			animation.Play("StartMove");
 			animation.PlayQueue("Move");
 		}
@@ -123,55 +134,32 @@ void Player::UpdateInput()
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
 	{
-		/*string = "Jump";
-		Queuestrig = "Jumping";*/
 		animation.Play("Jump");
 		animation.PlayQueue("Jumping");
 
-		isString = true;
 		isJump = true;
 	}
 
-	// 공격 애니메이션 or 이전 이미지 저장하는 법????
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::X))
+	// 공격 이펙트 애니메이션 or 이전 이미지 저장하는 법????
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::X) && !isAttack)
 	{
-		/*string = "Slash";
-		isString = true;*/
-		//Queuestrig = "Idle";
 		animation.Play("Slash");
 		animation.PlayQueue("Idle");	// 이전 이미지로
 	}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash)
 	{
-		/*string = "Dash";
-		isString = true;
-		Queuestrig = "Idle";*/
 		animation.Play("Dash");
 		animation.PlayQueue("Idle");	// 이전 이미지로
 	}
-
-	/*if (!isDash)
-	{
-		if (isString)
-		{
-			if (!isJump)
-			{
-				animation.Play(string);
-				animation.Play(Queuestrig);
-			}
-			isString = false;
-		}
-	}*/
 }
 
 void Player::Update(float dt, FloatRect tile)
 {
 	UpdateInput();
 
-
 	Vector2f positionTemp = position;
-	// 대쉬 입력
+
 	if (!isDash)
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::C))
@@ -212,7 +200,7 @@ void Player::Update(float dt, FloatRect tile)
 			isBottom = true;
 		}
 	}
-
+	// 대쉬 입력
 	if (isDash)
 	{
 		if (isWay)
@@ -240,14 +228,37 @@ void Player::Update(float dt, FloatRect tile)
 			}
 		}
 	}
+
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::X) && !isAttack)
+	{
+		isAttack = true;
+	}
+	attackDelay -= dt;
+	if (attackDelay < 0.f)
+	{
+		attackDelay = ATTACK_DELAY;
+		isAttack = false;
+	}
 	sprite.setPosition(position);
+	// 공격 박스 포지션
+	attackBoxPosition.x = position.x;
+	attackBoxPosition.y = position.y - 10;
+	attackBox.setPosition(attackBoxPosition);
+
+	// 히트박스 포지션
+	hitBox.setPosition(attackBoxPosition);
 
 	animation.Update(dt);
 }
 
 void Player::Draw(RenderWindow& window)
 {
+	if (isAttack)
+	{
+		window.draw(attackBox);
+	}
 	window.draw(sprite);
+	window.draw(hitBox);
 }
 
 const FloatRect Player::GetGlobalBounds()

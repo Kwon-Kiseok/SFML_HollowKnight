@@ -8,6 +8,8 @@
 class Player : public GameObject
 {
 private:
+	const float ATTACK_DELAY = 0.3f;
+
 	bool isWay;	// true면 왼쪽을 바라보는 상황
 	bool isJump;
 	bool isBottom;
@@ -16,7 +18,6 @@ private:
 	int mp;
 
 	bool isDash;
-	bool isString;
 
 	float speed;
 	AnimationController animation;
@@ -25,7 +26,14 @@ private:
 	std::map<std::string, Texture> texMap;
 
 	Vector2f dashTemp;
-  
+	// 공격 범위 박스
+	RectangleShape attackBox;
+	Vector2f attackBoxPosition;
+	bool isAttack;
+	float attackDelay;
+	// 플레이어 히트박스
+	RectangleShape hitBox;
+	Vector2f hitBoxPosition;
 public:
 	Player();
 	void Init();
