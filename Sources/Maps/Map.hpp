@@ -1,14 +1,29 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../Player/Player.hpp"
+#include "../Objects/Stable/Stable.hpp"
+#include <vector>
+
+#include <iostream>
+
 class Map
 {
+protected:
+	std::vector<GameObject*> gameObjects;
+	std::vector<Character*> characters;
+
+	std::vector<Stable*> stableObjects;
+
+	Player* player;
 public:
-	Map() {}
+	Map(Player* player_) : player(player_) {}
 	virtual ~Map() {}
 
-	virtual void Init() = 0;
-	virtual void Update(float dt) = 0;
-	virtual void Render(sf::RenderWindow& window) = 0;
-	virtual void Release() = 0;
+	virtual void Init();
+	virtual void Update(float dt);
+	virtual void Render(sf::RenderWindow& window);
+	virtual void Release();
+
+	virtual void CheckCollisions(float dt);
 };
 

@@ -12,6 +12,7 @@ MapTestPlayScene::~MapTestPlayScene() noexcept
 
 void MapTestPlayScene::Init()
 {
+	MapManager::GetInstance().Init();
 	MapManager::GetInstance().LoadMap(MAP_TYPE::Town);
 }
 

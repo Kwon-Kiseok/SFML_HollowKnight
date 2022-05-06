@@ -6,6 +6,7 @@
 
 
 class Map;
+class Player;
 enum class MAP_TYPE
 {
 	Town,
@@ -17,7 +18,7 @@ class MapManager : public Singleton<MapManager>
 {
 private:
 	Map* map;
-
+	Player* player;
 public:
 	MapManager() noexcept = default;
 	~MapManager() noexcept;

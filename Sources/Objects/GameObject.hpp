@@ -30,29 +30,39 @@ public:
 	GameObject();
 	virtual ~GameObject();
 
-	void SetPosition(Vector2f pos);
-	Vector2f GetPosition();
-
-	void SetHidden();
-	void SetVisible();
-	bool GetIsVisible();
-
-	void SetLayer(int layer);
-	int GetLayer();
-
-	void SetTag(TAG tag);
-	TAG GetTag();
-	bool CompareTag(TAG tag);
-
+	// Set Function
 	void SetTexture(std::string path);
 	void SetSprite();
-	Sprite GetSprite();
+	void SetPosition(Vector2f pos);
+	void SetPosition(float x, float y);
 	void SetOriginCenter();
+	void SetVisible();
+	void SetHidden();
+	void SetLayer(int layer);
+	void SetTag(TAG tag);
+
+	// Get Function
+	Vector2f GetPosition();
+	Texture& GetTexture();
+	Sprite& GetSprite();
+	TAG GetTag();
+	bool GetIsVisible();
+	int GetLayer();
+
+	// 
+	bool CompareTag(TAG tag);
 	
 	void DebugCollision(Vector2f size);
 	bool CollisionPoint(Vector2f point);
 	bool CollisionBox(FloatRect box);
 
+	virtual bool CheckCollision(GameObject* otherObj);
+	virtual bool Collision(GameObject* otherObj) = 0;
 
+	//
+	virtual void Init() = 0;
+	virtual void Update(float dt) = 0;
+	virtual void Render(RenderWindow& window) = 0;
+	virtual void Release() = 0;
 };
 

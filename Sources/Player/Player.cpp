@@ -16,6 +16,7 @@ void Player::Init()
 	mp = PlayerDataManager::GetInstance().GetPlayerMP();
 
 	SetTag(TAG::PLAYER);
+	SetName("Hero");
 	sprite.setPosition(position);
 	sprite.setOrigin(31, 0);
 	// Animator 초기화
@@ -165,7 +166,7 @@ void Player::UpdateInput()
 	}*/
 }
 
-void Player::Update(float dt, FloatRect tile)
+void Player::Update(float dt)
 {
 	UpdateInput();
 
@@ -195,22 +196,24 @@ void Player::Update(float dt, FloatRect tile)
 			position.y -= dt * speed * 2.f;
 			isBottom = false;
 		}
-		else
+		// temp
+		if(InputManager::GetInstance().GetKeyDown(Keyboard::Down)
+			|| InputManager::GetInstance().GetKey(Keyboard::Down))
 		{
 			position.y += dt * speed * 2.f;
 		}
-		// 바닥 충돌 체크
-		if ((float)position.y > tile.top &&
-			((float)position.x > tile.left && (float)position.x < tile.left + tile.width))
-		{
-			if (isJump)
-			{
-				animation.Play("Idle");
-				isJump = false;
-			}
-			position.y = positionTemp.y;
-			isBottom = true;
-		}
+		//// 바닥 충돌 체크
+		//if ((float)position.y > tile.top &&
+		//	((float)position.x > tile.left && (float)position.x < tile.left + tile.width))
+		//{
+		//	if (isJump)
+		//	{
+		//		animation.Play("Idle");
+		//		isJump = false;
+		//	}
+		//	position.y = positionTemp.y;
+		//	isBottom = true;
+		//}
 	}
 
 	if (isDash)
@@ -245,9 +248,13 @@ void Player::Update(float dt, FloatRect tile)
 	animation.Update(dt);
 }
 
-void Player::Draw(RenderWindow& window)
+void Player::Render(RenderWindow& window)
 {
 	window.draw(sprite);
+}
+
+void Player::Release()
+{
 }
 
 const FloatRect Player::GetGlobalBounds()
