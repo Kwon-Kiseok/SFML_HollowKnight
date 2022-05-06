@@ -4,6 +4,8 @@
 #include "../Managers/InputManager.hpp"
 #include "../Managers/SceneManager.hpp"
 #include "../Managers/SoundManager.hpp"
+#include "../Managers/UIManager.hpp"
+#include <sstream>
 
 void InventoryScene::Init()
 {
@@ -44,7 +46,28 @@ void InventoryScene::Init()
 	textInven.setString("Inventory");
 	textInven.setCharacterSize(35);
 	textInven.setFillColor(Color::White);
-	textInven.setPosition(900, 50);
+	textInven.setPosition(883, 50);
+
+
+	textureHealth = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/Inv_0030_inv_health_backboard.png");
+	spriteHealth.setTexture(textureHealth);
+	spriteHealth.setPosition(150, 150);
+
+	textureSoul = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/Inv_0032_inv_soul_backboard.png");
+	spriteSoul.setTexture(textureSoul);
+	spriteSoul.setPosition(400, 240);
+
+	textureSpellCore = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/Inv_0029_spell_core.png");
+	spriteSpellCore.setTexture(textureSpellCore);
+	spriteSpellCore.setPosition(365, 550);
+
+	textureNail = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/Inv_0033_inv_nail_01.png");
+	spriteNail.setTexture(textureNail);
+	spriteNail.setPosition(180, 450);
+
+	textureInvenCoin = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/InventoryCoin.png");
+	spriteInvenCoin.setTexture(textureInvenCoin);
+	spriteInvenCoin.setPosition(350, 900);
 }
 
 void InventoryScene::Update(float dt)
@@ -53,6 +76,15 @@ void InventoryScene::Update(float dt)
 	{
 		visible = !visible;
 	}
+
+	stringstream ssCoin;
+	ssCoin << coin.GetCoin();
+	textCoin.setString(ssCoin.str());
+	textCoin.setPosition(430, 910);
+	textCoin.setCharacterSize(40);
+	textCoin.setFillColor(Color::White);
+	textCoin.setFont(fontCALIST);
+
 }
 
 void InventoryScene::Render(sf::RenderWindow& window)
@@ -66,6 +98,14 @@ void InventoryScene::Render(sf::RenderWindow& window)
 	window.draw(spriteFrameRB);
 	
 	window.draw(textInven);
+
+	window.draw(spriteHealth);
+	window.draw(spriteSoul);
+	window.draw(spriteSpellCore);
+	window.draw(spriteNail);
+
+	window.draw(spriteInvenCoin);
+	window.draw(textCoin);
 }
 
 void InventoryScene::Release()

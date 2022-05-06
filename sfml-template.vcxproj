@@ -148,6 +148,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Items\Item.cpp" />
+    <ClCompile Include="Sources\Items\Coin.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Portal.cpp" />
     <ClCompile Include="Sources\Maps\Map.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Monster\Monster.cpp" />
@@ -185,6 +187,8 @@
     <ClCompile Include="Sources\Objects\Stable\Stable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Items\Item.hpp" />
+    <ClInclude Include="Sources\Items\Coin.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Portal.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\Monster.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Character.hpp" />
