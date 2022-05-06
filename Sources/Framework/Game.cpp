@@ -5,6 +5,7 @@
 #include "../Managers/TextureManager.hpp"
 #include "../Managers/ViewManager.hpp"
 
+
 Game::~Game() noexcept
 {
     delete window;
@@ -18,6 +19,13 @@ void Game::Init()
         ,ViewManager::GetInstance().GetResolution().y), "Hollow Knight", Style::Fullscreen);
     SceneManager::GetInstance().Init();
     InputManager::GetInstance().Init();
+
+    font.loadFromFile("Resources/Fonts/CALIST.TTF");
+    textBox = new Textbox(20, sf::Color::White, false);
+    textBox->setPosition({ 100, 100 });
+    textBox->setLimit(true, 30);
+    textBox->setFont(font);
+
 }
 
 void Game::Update()
@@ -31,6 +39,8 @@ void Game::Update()
         {
             if (event.type == sf::Event::Closed)
                 window->close();
+            if (event.type == sf::Event::TextEntered)
+                textBox->typedOn(event);
             InputManager::GetInstance().ProcessInput(event);
         }
         if (InputManager::GetInstance().GetKeyDown(sf::Keyboard::Escape))
@@ -51,6 +61,7 @@ void Game::Render()
     window->clear();
     window->setView(ViewManager::GetInstance().GetMainView());
     SceneManager::GetInstance().Render(*window);
+    textBox->drawTo(*window);
     window->display();
 }
 
@@ -59,4 +70,9 @@ void Game::Release()
     ViewManager::GetInstance().ClearView();
     SceneManager::GetInstance().Release();
     SoundManager::GetInstance().Release();
+}
+
+Textbox& Game::GetTextBox()
+{
+    return *textBox;
 }

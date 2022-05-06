@@ -4,11 +4,13 @@
 class Ground : public Stable
 {
 private:
+	int imageIdx;
 
 public:
-	Ground();
+	Ground(int idx);
 	virtual ~Ground();
 
+	void SetImageIdx(int idx);
 	virtual bool Collision(GameObject* otherObj) override;
 };
 

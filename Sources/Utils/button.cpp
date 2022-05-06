@@ -33,7 +33,7 @@ button::~button()
 
 void button::update()
 {
-	Vector2f mousePosition = InputManager::GetInstance().GetMouseWorldPosition();
+	Vector2i mousePosition = InputManager::GetInstance().GetMousePosition();
 
 	bool mouseInButton = mousePosition.x >= buttonShape.getPosition().x - buttonShape.getGlobalBounds().width / 2
 		&& mousePosition.x <= buttonShape.getPosition().x + buttonShape.getGlobalBounds().width / 2
