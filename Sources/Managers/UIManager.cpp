@@ -151,8 +151,6 @@ void UIManager::Init_PlayScene()
 
 void UIManager::Update_PlayScene(float dt)
 {
-	inventory.Update(dt);
-	Update_Map(dt);
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life°¨¼Ò
 	{
 		currentHP--;
@@ -162,6 +160,9 @@ void UIManager::Update_PlayScene(float dt)
 	{
 		currentHP++;
 	}
+
+	inventory.Update(dt);
+	Update_Map(dt);
 }
 
 void UIManager::Render_PlayScene(sf::RenderWindow& window)
