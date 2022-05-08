@@ -18,7 +18,7 @@ public:
 
 public:
 	Scene* GetCurrent() { return currentScene; }
-
+	std::unordered_map<std::wstring, Scene*>& GetScenes() { return Scenes; }
 	void Init();
 	void Update(float dt = 0.f);
 	void Render(sf::RenderWindow& window);

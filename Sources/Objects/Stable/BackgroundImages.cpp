@@ -141,7 +141,7 @@ TownLayered::TownLayered(int idx)
 		break;
 	}
 
-	SetName(index);
+	SetName("town_layered"+index);
 	SetTexture(path + index);
 	SetSprite();
 }

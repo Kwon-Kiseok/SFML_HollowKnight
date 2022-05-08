@@ -68,7 +68,6 @@ void button::Click(bool isHovered)
 		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
 		{
 			state = Button_state::clicked;
-			std::cout << "Button Clicked" << std::endl;
 			isClick = true;
 		}
 		else if (InputManager::GetInstance().GetMouseButtonUp(Mouse::Left) && isClick == true)

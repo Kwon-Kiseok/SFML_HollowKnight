@@ -30,16 +30,20 @@ void EditingScene::Init()
 
 	layerIndicator.setFont(font);
 	layerIndicator.setCharacterSize(20);
-	layerIndicator.setPosition(1690.f, 420.f);
+	layerIndicator.setPosition(ViewManager::GetInstance().GetResolution().x - 260.f, 420.f);
 	layerIndicator.setFillColor(Color::White);
-	
-	groundButton = new button("ground", Vector2f(1850.f, 300.f), Vector2f(100.f, 25.f));
-	layeredButton = new button("layered", Vector2f(1850.f, 400.f), Vector2f(100.f, 25.f));
-	buildingButton = new button("building", Vector2f(1850.f, 500.f), Vector2f(100.f, 25.f));
-	backgroundButton = new button("bg", Vector2f(1850.f, 600.f), Vector2f(100.f, 25.f));
 
-	saveButton = new button("Save", Vector2f(1725.f, 950.f), Vector2f(100.f, 30.f));
-	exitButton = new button("Exit", Vector2f(1850.f, 950.f), Vector2f(100.f, 30.f));
+	manualText.setFont(font);
+	manualText.setCharacterSize(20);
+	manualText.setFillColor(Color::Magenta);
+	
+	groundButton = new button("ground", Vector2f(ViewManager::GetInstance().GetResolution().x-100.f, 300.f), Vector2f(100.f, 25.f));
+	layeredButton = new button("layered", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 330.f), Vector2f(100.f, 25.f));
+	buildingButton = new button("building", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 360.f), Vector2f(100.f, 25.f));
+	backgroundButton = new button("bg", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 390.f), Vector2f(100.f, 25.f));
+
+	saveButton = new button("Save", Vector2f(ViewManager::GetInstance().GetResolution().x - 200.f, 950.f), Vector2f(100.f, 30.f));
+	exitButton = new button("Exit", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 950.f), Vector2f(100.f, 30.f));
 
 	buttons.push_back(groundButton);
 	buttons.push_back(layeredButton);
@@ -51,11 +55,17 @@ void EditingScene::Init()
 
 void EditingScene::Update(float dt)
 {
+	// 마우스 조작법 표시
+	SetManual();
 	// 방향키로 화면 이동
 	MoveView();
 	// 현재 커서 위치 보여줌
 	CursorPosView();
+	// 배치된 오브젝트들 정보 보기
 	ViewObjectsInfos();
+	// 배치된 오브젝트 선택
+	ClickObject();
+
 	// 어떤 오브젝트 클래스 버튼이 눌렸는지 검사
 	for (auto button : buttons)
 	{
@@ -64,7 +74,7 @@ void EditingScene::Update(float dt)
 	}
 	// 오브젝트가 선택되었다면 
 	SetImageIndex();
-
+	// 레이어 설정
 	if (checkImageIdx)
 		SetLayer();
 	// 위치 설정
@@ -118,6 +128,7 @@ void EditingScene::Render(sf::RenderWindow& window)
 	}
 
 	window.draw(currentCursorPos);
+	window.draw(manualText);
 }
 
 void EditingScene::Release()
@@ -159,7 +170,18 @@ void EditingScene::OpenImageIndex(button& btn)
 		{
 			stringstream ss;
 			ss << (i+1);
-			button* objectName = new button(ss.str(), Vector2f(1780.f, 10.f + (i * 30.f)), Vector2f(25.f, 25.f));
+			button* objectName = new button(ss.str(), Vector2f(ViewManager::GetInstance().GetResolution().x - 175.f, 10.f + (i * 30.f)), Vector2f(25.f, 25.f));
+			ImageIndexList.push_back(objectName);
+		}
+	}
+	if (selectName == "ground" && btn.IsButtonClicked())
+	{
+		Ground temp;
+		for (int i = 0; i < temp.GetIndexTotal(); ++i)
+		{
+			stringstream ss;
+			ss << (i + 1);
+			button* objectName = new button(ss.str(), Vector2f(ViewManager::GetInstance().GetResolution().x - 175.f, 10.f + (i * 30.f)), Vector2f(25.f, 25.f));
 			ImageIndexList.push_back(objectName);
 		}
 	}
@@ -188,9 +210,9 @@ void EditingScene::SetLayer()
 	// 레이어
 	if (plusLayerButton == nullptr && minusLayerButton == nullptr && confirmLayerButton == nullptr)
 	{
-		plusLayerButton = new button("+", Vector2f(1700.f, 400.f), Vector2f(25.f, 25.f));
-		minusLayerButton = new button("-", Vector2f(1700.f, 460.f), Vector2f(25.f, 25.f));
-		confirmLayerButton = new button("OK", Vector2f(1730.f, 430.f), Vector2f(25.f, 25.f));
+		plusLayerButton = new button("+", Vector2f(ViewManager::GetInstance().GetResolution().x - 250.f, 400.f), Vector2f(25.f, 25.f));
+		minusLayerButton = new button("-", Vector2f(ViewManager::GetInstance().GetResolution().x - 250.f, 460.f), Vector2f(25.f, 25.f));
+		confirmLayerButton = new button("OK", Vector2f(ViewManager::GetInstance().GetResolution().x - 225.f, 430.f), Vector2f(25.f, 25.f));
 	}
 	plusLayerButton->update();
 	minusLayerButton->update();
@@ -247,6 +269,9 @@ void EditingScene::SetLayer()
 
 void EditingScene::SetObjectsPosition()
 {
+	if (object == nullptr)
+		return;
+
 	if (object != nullptr && positionSetting)
 	{
 		for (auto object : ImageIndexList)
@@ -261,12 +286,35 @@ void EditingScene::SetObjectsPosition()
 
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::Space))
 		{
-			objects.push_back(object);
+			if (!selectObject)
+				objects.push_back(object);
+			else
+				selectObject = false;
 			positionSetting = false;
 		}
 		else if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Right))
 		{
+			if (selectObject == true)
+			{
+				object->SetPosition(prevPos);
+			}
+
 			object = nullptr;
+			selectObject = false;
+			positionSetting = false;
+		}
+		else if (InputManager::GetInstance().GetKeyDown(Keyboard::BackSpace))
+		{
+			for (auto it = objects.begin(); it != objects.end(); ++it)
+			{
+				if ((*it) == object)
+				{
+					objects.erase(it);
+					break;
+				}
+			}
+			object = nullptr;
+			selectObject = false;
 			positionSetting = false;
 		}
 	}
@@ -307,6 +355,9 @@ void EditingScene::CursorPosView()
 	ss.str("");
 	ss << InputManager::GetInstance().GetCurrentZoom();
 	cursorData += "\nZoom: " + ss.str();
+	ss.str("");
+	ss << objects.size();
+	cursorData += "\nObjects Size: " + ss.str();
 
 	currentCursorPos.setString(cursorData);
 }
@@ -353,5 +404,39 @@ void EditingScene::ViewObjectsInfos()
 			status = nullptr;
 		}
 		objectStatuses.clear();
+	}
+}
+
+void EditingScene::ClickObject()
+{
+	if (selectObject == true)
+		return;
+
+	for (auto object : objects)
+	{
+		if (object->GetSprite().getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
+		{
+			if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
+			{
+				selectObject = true;
+				this->object = object;
+				prevPos = object->GetPosition();
+				positionSetting = true;
+			}
+		}
+	}
+}
+
+void EditingScene::SetManual()
+{
+	manualText.setPosition(static_cast<Vector2f>(InputManager::GetInstance().GetMousePosition()));
+	
+	if(positionSetting)
+	{
+		manualText.setString(L"RIGHT - undo\nSPACE - put\nBACK SPACE - delete");
+	}
+	else
+	{
+		manualText.setString(L"LEFT - select");
 	}
 }

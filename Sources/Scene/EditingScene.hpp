@@ -56,6 +56,10 @@ private:
 	string stringStatus;
 	bool isTabClicked;
 
+	Vector2f prevPos;
+	bool selectObject;
+	Text manualText;
+
 public:
 	EditingScene() noexcept;
 	~EditingScene() noexcept = default;
@@ -73,5 +77,8 @@ public:
 	void MoveView();
 	void CursorPosView();
 	void ViewObjectsInfos();
+
+	void ClickObject();
+	void SetManual();
 };
 

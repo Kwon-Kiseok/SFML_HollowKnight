@@ -90,15 +90,20 @@ void InputManager::ProcessInput(const Event& event)
 		break;
 	case Event::MouseWheelScrolled:
 	{
-		if (event.mouseWheelScroll.delta >= 1)
+		// 에디터 씬에서만
+		if (SceneManager::GetInstance().GetScenes().find(L"Editor")->second
+			== SceneManager::GetInstance().GetCurrent())
 		{
-			ViewManager::GetInstance().GetMainView().zoom(1.f / zoomAmount);
-			currentZoom /= zoomAmount;
-		}
-		if (event.mouseWheelScroll.delta <= -1)
-		{
-			ViewManager::GetInstance().GetMainView().zoom(1.02f);
-			currentZoom *= 1.02f;
+			if (event.mouseWheelScroll.delta >= 1)
+			{
+				ViewManager::GetInstance().GetMainView().zoom(1.f / zoomAmount);
+				currentZoom /= zoomAmount;
+			}
+			if (event.mouseWheelScroll.delta <= -1)
+			{
+				ViewManager::GetInstance().GetMainView().zoom(1.02f);
+				currentZoom *= 1.02f;
+			}
 		}
 	}
 		break;

@@ -2,9 +2,15 @@
 #include "../../Utils/Utility.hpp"
 #include <string>
 
+Ground::Ground()
+{
+	index_total = 3;
+}
+
 Ground::Ground(int idx)
 	: Stable()
 {
+	index_total = 3;
 	SetTag(TAG::GROUND);
 	collidable = true;
 	interactable = false;
@@ -26,6 +32,7 @@ Ground::Ground(int idx)
 		break;
 	}
 
+	SetName("town ground"+index);
 	SetTexture(path+index);
 	SetSprite();
 }
@@ -42,5 +49,10 @@ void Ground::SetImageIdx(int idx)
 bool Ground::Collision(GameObject* otherObj)
 {
 	return true;
+}
+
+int Ground::GetIndexTotal()
+{
+	return index_total;
 }
 
