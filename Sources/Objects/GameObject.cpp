@@ -27,6 +27,11 @@ Vector2f GameObject::GetPosition()
 	return position;
 }
 
+Vector2f GameObject::GetOrigin()
+{
+	return sprite.getOrigin();
+}
+
 Texture& GameObject::GetTexture()
 {
 	return this->texture;
@@ -57,9 +62,19 @@ int GameObject::GetLayer()
 	return layer;
 }
 
+std::string& GameObject::GetName()
+{
+	return name;
+}
+
 void GameObject::SetTag(TAG tag)
 {
 	this->tag = tag;
+}
+
+void GameObject::SetName(std::string name)
+{
+	this->name = name;
 }
 
 TAG GameObject::GetTag()

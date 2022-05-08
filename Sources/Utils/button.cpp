@@ -31,6 +31,11 @@ button::~button()
 {
 }
 
+string button::GetText()
+{
+	return text.getString();
+}
+
 void button::update()
 {
 	Vector2i mousePosition = InputManager::GetInstance().GetMousePosition();

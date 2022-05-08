@@ -1,6 +1,9 @@
 #include "InputManager.hpp"
+#include "ViewManager.hpp"
+#include "SceneManager.hpp"
 #include <algorithm>
 #include <cmath>
+
 
 map<Axis, AxisInfo> InputManager::mapAxis;
 
@@ -85,6 +88,20 @@ void InputManager::ProcessInput(const Event& event)
 		upButtons.push_back(event.mouseButton.button);
 	}
 		break;
+	case Event::MouseWheelScrolled:
+	{
+		if (event.mouseWheelScroll.delta >= 1)
+		{
+			ViewManager::GetInstance().GetMainView().zoom(1.f / zoomAmount);
+			currentZoom /= zoomAmount;
+		}
+		if (event.mouseWheelScroll.delta <= -1)
+		{
+			ViewManager::GetInstance().GetMainView().zoom(1.02f);
+			currentZoom *= 1.02f;
+		}
+	}
+		break;
 	default:
 		break;
 	}
@@ -129,6 +146,11 @@ float InputManager::GetAxis(Axis axis) noexcept
 		return mapAxis[axis].value;
 	}
 	return 0.0f;
+}
+
+float InputManager::GetCurrentZoom() noexcept
+{
+	return currentZoom;
 }
 
 int InputManager::GetAxisRaw(const list<Keyboard::Key>& positivie, const list<Keyboard::Key>& negative) noexcept

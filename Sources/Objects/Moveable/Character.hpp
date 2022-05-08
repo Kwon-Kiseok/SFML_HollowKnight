@@ -1,14 +1,12 @@
 #pragma once
 #include "../GameObject.hpp"
 #include "../../Animation/AnimationController.hpp"
-#include <string>
 
 enum class Direction { NONE, LEFT, RIGHT, UP, DOWN };
 
 class Character : public GameObject
 {
 protected:
-	std::string name;			// 캐릭터의 이름 부여
 	int health;					// 캐릭터의 체력
 	Direction prevDir;			// 캐릭터의 이전 방향
 	Direction currentDir;		// 캐릭터의 현재 방향
@@ -33,7 +31,6 @@ public:
 	virtual ~Character();
 
 	// Get Function
-	std::string GetName();
 	int GetHealth();
 	Direction GetPrevDirection();
 
@@ -41,7 +38,6 @@ public:
 	// SetFunction
 	void SetX(float x);
 	void SetY(float y);
-	void SetName(std::string name);
 	void SetHealth(int health);
 	void SetDirection(Direction dir);
 	void SetCollisionState(bool isCol);

@@ -14,9 +14,21 @@ BackgroundImages::~BackgroundImages()
 {
 }
 
+int BackgroundImages::GetIndexTotal()
+{
+	return index_total;
+}
+
+TownLayered::TownLayered()
+{
+	index_total = 35;
+}
+
 TownLayered::TownLayered(int idx)
 	: BackgroundImages(idx)
 {
+	index_total = 35;
+
 	std::string path = "Resources/Sprite/BG/Town/town_layered_00";
 	std::string index;
 
@@ -129,6 +141,7 @@ TownLayered::TownLayered(int idx)
 		break;
 	}
 
+	SetName(index);
 	SetTexture(path + index);
 	SetSprite();
 }

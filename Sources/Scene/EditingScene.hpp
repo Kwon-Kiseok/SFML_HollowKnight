@@ -6,12 +6,22 @@
 #include "../Utils/button.hpp"
 #include "../Objects/GameObject.hpp"
 
+#define MAX_LAYER 10
+#define MIN_LAYER 0
+
 using namespace sf;
 using namespace std;
 // ¸Ê ¿¡µðÆÃÀ» ÇÒ ¾À
 class EditingScene : public Scene
 {
 private:
+	RectangleShape backboard;
+
+	Font font;
+	Text currentCursorPos;
+	string cursorData;
+
+	string selectName;
 	string inputLayer;
 	string inputIndex;
 
@@ -30,7 +40,21 @@ private:
 	button* buildingButton;		//
 	button* backgroundButton;	// µÞ ¹è°æ
 
-	bool ClikedgroundButton;
+	button* saveButton;
+	button* exitButton;
+
+	vector<button*> buttons;
+
+	vector<button*> ImageIndexList;
+	bool checkImageIdx;
+	Text layerIndicator;
+	button* plusLayerButton;
+	button* minusLayerButton;
+	button* confirmLayerButton;
+
+	vector<Text*> objectStatuses;
+	string stringStatus;
+	bool isTabClicked;
 
 public:
 	EditingScene() noexcept;
@@ -40,6 +64,14 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Render(RenderWindow& window) override;
 	virtual void Release() override;
+
+	void ObjectSeleted(button& button);
+	void OpenImageIndex(button& btn);
+	void SetImageIndex();
+	void SetLayer();
+	void SetObjectsPosition();
 	void MoveView();
+	void CursorPosView();
+	void ViewObjectsInfos();
 };
 

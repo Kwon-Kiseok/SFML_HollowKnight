@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <string>
 
 using namespace sf;
 
@@ -22,6 +23,7 @@ protected:
 	Vector2f position;
 	int layer;
 	TAG tag;
+	std::string name;
 	bool isVisible;
 
 	RectangleShape rectangleShape;
@@ -40,14 +42,17 @@ public:
 	void SetHidden();
 	void SetLayer(int layer);
 	void SetTag(TAG tag);
+	void SetName(std::string name);
 
 	// Get Function
 	Vector2f GetPosition();
+	Vector2f GetOrigin();
 	Texture& GetTexture();
 	Sprite& GetSprite();
 	TAG GetTag();
 	bool GetIsVisible();
 	int GetLayer();
+	std::string& GetName();
 
 	// 
 	bool CompareTag(TAG tag);
