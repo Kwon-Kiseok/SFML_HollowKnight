@@ -6,6 +6,15 @@
 
 #include <iostream>
 
+struct MapData
+{
+	std::string name;
+	int index;
+	int layer;
+	float x;
+	float y;
+};
+
 class Map
 {
 protected:

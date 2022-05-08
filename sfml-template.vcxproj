@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Objects\Stable\Bench.cpp" />
     <ClCompile Include="Sources\Objects\Stable\BackgroundImages.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Portal.cpp" />
     <ClCompile Include="Sources\Maps\Map.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Sources\Utils\Textbox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Objects\Stable\Bench.hpp" />
     <ClInclude Include="Sources\Objects\Stable\BackgroundImages.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Portal.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\Monster.hpp" />

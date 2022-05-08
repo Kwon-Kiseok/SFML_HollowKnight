@@ -7,13 +7,14 @@ Portal::Portal()
 	collidable = true;
 	interactable = true;
 	type = Interaction_Type::PORTAL;
+	SetName("portal");
 	
 	SetTexture("Resources/Sprite/light_effect_v02.png");
 	SetSprite();
 	SetOriginCenter();
 
-	DebugCollision(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-	rectangleShape.setPosition(sprite.getPosition());
+	/*DebugCollision(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
+	rectangleShape.setPosition(sprite.getPosition());*/
 }
 
 Portal::~Portal()
@@ -37,7 +38,7 @@ void Portal::Interaction()
 
 void Portal::Render(RenderWindow& window)
 {
-	window.draw(rectangleShape);
+	//window.draw(rectangleShape);
 	window.draw(sprite);
 }
 

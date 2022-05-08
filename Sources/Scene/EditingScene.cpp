@@ -3,10 +3,15 @@
 #include "../Managers/TextureManager.hpp"
 #include "../Managers/InputManager.hpp"
 #include "../Utils/Utility.hpp"
-#include "../Objects/Stable/Ground.hpp"
+#include "../Animation/rapidcsv.hpp"
+#include "../Objects/Stable/Stable.hpp"
 #include "../Objects/Stable/BackgroundImages.hpp"
+#include "../Objects/Stable/Ground.hpp"
+#include "../Objects/Stable/bench.hpp"
+#include "../Objects/Stable/Portal.hpp"
 
 #include <iostream>
+#include <ostream>
 #include <sstream>
 
 EditingScene::EditingScene() noexcept
@@ -20,7 +25,7 @@ void EditingScene::Init()
 {
 	backboard.setPosition(0.f, 0.f);
 	backboard.setFillColor(Color(128,128,128));
-	backboard.setSize(Vector2f(5000.f, 4000.f));
+	backboard.setSize(Vector2f(3000.f, 1000.f));
 
 	font.loadFromFile("Resources/Fonts/CALIST.TTF");
 	currentCursorPos.setFont(font);
@@ -37,20 +42,32 @@ void EditingScene::Init()
 	manualText.setCharacterSize(20);
 	manualText.setFillColor(Color::Magenta);
 	
+	// 버튼 생성
 	groundButton = new button("ground", Vector2f(ViewManager::GetInstance().GetResolution().x-100.f, 300.f), Vector2f(100.f, 25.f));
 	layeredButton = new button("layered", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 330.f), Vector2f(100.f, 25.f));
 	buildingButton = new button("building", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 360.f), Vector2f(100.f, 25.f));
 	backgroundButton = new button("bg", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 390.f), Vector2f(100.f, 25.f));
+	graveCrossButton = new button("graveCross", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 420.f), Vector2f(100.f, 25.f));
+	extraButton = new button("extra", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 450.f), Vector2f(100.f, 25.f));
+	benchButton = new button("bench", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 480.f), Vector2f(100.f, 25.f));
+	portalButton = new button("portal", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 510.f), Vector2f(100.f, 25.f));
 
-	saveButton = new button("Save", Vector2f(ViewManager::GetInstance().GetResolution().x - 200.f, 950.f), Vector2f(100.f, 30.f));
-	exitButton = new button("Exit", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 950.f), Vector2f(100.f, 30.f));
+	saveButton = new button("Save", Vector2f(ViewManager::GetInstance().GetResolution().x - 300.f, 950.f), Vector2f(90.f, 30.f));
+	loadButton = new button("Load", Vector2f(ViewManager::GetInstance().GetResolution().x - 200.f, 950.f), Vector2f(90.f, 30.f));
+	exitButton = new button("Exit", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 950.f), Vector2f(90.f, 30.f));
 
-	buttons.push_back(groundButton);
-	buttons.push_back(layeredButton);
-	buttons.push_back(buildingButton);
-	buttons.push_back(backgroundButton);
-	buttons.push_back(saveButton);
-	buttons.push_back(exitButton);
+	objectButtons.push_back(groundButton);
+	objectButtons.push_back(layeredButton);
+	objectButtons.push_back(buildingButton);
+	objectButtons.push_back(backgroundButton);
+	objectButtons.push_back(graveCrossButton);
+	objectButtons.push_back(extraButton);
+	objectButtons.push_back(benchButton);
+	objectButtons.push_back(portalButton);
+
+	objectButtons.push_back(saveButton);
+	objectButtons.push_back(loadButton);
+	objectButtons.push_back(exitButton);
 }
 
 void EditingScene::Update(float dt)
@@ -67,11 +84,24 @@ void EditingScene::Update(float dt)
 	ClickObject();
 
 	// 어떤 오브젝트 클래스 버튼이 눌렸는지 검사
-	for (auto button : buttons)
+	for (auto button : objectButtons)
 	{
 		button->update();
+
+		if (saveButton->IsButtonClicked())
+		{
+			Save();
+			saveButton->ResetIsClicked();
+		}
+		else if (loadButton->IsButtonClicked())
+		{
+			Load();
+			loadButton->ResetIsClicked();
+		}
+
 		ObjectSeleted(*button);
 	}
+
 	// 오브젝트가 선택되었다면 
 	SetImageIndex();
 	// 레이어 설정
@@ -110,7 +140,7 @@ void EditingScene::Render(sf::RenderWindow& window)
 	// ui
 	window.setView(ViewManager::GetInstance().GetUiView());
 	ViewManager::GetInstance().draw(window);
-	for (auto button : buttons)
+	for (auto button : objectButtons)
 	{
 		button->draw(window);
 	}
@@ -133,12 +163,12 @@ void EditingScene::Render(sf::RenderWindow& window)
 
 void EditingScene::Release()
 {
-	for (auto button : buttons)
+	for (auto button : objectButtons)
 	{
 		delete button;
 		button = nullptr;
 	}
-	buttons.clear();
+	objectButtons.clear();
 
 	for (auto it = objects.begin(); it != objects.end(); ++it)
 	{
@@ -146,16 +176,19 @@ void EditingScene::Release()
 		(*it) = nullptr;
 		count++;
 	}
-	std::cout << count << std::endl;
 	objects.clear();
 }
 
 void EditingScene::ObjectSeleted(button& button)
 {
-	if (button.IsButtonClicked() && !positionSetting)
+	if (button.GetText() == "Save" || button.GetText() == "Load" || button.GetText() == "Exit")
+	{
+		return;
+	}
+	else if (button.IsButtonClicked() && !positionSetting)
 	{
 		selectName = button.GetText();
-		std::cout << selectName << std::endl;
+		//std::cout << selectName << std::endl;
 		OpenImageIndex(button);
 		button.ResetIsClicked();
 	}
@@ -163,21 +196,65 @@ void EditingScene::ObjectSeleted(button& button)
 
 void EditingScene::OpenImageIndex(button& btn)
 {
-	if (selectName == "layered" && btn.IsButtonClicked())
+	if (!btn.IsButtonClicked())
+		return;
+	else
 	{
-		TownLayered temp;
-		for (int i = 0; i < temp.GetIndexTotal(); ++i)
+		// 이미 열려있었다면 초기화
+		if (!ImageIndexList.empty())
 		{
-			stringstream ss;
-			ss << (i+1);
-			button* objectName = new button(ss.str(), Vector2f(ViewManager::GetInstance().GetResolution().x - 175.f, 10.f + (i * 30.f)), Vector2f(25.f, 25.f));
-			ImageIndexList.push_back(objectName);
+			for (auto object : ImageIndexList)
+			{
+				delete object;
+				object = nullptr;
+			}
+			ImageIndexList.clear();
 		}
-	}
-	if (selectName == "ground" && btn.IsButtonClicked())
-	{
-		Ground temp;
-		for (int i = 0; i < temp.GetIndexTotal(); ++i)
+
+		Stable* temp = nullptr;
+		if (selectName == "ground")
+		{
+			temp = new Ground();
+		}
+		else if (selectName == "layered")
+		{
+			temp = new TownLayered();
+		}
+		else if (selectName == "building")
+		{
+			temp = new TownBuilding();
+		}
+		else if (selectName == "bg")
+		{
+			temp = new TownBG();
+		}
+		else if (selectName == "graveCross")
+		{
+			temp = new TownGraveCross();
+		}
+		else if (selectName == "extra")
+		{
+			temp = new TownExtra();
+		}
+		else if (selectName == "bench")
+		{
+			temp = new Bench();
+			stringstream ss;
+			ss << 1;
+			button* objectName = new button(ss.str(), Vector2f(ViewManager::GetInstance().GetResolution().x - 175.f, 10.f), Vector2f(50.f, 25.f));
+			ImageIndexList.push_back(objectName);
+			return;
+		}
+		else if (selectName == "portal")
+		{
+			temp = new Portal();
+			stringstream ss;
+			ss << 1;
+			button* objectName = new button(ss.str(), Vector2f(ViewManager::GetInstance().GetResolution().x - 175.f, 10.f), Vector2f(50.f, 25.f));
+			ImageIndexList.push_back(objectName);
+			return;
+		}
+		for (int i = 0; i < temp->GetIndexTotal(); ++i)
 		{
 			stringstream ss;
 			ss << (i + 1);
@@ -250,6 +327,30 @@ void EditingScene::SetLayer()
 		else if (selectName == "layered")
 		{
 			this->object = new TownLayered(inputImageIdx);
+		}
+		else if (selectName == "portal")
+		{
+			this->object = new Portal();
+		}
+		else if (selectName == "building")
+		{
+			this->object = new TownBuilding(inputImageIdx);
+		}
+		else if (selectName == "bg")
+		{
+			this->object = new TownBG(inputImageIdx);
+		}
+		else if (selectName == "graveCross")
+		{
+			this->object = new TownGraveCross(inputImageIdx);
+		}
+		else if (selectName == "extra")
+		{
+			this->object = new TownExtra(inputImageIdx);
+		}
+		else if (selectName == "bench")
+		{
+			this->object = new Bench();
 		}
 
 		this->object->SetLayer(layer);
@@ -348,18 +449,18 @@ void EditingScene::CursorPosView()
 {
 	stringstream ss;
 	ss << InputManager::GetInstance().GetMouseWorldPosition().x;
-	cursorData = "X: " + ss.str();
+	editData = "X: " + ss.str();
 	ss.str("");
 	ss << InputManager::GetInstance().GetMouseWorldPosition().y;
-	cursorData += " Y: " + ss.str();
+	editData += " Y: " + ss.str();
 	ss.str("");
 	ss << InputManager::GetInstance().GetCurrentZoom();
-	cursorData += "\nZoom: " + ss.str();
+	editData += "\nZoom: " + ss.str();
 	ss.str("");
 	ss << objects.size();
-	cursorData += "\nObjects Size: " + ss.str();
+	editData += "\nObjects Size: " + ss.str();
 
-	currentCursorPos.setString(cursorData);
+	currentCursorPos.setString(editData);
 }
 
 void EditingScene::ViewObjectsInfos()
@@ -439,4 +540,91 @@ void EditingScene::SetManual()
 	{
 		manualText.setString(L"LEFT - select");
 	}
+}
+
+void EditingScene::Save()
+{
+	ofstream dataFile;
+	dataFile.open("data_tables/maps/Town_map_data.csv");
+	if (dataFile.fail())
+	{
+		cout << "File load Failed" << endl;
+		return;
+	}
+	dataFile << "NAME,INDEX,LAYER,X,Y\n";
+	for (int i = 0; i < objects.size(); ++i)
+	{
+		dataFile << objects[i]->GetName() << "," << objects[i]->GetImageIdx() 
+			<< "," << objects[i]->GetLayer() << "," << objects[i]->GetPosition().x 
+			<< "," << objects[i]->GetPosition().y << endl;
+	}
+	cout << "Save Complete File" << endl;
+	dataFile.close();
+}
+
+void EditingScene::Load()
+{
+	rapidcsv::Document dataFile("data_tables/maps/Town_map_data.csv");
+
+	vector<string> colName = dataFile.GetColumn<string>("NAME");
+	vector<int> colIndex = dataFile.GetColumn<int>("INDEX");
+	vector<int> colLayer = dataFile.GetColumn<int>("LAYER");
+	vector<float> colX = dataFile.GetColumn<float>("X");
+	vector<float> colY = dataFile.GetColumn<float>("Y");
+
+	int totalObjects = colName.size();
+	for (int i = 0; i < totalObjects; ++i)
+	{
+		MapData data;
+		data.name = colName[i];
+		data.index = colIndex[i];
+		data.layer = colLayer[i];
+		data.x = colX[i];
+		data.y = colY[i];
+
+		AddObject(data);
+		objects.push_back(object);
+	}
+
+	cout << "Load Complete" << endl;
+}
+
+void EditingScene::AddObject(MapData& data)
+{
+	if (data.name == "ground")
+	{
+		this->object = new Ground(data.index);
+	}
+	else if (data.name == "layered")
+	{
+		this->object = new TownLayered(data.index);
+	}
+	else if (data.name == "portal")
+	{
+		this->object = new Portal();
+	}
+	else if (data.name == "building")
+	{
+		this->object = new TownBuilding(data.index);
+	}
+	else if (data.name == "bg")
+	{
+		this->object = new TownBG(data.index);
+	}
+	else if (data.name == "graveCross")
+	{
+		this->object = new TownGraveCross(data.index);
+	}
+	else if (data.name == "extra")
+	{
+		this->object = new TownExtra(data.index);
+	}
+	else if (data.name == "bench")
+	{
+		this->object = new Bench();
+	}
+
+	this->object->SetLayer(data.layer);
+	this->object->SetPosition(Vector2f(data.x, data.y));
+	this->object->SetOriginCenter();
 }

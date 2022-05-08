@@ -62,6 +62,11 @@ int GameObject::GetLayer()
 	return layer;
 }
 
+int GameObject::GetImageIdx()
+{
+	return imageIdx;
+}
+
 std::string& GameObject::GetName()
 {
 	return name;

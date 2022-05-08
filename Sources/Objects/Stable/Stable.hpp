@@ -1,7 +1,7 @@
 #pragma once
 #include "../GameObject.hpp"
 
-enum class Interaction_Type { NONE, DAMAGED, BROKEN, PORTAL };
+enum class Interaction_Type { NONE, DAMAGED, BROKEN, PORTAL, CHECKPOINT, BENCH, };
 
 class Stable : public GameObject
 {
@@ -9,6 +9,7 @@ protected:
 	bool collidable;
 	bool interactable;
 	Interaction_Type type;
+	int index_total;
 
 public:
 	Stable();
@@ -19,6 +20,7 @@ public:
 
 	virtual Interaction_Type GetInteractionType();
 	virtual void Interaction();
+	virtual int GetIndexTotal();
 
 	virtual void Init() override;
 	virtual void Render(RenderWindow& window) override;

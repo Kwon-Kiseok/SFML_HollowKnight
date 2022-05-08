@@ -10,6 +10,7 @@ enum class TAG
 	PLAYER,
 	MONSTER,
 	GROUND,
+	BENCH,
 	BACKGROUND,
 	TRAP,
 	BREAKABLE,
@@ -25,6 +26,8 @@ protected:
 	TAG tag;
 	std::string name;
 	bool isVisible;
+
+	int imageIdx;
 
 	RectangleShape rectangleShape;
 	FloatRect boundingBox;
@@ -52,6 +55,7 @@ public:
 	TAG GetTag();
 	bool GetIsVisible();
 	int GetLayer();
+	int GetImageIdx();
 	std::string& GetName();
 
 	// 

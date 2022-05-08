@@ -32,7 +32,7 @@ Ground::Ground(int idx)
 		break;
 	}
 
-	SetName("town ground"+index);
+	SetName("ground");
 	SetTexture(path+index);
 	SetSprite();
 }
@@ -49,10 +49,5 @@ void Ground::SetImageIdx(int idx)
 bool Ground::Collision(GameObject* otherObj)
 {
 	return true;
-}
-
-int Ground::GetIndexTotal()
-{
-	return index_total;
 }
 

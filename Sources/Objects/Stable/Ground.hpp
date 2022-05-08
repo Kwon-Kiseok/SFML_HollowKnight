@@ -3,9 +3,6 @@
 
 class Ground : public Stable
 {
-private:
-	int imageIdx;
-	int index_total;
 public:
 	Ground();
 	Ground(int idx);
@@ -13,6 +10,5 @@ public:
 
 	void SetImageIdx(int idx);
 	virtual bool Collision(GameObject* otherObj) override;
-	int GetIndexTotal();
 };
 
