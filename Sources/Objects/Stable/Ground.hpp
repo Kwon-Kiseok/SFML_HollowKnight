@@ -3,10 +3,8 @@
 
 class Ground : public Stable
 {
-private:
-	int imageIdx;
-
 public:
+	Ground();
 	Ground(int idx);
 	virtual ~Ground();
 

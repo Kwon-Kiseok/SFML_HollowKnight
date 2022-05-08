@@ -2,9 +2,15 @@
 #include "../../Utils/Utility.hpp"
 #include <string>
 
+Ground::Ground()
+{
+	index_total = 3;
+}
+
 Ground::Ground(int idx)
 	: Stable()
 {
+	index_total = 3;
 	SetTag(TAG::GROUND);
 	collidable = true;
 	interactable = false;
@@ -26,6 +32,7 @@ Ground::Ground(int idx)
 		break;
 	}
 
+	SetName("ground");
 	SetTexture(path+index);
 	SetSprite();
 }
