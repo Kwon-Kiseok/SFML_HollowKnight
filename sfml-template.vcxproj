@@ -148,6 +148,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Items\Item.cpp" />
+    <ClCompile Include="Sources\Items\Coin.cpp" />
     <ClCompile Include="Sources\Animation\EffectManager.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Bench.cpp" />
     <ClCompile Include="Sources\Objects\Stable\BackgroundImages.cpp" />
@@ -189,6 +191,8 @@
     <ClCompile Include="Sources\Utils\Textbox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Items\Item.hpp" />
+    <ClInclude Include="Sources\Items\Coin.hpp" />
     <ClInclude Include="Sources\Animation\EffectManager.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Bench.hpp" />
     <ClInclude Include="Sources\Objects\Stable\BackgroundImages.hpp" />

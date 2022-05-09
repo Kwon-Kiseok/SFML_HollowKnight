@@ -4,6 +4,8 @@
 #include "../Managers/InputManager.hpp"
 #include "../Managers/SceneManager.hpp"
 #include "../Managers/SoundManager.hpp"
+#include "../Items/Coin.hpp"
+#include <sstream>
 
 void UIManager::Init_TitleScene()
 {
@@ -107,14 +109,24 @@ void UIManager::Init_PlayScene()
 {
 	textureLifes = new Texture[5];
 	spriteLifes = new Sprite[5];
-	
+
 	for (int i = 0; i < 5; i++)
 	{
 		textureLifes[i] = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/select_game_HUD_0001_health.png");
 		spriteLifes[i].setTexture(textureLifes[i]);
 		spriteLifes[i].setPosition(250 + 50 * i, 80);
 	}
-	
+
+	textureNoLife = new Texture[5];
+	spriteNoLife = new Sprite[5];
+
+	for (int i = 0; i < 5; i++)
+	{
+		textureNoLife[i] = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/select_game_HUD_0001_health_steel.png");
+		spriteNoLife[i].setTexture(textureNoLife[i]);
+		spriteNoLife[i].setPosition(450 - 50 * i, 80);
+	}
+
 	textureCharacterUI = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/select_game_HUD_0002_health_frame2.png");
 	spriteCharacterUI.setTexture(textureCharacterUI);
 	spriteCharacterUI.setPosition(30, 30);
@@ -124,18 +136,33 @@ void UIManager::Init_PlayScene()
 	spriteCoin.setPosition(210, 150);
 
 	fontCALIST.loadFromFile("Resources/Fonts/CALIST.ttf");
-	textCoin.setString("200");
-	textCoin.setPosition(270, 160);
-	textCoin.setCharacterSize(35);
+	stringstream ssCoin;
+	ssCoin << coin.GetCoin();
+	textCoin.setString(ssCoin.str());
+	textCoin.setPosition(275, 153);
+	textCoin.setCharacterSize(40);
 	textCoin.setFillColor(Color::White);
 	textCoin.setFont(fontCALIST);
 
 	inventory.Init();
+	Init_Map();
+	
 }
 
 void UIManager::Update_PlayScene(float dt)
 {
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life����
+	{
+		currentHP--;
+	}
+
+	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P))	//P: Life��
+	{
+		currentHP++;
+	}
+
 	inventory.Update(dt);
+	Update_Map(dt);
 }
 
 void UIManager::Render_PlayScene(sf::RenderWindow& window)
@@ -148,15 +175,65 @@ void UIManager::Render_PlayScene(sf::RenderWindow& window)
 
 	for (int i = 0; i < 5; i++)
 	{
+		window.draw(spriteNoLife[i]);
+	}
+
+	for (int i = 0; i < currentHP; i++)
+	{
 		window.draw(spriteLifes[i]);
 	}
 
 	if (inventory.GetVisible())
 		inventory.Render(window);
+
+	if (GetMapVisible() && !inventory.GetVisible())
+		Render_Map(window);
 }
 
 void UIManager::Release_PlayScene()
 {
+}
+
+// //////////////////////////////////////////////////////////////////////
+
+void UIManager::Init_Map()
+{
+	textureTown = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/map/SpriteTown.png");
+	spriteTown.setTexture(textureTown);
+	spriteTown.setPosition(660, 440);
+
+	textureBack = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/map/back.png");
+	spriteBack.setTexture(textureBack);
+	spriteBack.setPosition(0, 0);
+}
+
+void UIManager::Update_Map(float dt)
+{
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::Tab))
+	{
+		mapVisible = !mapVisible;
+	}
+}
+
+void UIManager::Render_Map(sf::RenderWindow& window)
+{
+	window.draw(spriteBack);
+	window.draw(spriteTown);
+}
+
+void UIManager::SetMapVisible(bool open)
+{
+	mapVisible = open;
+}
+
+bool UIManager::GetMapVisible()
+{
+	return mapVisible;
+}
+
+bool UIManager::GetMapIsOpen()
+{
+	return GetMapVisible();
 }
 
 bool UIManager::GetInventoryIsOpen()

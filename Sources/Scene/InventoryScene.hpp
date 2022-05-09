@@ -1,11 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../Items/Coin.hpp"
 
 using namespace sf;
 
 class InventoryScene 
 {
 private:
+	Coin coin;
+
 	Texture textureBackUI;
 	Sprite spriteBackUI;
 
@@ -22,8 +25,25 @@ private:
 	Texture textureFrameRB;
 	Sprite spriteFrameRB;
 
+	Texture textureHealth;
+	Sprite spriteHealth;
+
+	Texture textureSoul;
+	Sprite spriteSoul;
+
+	Texture textureSpellCore;
+	Sprite spriteSpellCore;
+
+	Texture textureNail;
+	Sprite spriteNail;
+
+	Texture textureInvenCoin;
+	Sprite spriteInvenCoin;
+
 	Font fontCALIST;
 	Text textInven;
+
+	Text textCoin;
 
 	bool visible = false;
 

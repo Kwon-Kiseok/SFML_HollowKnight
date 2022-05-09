@@ -36,6 +36,8 @@
     <ClCompile Include="Sources\Maps\Map.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Stable.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Portal.cpp" />
+    <ClCompile Include="Sources\Items\Coin.cpp" />
+    <ClCompile Include="Sources\Items\Item.cpp" />
     <ClCompile Include="Sources\Animation\EffectManager.cpp" />
     <ClCompile Include="Sources\Objects\Stable\BackgroundImages.cpp" />
     <ClCompile Include="Sources\Utils\Textbox.cpp" />
@@ -52,6 +54,8 @@
     <ClInclude Include="Sources\Objects\Moveable\Monster\Monster.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Stable.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Portal.hpp" />
+    <ClInclude Include="Sources\Items\Coin.hpp" />
+    <ClInclude Include="Sources\Items\Item.hpp" />
     <ClInclude Include="Sources\Animation\EffectManager.hpp" />
     <ClInclude Include="Sources\Objects\Stable\BackgroundImages.hpp" />
     <ClInclude Include="Sources\Utils\Textbox.hpp" />
