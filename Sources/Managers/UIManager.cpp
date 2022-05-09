@@ -140,7 +140,8 @@ void UIManager::Update_PlayScene(float dt)
 
 void UIManager::Render_PlayScene(sf::RenderWindow& window)
 {
-
+	window.setView(ViewManager::GetInstance().GetUiView());
+	ViewManager::GetInstance().draw(window);
 	window.draw(spriteCharacterUI);
 	window.draw(spriteCoin);
 	window.draw(textCoin);
