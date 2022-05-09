@@ -1,6 +1,9 @@
 #include "InputManager.hpp"
+#include "ViewManager.hpp"
+#include "SceneManager.hpp"
 #include <algorithm>
 #include <cmath>
+
 
 map<Axis, AxisInfo> InputManager::mapAxis;
 
@@ -26,27 +29,25 @@ void InputManager::Init() noexcept
 	info.limit = 0.05f;
 	info.value = 0.f;
 	info.positiveKeys.clear();
-	info.positiveKeys.push_back(Keyboard::D);
 	info.positiveKeys.push_back(Keyboard::Right);
 
 	info.negativeKeys.clear();
-	info.negativeKeys.push_back(Keyboard::A);
 	info.negativeKeys.push_back(Keyboard::Left);
 	mapAxis[info.axis] = info;
 
 	// Vertical
-	info.axis = Axis::Vertical;
-	info.sensi = 1.f;
-	info.limit = 0.05f;
-	info.value = 0.f;
-	info.positiveKeys.clear();
-	info.positiveKeys.push_back(Keyboard::S);
-	info.positiveKeys.push_back(Keyboard::Down);
+	//info.axis = Axis::Vertical;
+	//info.sensi = 1.f;
+	//info.limit = 0.05f;
+	//info.value = 0.f;
+	//info.positiveKeys.clear();
+	//info.positiveKeys.push_back(Keyboard::S);
+	//info.positiveKeys.push_back(Keyboard::Down);
 
-	info.negativeKeys.clear();
-	info.negativeKeys.push_back(Keyboard::W);
-	info.negativeKeys.push_back(Keyboard::Up);
-	mapAxis[info.axis] = info;
+	//info.negativeKeys.clear();
+	//info.negativeKeys.push_back(Keyboard::W);
+	//info.negativeKeys.push_back(Keyboard::Up);
+	//mapAxis[info.axis] = info;
 }
 
 void InputManager::ClearInput() noexcept
@@ -83,6 +84,25 @@ void InputManager::ProcessInput(const Event& event)
 	{
 		buttons.remove(event.mouseButton.button);
 		upButtons.push_back(event.mouseButton.button);
+	}
+		break;
+	case Event::MouseWheelScrolled:
+	{
+		// 에디터 씬에서만
+		if (SceneManager::GetInstance().GetScenes().find(L"Editor")->second
+			== SceneManager::GetInstance().GetCurrent())
+		{
+			if (event.mouseWheelScroll.delta >= 1)
+			{
+				ViewManager::GetInstance().GetMainView().zoom(1.f / zoomAmount);
+				currentZoom /= zoomAmount;
+			}
+			if (event.mouseWheelScroll.delta <= -1)
+			{
+				ViewManager::GetInstance().GetMainView().zoom(1.02f);
+				currentZoom *= 1.02f;
+			}
+		}
 	}
 		break;
 	default:
@@ -129,6 +149,11 @@ float InputManager::GetAxis(Axis axis) noexcept
 		return mapAxis[axis].value;
 	}
 	return 0.0f;
+}
+
+float InputManager::GetCurrentZoom() noexcept
+{
+	return currentZoom;
 }
 
 int InputManager::GetAxisRaw(const list<Keyboard::Key>& positivie, const list<Keyboard::Key>& negative) noexcept

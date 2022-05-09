@@ -5,6 +5,7 @@
 #include "../Managers/TextureManager.hpp"
 #include "../Managers/ViewManager.hpp"
 
+
 Game::~Game() noexcept
 {
     delete window;

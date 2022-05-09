@@ -1,17 +1,11 @@
 #pragma once
 #include "Scene.hpp"
-#include "../Player/Player.hpp"
-#include "../DemoTile.hpp"
 
 using namespace sf;
 class PlayScene	: public Scene
 {
-private:
-	Player* player;
-	DemoTile* tile;
-
 public:
-	PlayScene() {}
+	PlayScene();
 	virtual ~PlayScene() noexcept = default;
 
 	virtual void Init() override;

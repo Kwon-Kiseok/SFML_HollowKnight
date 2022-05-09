@@ -150,6 +150,9 @@
   <ItemGroup>
     <ClCompile Include="Sources\Items\Item.cpp" />
     <ClCompile Include="Sources\Items\Coin.cpp" />
+    <ClCompile Include="Sources\Animation\EffectManager.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Bench.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\BackgroundImages.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Portal.cpp" />
     <ClCompile Include="Sources\Maps\Map.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Monster\Monster.cpp" />
@@ -185,10 +188,14 @@
     <ClCompile Include="Sources\Maps\Town_Map.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Monster\tempMob.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Stable.cpp" />
+    <ClCompile Include="Sources\Utils\Textbox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Items\Item.hpp" />
     <ClInclude Include="Sources\Items\Coin.hpp" />
+    <ClInclude Include="Sources\Animation\EffectManager.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Bench.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\BackgroundImages.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Portal.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\Monster.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Character.hpp" />
@@ -228,6 +235,7 @@
     <ClInclude Include="Sources\Maps\Town_Map.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\tempMob.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Stable.hpp" />
+    <ClInclude Include="Sources\Utils\Textbox.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

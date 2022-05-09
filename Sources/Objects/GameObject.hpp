@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <string>
 
 using namespace sf;
 
@@ -9,6 +10,7 @@ enum class TAG
 	PLAYER,
 	MONSTER,
 	GROUND,
+	BENCH,
 	BACKGROUND,
 	TRAP,
 	BREAKABLE,
@@ -22,7 +24,10 @@ protected:
 	Vector2f position;
 	int layer;
 	TAG tag;
+	std::string name;
 	bool isVisible;
+
+	int imageIdx;
 
 	RectangleShape rectangleShape;
 	FloatRect boundingBox;
@@ -40,14 +45,18 @@ public:
 	void SetHidden();
 	void SetLayer(int layer);
 	void SetTag(TAG tag);
+	void SetName(std::string name);
 
 	// Get Function
 	Vector2f GetPosition();
+	Vector2f GetOrigin();
 	Texture& GetTexture();
 	Sprite& GetSprite();
 	TAG GetTag();
 	bool GetIsVisible();
 	int GetLayer();
+	int GetImageIdx();
+	std::string& GetName();
 
 	// 
 	bool CompareTag(TAG tag);

@@ -12,17 +12,24 @@ GameObject::~GameObject()
 void GameObject::SetPosition(Vector2f pos)
 {
 	position = pos;
+	sprite.setPosition(position);
 }
 
 void GameObject::SetPosition(float x, float y)
 {
 	position.x = x;
 	position.y = y;
+	sprite.setPosition(Vector2f(x, y));
 }
 
 Vector2f GameObject::GetPosition()
 {
 	return position;
+}
+
+Vector2f GameObject::GetOrigin()
+{
+	return sprite.getOrigin();
 }
 
 Texture& GameObject::GetTexture()
@@ -55,9 +62,24 @@ int GameObject::GetLayer()
 	return layer;
 }
 
+int GameObject::GetImageIdx()
+{
+	return imageIdx;
+}
+
+std::string& GameObject::GetName()
+{
+	return name;
+}
+
 void GameObject::SetTag(TAG tag)
 {
 	this->tag = tag;
+}
+
+void GameObject::SetName(std::string name)
+{
+	this->name = name;
 }
 
 TAG GameObject::GetTag()

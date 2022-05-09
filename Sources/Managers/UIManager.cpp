@@ -151,12 +151,12 @@ void UIManager::Init_PlayScene()
 
 void UIManager::Update_PlayScene(float dt)
 {
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life°¨¼Ò
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Lifeï¿½ï¿½ï¿½ï¿½
 	{
 		currentHP--;
 	}
 
-	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P))	//P: LifeÁõ°¡
+	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P))	//P: Lifeï¿½ï¿½
 	{
 		currentHP++;
 	}
@@ -167,6 +167,8 @@ void UIManager::Update_PlayScene(float dt)
 
 void UIManager::Render_PlayScene(sf::RenderWindow& window)
 {
+	window.setView(ViewManager::GetInstance().GetUiView());
+	ViewManager::GetInstance().draw(window);
 	window.draw(spriteCharacterUI);
 	window.draw(spriteCoin);
 	window.draw(textCoin);
