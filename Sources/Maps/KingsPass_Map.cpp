@@ -6,6 +6,7 @@
 #include "../Managers/PlayerDataManager.hpp"
 #include "../Objects/Stable/Ground.hpp"
 #include "../Objects/Stable/Portal.hpp"
+#include "../Objects/Moveable/Monster/tempMob.hpp"
 
 #include <iostream>
 
@@ -35,12 +36,10 @@ KingsPass_Map::KingsPass_Map(Player* player_)
 	portal->SetNextMap(MAP_TYPE::Town);
 
 	this->player->SetPosition(Vector2f(300.f / 2, 500.f));
-	//player->Init();
-	gameObjects.push_back(player);
 
 	for (int i = 0; i < 30; ++i)
 	{
 		stableObjects.push_back(grounds[i]);
 	}
-	stableObjects.push_back(portal);
+	portals.push_back(portal);
 }

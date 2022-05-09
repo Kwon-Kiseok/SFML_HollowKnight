@@ -75,7 +75,7 @@ void UIManager::Update_TitleScene(float dt)
 	{
 		if (Cursor_selectY == 600.f)
 		{
-			SceneManager::GetInstance().Load(L"PLAY");
+			SceneManager::GetInstance().Load(L"Play");
 		}
 		else if (Cursor_selectY == 750.f)
 		{
@@ -83,13 +83,36 @@ void UIManager::Update_TitleScene(float dt)
 		}
 		else if (Cursor_selectY == 900.f)
 		{
-			SceneManager::GetInstance().Load(L"Exit");
+			
 		}
 	}
 
 	if (textPlay.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
 	{
 		Cursor_selectY = 600.f;
+
+		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
+		{
+			SceneManager::GetInstance().Load(L"Play");
+		}
+	}
+	if (textEditor.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
+	{
+		Cursor_selectY = 750.f;
+
+		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
+		{
+			SceneManager::GetInstance().Load(L"Editor");
+		}
+	}
+	if (textExit.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
+	{
+		Cursor_selectY = 900.f;
+
+		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
+		{
+			
+		}
 	}
 }
 
@@ -154,11 +177,16 @@ void UIManager::Update_PlayScene(float dt)
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life����
 	{
 		currentHP--;
+		if (currentHP < 0)
+			currentHP = 0;
 	}
 
-	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P))	//P: Life��
+	else if (InputManager::GetInstance().GetKeyDown(Keyboard::K))	//P: Life��
 	{
 		currentHP++;
+		if (currentHP > 5)
+			currentHP = 5;
+
 	}
 
 	inventory.Update(dt);

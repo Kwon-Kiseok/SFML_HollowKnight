@@ -55,6 +55,7 @@ private:
 
 	bool mapVisible = false;
 	InventoryScene inventory;
+
 public:
 	void Init();
 	void Update(float dt);

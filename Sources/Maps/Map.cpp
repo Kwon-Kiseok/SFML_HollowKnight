@@ -53,6 +53,11 @@ void Map::Render(sf::RenderWindow& window)
 		(*it)->Render(window);
 	}
 
+	for (auto it = portals.begin(); it != portals.end(); ++it)
+	{
+		(*it)->Render(window);
+	}
+
 }
 
 void Map::Release()
@@ -63,6 +68,13 @@ void Map::Release()
 		*it = nullptr;
 	}
 	stableObjects.clear();
+
+	for (auto it = portals.begin(); it != portals.end(); ++it)
+	{
+		delete* it;
+		*it = nullptr;
+	}
+	portals.clear();
 
 }
 
@@ -124,6 +136,22 @@ void Map::CheckCollisions(float dt)
 		{
 			player->Collision(*it);
 
+			// ¶¥°ú ºÎµúÇûÀ» ¶§
+			if ((*it)->CompareTag(TAG::GROUND))
+			{
+				player->OnGround(dt);
+			}
+		}
+	}
+
+	for (std::vector<Portal*>::iterator it = portals.begin(); it != portals.end(); ++it)
+	{
+		if ((*it) == nullptr) continue;
+
+		if (player->CheckCollision((*it)))
+		{
+			player->Collision(*it);
+
 			// ÇÃ·¹ÀÌ¾î°¡ Æ÷Å»°ú °ãÃÆÀ» ¶§
 			if ((*it)->GetInteractionType() == Interaction_Type::PORTAL)
 			{
@@ -131,19 +159,7 @@ void Map::CheckCollisions(float dt)
 				(*it)->Interaction();
 				return;
 			}
-
-			// ¶¥°ú ºÎµúÇûÀ» ¶§
-			if ((*it)->CompareTag(TAG::GROUND))
-			{
-				player->OnGround(dt);
-				std::cout << player->GetName() << " Collision Stable" << std::endl;
-			}
-			else
-			{
-				//player->SetVal(dt);
-			}
 		}
-
 	}
 }
 

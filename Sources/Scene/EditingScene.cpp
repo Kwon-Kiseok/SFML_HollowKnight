@@ -2,6 +2,7 @@
 #include "../Managers/ViewManager.hpp"
 #include "../Managers/TextureManager.hpp"
 #include "../Managers/InputManager.hpp"
+#include "../Managers/SceneManager.hpp"
 #include "../Utils/Utility.hpp"
 #include "../Animation/rapidcsv.hpp"
 #include "../Objects/Stable/Stable.hpp"
@@ -97,6 +98,11 @@ void EditingScene::Update(float dt)
 		{
 			Load();
 			loadButton->ResetIsClicked();
+		}
+		else if (exitButton->IsButtonClicked())
+		{
+			SceneManager::GetInstance().Load(L"Title");
+			return;
 		}
 
 		ObjectSeleted(*button);

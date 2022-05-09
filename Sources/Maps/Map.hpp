@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Player/Player.hpp"
 #include "../Objects/Stable/Stable.hpp"
+#include "../Objects/Stable/Portal.hpp"
 #include <vector>
 
 #include <iostream>
@@ -20,8 +21,8 @@ class Map
 protected:
 	std::vector<GameObject*> gameObjects;
 	std::vector<Character*> characters;
-
 	std::vector<Stable*> stableObjects;
+	std::vector<Portal*> portals;
 
 	Player* player;
 public:

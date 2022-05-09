@@ -1,7 +1,6 @@
 #pragma once
 #include "Map.hpp"
 
-
 using namespace sf;
 
 class Ground;

@@ -16,7 +16,7 @@ Town_Map::Town_Map(Player* player)
 	: Map(player)
 {
 	LoadMap();
-	player->SetPosition(Vector2f(100.f, 700.f));
+	player->SetPosition(Vector2f(550.f, 845.f));
 }
 
 void Town_Map::LoadMap()
@@ -39,8 +39,23 @@ void Town_Map::LoadMap()
 		data.x = colX[i];
 		data.y = colY[i];
 
-		AddObject(data);
-		stableObjects.push_back(object);
+		if (data.name != "portal")
+		{
+			AddObject(data);
+			if (object != nullptr)
+				stableObjects.push_back(object);
+		}
+		else if (data.name == "portal")
+		{
+			// Æ÷Å»Àº Æ÷Å»³¢¸®
+			//this->object = new Portal();
+			Portal* portal = new Portal();
+			portal->SetCurrMap(MAP_TYPE::Town);
+			// temp
+			portal->SetNextMap(MAP_TYPE::KingsPass);
+			portal->SetPosition(data.x, data.y);
+			portals.push_back(portal);
+		}
 	}
 
 	cout << "Load Complete" << endl;
@@ -55,10 +70,6 @@ void Town_Map::AddObject(MapData& data)
 	else if (data.name == "layered")
 	{
 		this->object = new TownLayered(data.index);
-	}
-	else if (data.name == "portal")
-	{
-		this->object = new Portal();
 	}
 	else if (data.name == "building")
 	{
@@ -78,6 +89,7 @@ void Town_Map::AddObject(MapData& data)
 	}
 	else if (data.name == "bench")
 	{
+		// º¥Ä¡?
 		this->object = new Bench();
 	}
 
