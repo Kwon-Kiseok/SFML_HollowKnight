@@ -5,31 +5,32 @@
 #include "../Managers/SceneManager.hpp"
 #include "../Managers/SoundManager.hpp"
 #include "../Managers/UIManager.hpp"
+#include "../Managers/MapManager.hpp"
+
+PlayScene::PlayScene()
+{
+}
 
 void PlayScene::Init()
 {
-	player = new Player();
-	player->Init();
-	tile = new DemoTile(740, 900);
+	MapManager::GetInstance().Init();
+	MapManager::GetInstance().LoadMap(MAP_TYPE::Town);
 	UIManager::GetInstance().Init_PlayScene();
 }
 
 void PlayScene::Update(float dt)
 {
-	if(!UIManager::GetInstance().GetInventoryIsOpen())
-		player->Update(dt);
+	MapManager::GetInstance().Update(dt);
 	UIManager::GetInstance().Update_PlayScene(dt);
 }
 
 void PlayScene::Render(sf::RenderWindow& window)
 {
-	player->Render(window);
-	window.draw(tile->GetShape());
+	MapManager::GetInstance().Render(window);
 	UIManager::GetInstance().Render_PlayScene(window);
 }
 
 void PlayScene::Release()
 {
-	delete player;
-	delete tile;
+	MapManager::GetInstance().Release();
 }

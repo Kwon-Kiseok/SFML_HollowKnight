@@ -24,7 +24,7 @@ EditingScene::EditingScene() noexcept
 void EditingScene::Init()
 {
 	backboard.setPosition(0.f, 0.f);
-	backboard.setFillColor(Color(128,128,128));
+	backboard.setFillColor(Color(51,51,51));
 	backboard.setSize(Vector2f(3000.f, 1000.f));
 
 	font.loadFromFile("Resources/Fonts/CALIST.TTF");

@@ -6,7 +6,7 @@
 
 void Map::Init()
 {
-	player->Init();
+	characters.push_back(player);
 }
 
 void Map::Update(float dt)
@@ -32,7 +32,7 @@ void Map::Update(float dt)
 void Map::Render(sf::RenderWindow& window)
 {
 
-	for (int i = 3; i >= 0; --i)
+	for (int i = 10; i >= 0; --i)
 	{
 		for (auto it = stableObjects.begin(); it != stableObjects.end(); ++it)
 		{
@@ -61,7 +61,6 @@ void Map::Release()
 	{
 		delete *it;
 		*it = nullptr;
-		//(*it)->Release();
 	}
 	stableObjects.clear();
 
