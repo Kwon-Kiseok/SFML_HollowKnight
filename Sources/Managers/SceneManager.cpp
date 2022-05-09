@@ -3,6 +3,7 @@
 #include "../Scene/ManagerTestScene.hpp"
 #include "../Scene/PlayScene.hpp"
 #include "../Scene/EditingScene.hpp"
+#include "../Scene/MapperScene.hpp"
 #include "../Scene/MapTestPlayScene.hpp"
 
 
@@ -26,8 +27,9 @@ void SceneManager::Init()
 	Scenes[L"Editor"] = new EditingScene();
 
 	Scenes[L"MapTest"] = new MapTestPlayScene();
+	Scenes[L"Mapper"] = new MapperScene();
 
-	currentScene = Scenes[L"Play"];
+	currentScene = Scenes[L"Mapper"];
 
 	currentScene->Init();
 }

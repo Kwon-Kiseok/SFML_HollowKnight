@@ -11,6 +11,7 @@
 #include "../Objects/Stable/Portal.hpp"
 #include "../Objects/Stable/Stable.hpp"
 #include <iostream>
+#include "../Managers/SoundManager.hpp"
 
 Town_Map::Town_Map(Player* player)
 	: Map(player)
@@ -42,7 +43,8 @@ void Town_Map::LoadMap()
 		AddObject(data);
 		stableObjects.push_back(object);
 	}
-
+//
+	SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/S19 Crossroads Bass.wav");
 	cout << "Load Complete" << endl;
 }
 

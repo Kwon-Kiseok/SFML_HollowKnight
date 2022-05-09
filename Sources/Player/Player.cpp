@@ -2,6 +2,7 @@
 #include "../Animation/rapidcsv.hpp"
 #include "../Managers/InputManager.hpp"
 #include "../Managers/PlayerDataManager.hpp"
+#include "../Managers/SoundManager.hpp"
 
 Player::Player()
 	: isWay(true), isDash(false), isAttack(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
@@ -217,6 +218,8 @@ void Player::Update(float dt)
 			animation.Play("StartMove");
 			animation.PlayQueue("Move");
 			string = "Move";
+//
+			SoundManager::GetInstance().PlaySound(L"walk");
 		}
 		if (move != 0 && h == 0)
 		{
@@ -238,9 +241,13 @@ void Player::Update(float dt)
 		}
 		if (InputManager::GetInstance().GetKey(Keyboard::Z) && canJump)
 		{
+//
+			SoundManager::GetInstance().PlaySound(L"jump");
 			gravity = -700.f;
 		}
 		delta.y = gravity * dt;
+
+
 	}
 	/**********************************
 	* 대쉬
@@ -248,6 +255,9 @@ void Player::Update(float dt)
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash)
 		{
+//
+			SoundManager::GetInstance().PlaySound(L"dash");
+
 			animation.Play("Dash");
 			isDash = true;
 			canJump = false;
@@ -274,6 +284,8 @@ void Player::Update(float dt)
 				gravity = 0.f;
 			}
 		}
+	
+
 	}
 	/**********************************
 	* 공격
@@ -285,6 +297,8 @@ void Player::Update(float dt)
 			animation.PlayQueue(string);	// 이전 이미지로
 			isAttack = true;
 			effect.SetDraw("Slash");
+//
+			SoundManager::GetInstance().PlaySound(L"sword");
 		}
 		attackDelay -= dt;
 		if (attackDelay < 0.f)

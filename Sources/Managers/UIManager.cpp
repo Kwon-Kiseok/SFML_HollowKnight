@@ -56,6 +56,8 @@ void UIManager::Update_TitleScene(float dt)
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
 	{
+		SoundManager::GetInstance().PlaySound(L"changeMenu");
+
 		Cursor_selectY -= 150;
 		if (Cursor_selectY < 600.f)
 		{
@@ -65,6 +67,8 @@ void UIManager::Update_TitleScene(float dt)
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Down))
 	{
+		SoundManager::GetInstance().PlaySound(L"changeMenu");
+
 		Cursor_selectY += 150;
 		if (Cursor_selectY > 900.f)
 		{
@@ -85,6 +89,7 @@ void UIManager::Update_TitleScene(float dt)
 		{
 			SceneManager::GetInstance().Load(L"Exit");
 		}
+		SoundManager::GetInstance().PlaySound(L"select");
 	}
 
 	if (textPlay.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))

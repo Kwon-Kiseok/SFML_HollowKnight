@@ -7,7 +7,14 @@ SoundManager::~SoundManager() noexcept
 void SoundManager::Init()
 {
 	// AddSound로 필요한 사운드들 등록
+	AddSound("Resources/AudioClip/ui_button_confirm.wav", L"select");
+	AddSound("Resources/AudioClip/ui_change_selection.wav", L"changeMenu");
+// ////////////////////////////////////////////////////////////////////////
 
+	AddSound("Resources/AudioClip/Hero/hero_run_footsteps_stone.wav", L"walk");
+	AddSound("Resources/AudioClip/Hero/hero_jump.wav", L"jump");
+	AddSound("Resources/AudioClip/Hero/hero_dash.wav", L"dash");
+	AddSound("Resources/AudioClip/sword_3.wav", L"sword");
 }
 
 void SoundManager::AddSound(std::string path, std::wstring id)
