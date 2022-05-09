@@ -48,9 +48,12 @@ private:
 
 	Texture textureTown;
 	Sprite spriteTown;
+
+	Texture textureBack;
+	Sprite spriteBack;
+
+
 	bool mapVisible = false;
-
-
 	InventoryScene inventory;
 public:
 	void Init();

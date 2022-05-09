@@ -184,7 +184,7 @@ void UIManager::Render_PlayScene(sf::RenderWindow& window)
 	if (inventory.GetVisible())
 		inventory.Render(window);
 
-	if (GetMapVisible())
+	if (GetMapVisible() && !inventory.GetVisible())
 		Render_Map(window);
 }
 
@@ -196,10 +196,13 @@ void UIManager::Release_PlayScene()
 
 void UIManager::Init_Map()
 {
-	textureTown = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/map/Town.png");
+	textureTown = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/map/SpriteTown.png");
 	spriteTown.setTexture(textureTown);
-	spriteTown.setPosition(1920 * 0.5f, 1080 * 0.5f);
-	
+	spriteTown.setPosition(660, 440);
+
+	textureBack = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/map/back.png");
+	spriteBack.setTexture(textureBack);
+	spriteBack.setPosition(0, 0);
 }
 
 void UIManager::Update_Map(float dt)
@@ -212,6 +215,7 @@ void UIManager::Update_Map(float dt)
 
 void UIManager::Render_Map(sf::RenderWindow& window)
 {
+	window.draw(spriteBack);
 	window.draw(spriteTown);
 }
 
