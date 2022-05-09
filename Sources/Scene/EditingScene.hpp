@@ -1,23 +1,70 @@
 #pragma once
 #include "Scene.hpp"
 #include <unordered_map>
+#include <vector>
 #include <string>
 #include "../Utils/button.hpp"
-#include "../Utils/textureListBoxUI.hpp"
+#include "../Objects/GameObject.hpp"
+#include "../Maps/Map.hpp"
+
+#define MAX_LAYER 10
+#define MIN_LAYER 0
+
 using namespace sf;
 using namespace std;
 // 맵 에디팅을 할 씬
+class Player;
 class EditingScene : public Scene
 {
 private:
-	unordered_map<string, Texture*> textureMap;
-	unordered_map<int, Sprite*> spriteMap;
-	int clickCount;
+	RectangleShape backboard;
 
-	button* textureLoadButton;	// 텍스쳐 로드 버튼
-	bool isOpenTextureWindow; // 텍스처 윈도우가 열려있는지
+	Font font;
+	Text currentCursorPos;
+	string editData;
 
-	textureListBoxUI* listBoxUI;
+	string selectName;
+	string inputLayer;
+	string inputIndex;
+
+	int layer;
+	int inputImageIdx;
+
+	int count = 0;
+	bool positionSetting;
+
+	vector<GameObject*> objects;
+
+	GameObject* object;
+
+	button* groundButton;		// 바닥
+	button* layeredButton;		// 
+	button* buildingButton;		//
+	button* backgroundButton;	// 뒷 배경
+	button* graveCrossButton;
+	button* extraButton;
+	button* benchButton;
+	button* portalButton;		// 포탈
+
+	button* saveButton;
+	button* loadButton;
+	button* exitButton;
+
+	vector<button*> objectButtons;
+	vector<button*> ImageIndexList;
+	bool checkImageIdx;
+	Text layerIndicator;
+	button* plusLayerButton;
+	button* minusLayerButton;
+	button* confirmLayerButton;
+
+	vector<Text*> objectStatuses;
+	string stringStatus;
+	bool isTabClicked;
+
+	Vector2f prevPos;
+	bool selectObject;
+	Text manualText;
 
 public:
 	EditingScene() noexcept;
@@ -27,5 +74,21 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Render(RenderWindow& window) override;
 	virtual void Release() override;
+
+	void ObjectSeleted(button& button);
+	void OpenImageIndex(button& btn);
+	void SetImageIndex();
+	void SetLayer();
+	void SetObjectsPosition();
+	void MoveView();
+	void CursorPosView();
+	void ViewObjectsInfos();
+
+	void ClickObject();
+	void SetManual();
+
+	void Save();
+	void Load();
+	void AddObject(MapData& data);
 };
 

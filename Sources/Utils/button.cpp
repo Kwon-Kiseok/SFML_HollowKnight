@@ -31,9 +31,14 @@ button::~button()
 {
 }
 
+string button::GetText()
+{
+	return text.getString();
+}
+
 void button::update()
 {
-	Vector2f mousePosition = InputManager::GetInstance().GetMouseWorldPosition();
+	Vector2i mousePosition = InputManager::GetInstance().GetMousePosition();
 
 	bool mouseInButton = mousePosition.x >= buttonShape.getPosition().x - buttonShape.getGlobalBounds().width / 2
 		&& mousePosition.x <= buttonShape.getPosition().x + buttonShape.getGlobalBounds().width / 2
@@ -63,7 +68,6 @@ void button::Click(bool isHovered)
 		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
 		{
 			state = Button_state::clicked;
-			std::cout << "Button Clicked" << std::endl;
 			isClick = true;
 		}
 		else if (InputManager::GetInstance().GetMouseButtonUp(Mouse::Left) && isClick == true)

@@ -26,6 +26,7 @@ public:
 	button(string text, Vector2f pos, Vector2f size);
 	~button();
 
+	string GetText();
 	void update();
 	void Click(bool isHovered);
 	void draw(RenderWindow& window);

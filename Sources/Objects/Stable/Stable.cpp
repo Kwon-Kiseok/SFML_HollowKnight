@@ -32,6 +32,11 @@ void Stable::Interaction()
 	return;
 }
 
+int Stable::GetIndexTotal()
+{
+	return index_total;
+}
+
 void Stable::Init()
 {
 }

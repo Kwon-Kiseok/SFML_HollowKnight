@@ -37,6 +37,9 @@
     <ClCompile Include="Sources\Objects\Stable\Stable.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Portal.cpp" />
     <ClCompile Include="Sources\Animation\EffectManager.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\BackgroundImages.cpp" />
+    <ClCompile Include="Sources\Utils\Textbox.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Bench.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
@@ -50,6 +53,9 @@
     <ClInclude Include="Sources\Objects\Stable\Stable.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Portal.hpp" />
     <ClInclude Include="Sources\Animation\EffectManager.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\BackgroundImages.hpp" />
+    <ClInclude Include="Sources\Utils\Textbox.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Bench.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />

@@ -39,6 +39,9 @@ private:
 
 	static Vector2i mousePosition;			// 마우스의 윈도우상의 위치
 	static Vector2f mouseWorldPosition;		// 마우스의 월드 상의 위치
+
+	const float zoomAmount{ 1.02f };
+	float currentZoom = 1.0f;
 public:
 	InputManager() noexcept = default;
 	~InputManager() noexcept = default;
@@ -53,6 +56,8 @@ public:
 	/// 현재 축의 값을 float 반환
 	/// </summary>
 	float GetAxis(Axis axis) noexcept;
+
+	float GetCurrentZoom() noexcept;
 
 	/// <summary>
 	/// 눌린 키보드 키가 축에 대해 양의 값인지, 음의 값인지 반환 -1, 0, 1

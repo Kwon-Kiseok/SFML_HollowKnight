@@ -17,16 +17,10 @@ Character::Character()
 
 	jumpSpeed = 3.f;
 	moveSpeed = 5.f;
-	name = "Default";
 }
 
 Character::~Character()
 {
-}
-
-std::string Character::GetName()
-{
-	return name;
 }
 
 int Character::GetHealth()
@@ -47,11 +41,6 @@ void Character::SetX(float x)
 void Character::SetY(float y)
 {
 	this->position.y = y;
-}
-
-void Character::SetName(std::string name)
-{
-	this->name = name;
 }
 
 void Character::SetHealth(int health)

@@ -6,7 +6,7 @@
 
 void Map::Init()
 {
-	player->Init();
+	characters.push_back(player);
 }
 
 void Map::Update(float dt)
@@ -31,6 +31,18 @@ void Map::Update(float dt)
 
 void Map::Render(sf::RenderWindow& window)
 {
+
+	for (int i = 10; i >= 0; --i)
+	{
+		for (auto it = stableObjects.begin(); it != stableObjects.end(); ++it)
+		{
+			if ((*it)->GetLayer() == i)
+			{
+				(*it)->Render(window);
+			}
+		}
+	}
+
 	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
 	{
 		(*it)->Render(window);
@@ -41,10 +53,6 @@ void Map::Render(sf::RenderWindow& window)
 		(*it)->Render(window);
 	}
 
-	for (auto it = stableObjects.begin(); it != stableObjects.end(); ++it)
-	{
-		(*it)->Render(window);
-	}
 }
 
 void Map::Release()
@@ -53,7 +61,6 @@ void Map::Release()
 	{
 		delete* it;
 		*it = nullptr;
-		//(*it)->Release();
 	}
 	stableObjects.clear();
 

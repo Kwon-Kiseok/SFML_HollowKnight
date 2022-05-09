@@ -17,7 +17,7 @@ KingsPass_Map::KingsPass_Map(Player* player_)
 	float groundsLength = 0.f;
 	for (int i = 0; i < 30; ++i)
 	{
-		grounds[i] = new Ground();
+		grounds[i] = new Ground(1);
 		if (i == 0)
 		{
 			grounds[i]->SetPosition(0.f, 820.f);
