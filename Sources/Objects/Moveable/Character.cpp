@@ -8,7 +8,7 @@ Character::Character()
 	currentDir = Direction::NONE;
 	prevDir = Direction::NONE;
 	deltaTime = 0.f;
-	gravity = 2.f;
+	gravity = 980.f;
 	health = 10;
 
 	isColliding = false;
