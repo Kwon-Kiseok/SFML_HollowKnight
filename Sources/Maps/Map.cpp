@@ -40,6 +40,8 @@ void Map::Render(sf::RenderWindow& window)
 			{
 				(*it)->Render(window);
 			}
+
+			window.draw((*it)->GetRectangleShape());
 		}
 	}
 
@@ -134,8 +136,6 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
-			player->Collision(*it);
-
 			// ¶¥°ú ºÎµúÇûÀ» ¶§
 			if ((*it)->CompareTag(TAG::GROUND))
 			{

@@ -228,6 +228,7 @@ void Player::Update(float dt)
 			animation.Play("RunToIdle");
 			animation.PlayQueue("Idle");
 			string = "Idle";
+			SetDirection(Direction::NONE);
 		}
 		move = h;
 	}
@@ -279,7 +280,6 @@ void Player::Update(float dt)
 			if (position.x < dashTemp.x - 500.f || position.x > dashTemp.x + 500.f)
 			{
 				isDash = false;
-				canJump = true;
 				animation.Play("RunToIdle");
 				animation.PlayQueue(string);
 				gravity = 0.f;
