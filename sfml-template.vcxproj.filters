@@ -30,13 +30,13 @@
     <ClCompile Include="Sources\Managers\PlayerDataManager.cpp" />
     <ClCompile Include="Sources\Objects\GameObject.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Monster\tempMob.cpp" />
-    <ClCompile Include="Sources\Attack\Attack.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Ground.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Character.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Monster\Monster.cpp" />
     <ClCompile Include="Sources\Maps\Map.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Stable.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Portal.cpp" />
+    <ClCompile Include="Sources\Animation\EffectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
@@ -44,12 +44,12 @@
     <ClInclude Include="Sources\Managers\PlayerDataManager.hpp" />
     <ClInclude Include="Sources\Objects\GameObject.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\tempMob.hpp" />
-    <ClInclude Include="Sources\Attack\Attack.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Ground.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Character.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\Monster.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Stable.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Portal.hpp" />
+    <ClInclude Include="Sources\Animation\EffectManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />

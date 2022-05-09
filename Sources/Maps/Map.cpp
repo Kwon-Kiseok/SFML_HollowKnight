@@ -23,7 +23,7 @@ void Map::Update(float dt)
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::P))
 	{
-		std::cout << "Player's X: " <<player->GetPosition().x << " Y: " << player->GetPosition().y << std::endl;
+		std::cout << "Player's X: " << player->GetPosition().x << " Y: " << player->GetPosition().y << std::endl;
 	}
 
 	ViewManager::GetInstance().GetMainView().setCenter(player->GetPosition());
@@ -51,7 +51,7 @@ void Map::Release()
 {
 	for (auto it = stableObjects.begin(); it != stableObjects.end(); ++it)
 	{
-		delete *it;
+		delete* it;
 		*it = nullptr;
 		//(*it)->Release();
 	}
@@ -61,6 +61,7 @@ void Map::Release()
 
 void Map::CheckCollisions(float dt)
 {
+	Vector2f positionTemp = player->GetPosition();
 	for (std::vector<GameObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
 	{
 		if (*it == nullptr) continue;
@@ -91,12 +92,15 @@ void Map::CheckCollisions(float dt)
 				//player->OnHitted(dt);
 			}
 		}
-
-		//if ((*it)->Collision_AttackBox(player->GetAttackBox()) && (*it)->CompareTag(TAG::MONSTER))
-		//{
-		//	// 몬스터 캐릭터들이 플레이어의 공격박스에 부딪혔을 경우
-		//  // 몬스터 넉백 + 데미지 판정
-		//}
+		/******************************************
+		* 몬스터가 플레이어의 공격박스에 부딪혔을 경우
+		* 이게 맞나요????
+		******************************************/
+		RectangleShape attackBox = player->GetAttackBox();
+		if ((*it)->Collision_AttackBox(attackBox) && (*it)->CompareTag(TAG::MONSTER))
+		{
+			player->UpdateCollision();
+		}
 
 		//if (player->Collision_AttackBox((*it)->GetAttackBox()) && (*it)->CompareTag(TAG::MONSTER))
 		//{
@@ -124,7 +128,12 @@ void Map::CheckCollisions(float dt)
 			// 땅과 부딪혔을 때
 			if ((*it)->CompareTag(TAG::GROUND))
 			{
+				player->OnGround(dt);
 				std::cout << player->GetName() << " Collision Stable" << std::endl;
+			}
+			else
+			{
+				//player->SetVal(dt);
 			}
 		}
 
