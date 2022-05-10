@@ -5,7 +5,7 @@ CrossRoadImages::CrossRoadImages(int idx)
 {
 	index_total = 19;
 
-	std::string path = "Resources/Sprite/BG/CrossRoad/Images";
+	std::string path = "Resources/Sprite/BG/CrossRoad/Images/";
 	std::string index;
 
 	switch (imageIdx)
@@ -79,7 +79,7 @@ CrossRoadBG::CrossRoadBG(int idx)
 {
 	index_total = 16;
 
-	std::string path = "Resources/Sprite/BG/CrossRoad/background";
+	std::string path = "Resources/Sprite/BG/CrossRoad/background/";
 	std::string index;
 
 	switch (imageIdx)
@@ -144,7 +144,7 @@ CrossRoadRoof::CrossRoadRoof(int idx)
 {
 	index_total = 6;
 
-	std::string path = "Resources/Sprite/BG/CrossRoad/roof";
+	std::string path = "Resources/Sprite/BG/CrossRoad/roof/";
 	std::string index;
 
 	switch (imageIdx)
@@ -179,7 +179,7 @@ CrossRoadWall::CrossRoadWall(int idx)
 {
 	index_total = 19;
 
-	std::string path = "Resources/Sprite/BG/CrossRoad/wall";
+	std::string path = "Resources/Sprite/BG/CrossRoad/wall/";
 	std::string index;
 
 	switch (imageIdx)
@@ -279,7 +279,7 @@ CrossRoadWall::CrossRoadWall(int idx)
 		break;
 	}
 
-	SetName("kpWall");
+	SetName("crWall");
 	SetTexture(path + index);
 	SetSprite();
 }
@@ -289,7 +289,7 @@ CrossRoadCentral::CrossRoadCentral(int idx)
 {
 	index_total = 7;
 
-	std::string path = "Resources/Sprite/BG/CrossRoad/CentralResource";
+	std::string path = "Resources/Sprite/BG/CrossRoad/CentralResource/";
 	std::string index;
 
 	switch (imageIdx)
@@ -327,7 +327,7 @@ CrossRoadElev::CrossRoadElev(int idx)
 {
 	index_total = 24;
 
-	std::string path = "Resources/Sprite/BG/CrossRoad/ElevResource";
+	std::string path = "Resources/Sprite/BG/CrossRoad/ElevResource/";
 	std::string index;
 
 	switch (imageIdx)
@@ -406,7 +406,7 @@ CrossRoadElev::CrossRoadElev(int idx)
 		break;
 	}
 
-	SetName("kpImages");
+	SetName("crElev");
 	SetTexture(path + index);
 	SetSprite();
 }
@@ -416,7 +416,7 @@ CrossRoadObjects::CrossRoadObjects(int idx)
 {
 	index_total = 7;
 
-	std::string path = "Resources/Sprite/BG/CrossRoad/object";
+	std::string path = "Resources/Sprite/BG/CrossRoad/object/";
 	std::string index;
 
 	switch (imageIdx)

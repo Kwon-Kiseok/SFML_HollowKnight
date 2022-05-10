@@ -59,6 +59,13 @@ private:
 	button* kp_wallButton;
 	button* kp_objectButton;
 
+	// crossRoad
+	button* cr_groundButton;
+	button* cr_imagesButton;
+	button* cr_bgButton;
+	button* cr_roofButton;
+	button* cr_wallButton;
+	button* cr_objectButton;
 
 	//
 	button* saveButton;

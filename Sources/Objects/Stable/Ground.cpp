@@ -100,7 +100,7 @@ CrossRoadGround::CrossRoadGround(int idx)
 	interactable = false;
 	type = Interaction_Type::NONE;
 	imageIdx = idx;
-	std::string path = "Resources/Sprite/BG/CrossRoad/ground";
+	std::string path = "Resources/Sprite/BG/CrossRoad/ground/";
 	std::string index;
 
 	switch (imageIdx)

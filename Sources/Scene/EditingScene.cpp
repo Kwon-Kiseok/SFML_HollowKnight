@@ -17,6 +17,8 @@
 #include "../Objects/Stable/Platform.hpp"
 #include "../Objects/Stable/thorn.hpp"
 
+#include "../Objects/Stable/CrossRoadImages.hpp"
+
 #include <iostream>
 #include <ostream>
 #include <sstream>
@@ -33,7 +35,7 @@ void EditingScene::Init()
 	backboard.setPosition(0.f, 0.f);
 	backboard.setFillColor(Color(51,51,51));
 	//backboard.setFillColor(Color(0, 0, 0));
-	backboard.setSize(Vector2f(8000.f, 1500.f));
+	backboard.setSize(Vector2f(6000.f, 2000.f));
 
 	font.loadFromFile("Resources/Fonts/CALIST.TTF");
 	currentCursorPos.setFont(font);
@@ -51,25 +53,33 @@ void EditingScene::Init()
 	manualText.setFillColor(Color::Magenta);
 	
 	// 버튼 생성
-	groundButton = new button("ground", Vector2f(ViewManager::GetInstance().GetResolution().x-100.f, 300.f), Vector2f(100.f, 25.f));
-	layeredButton = new button("layered", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 330.f), Vector2f(100.f, 25.f));
-	buildingButton = new button("building", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 360.f), Vector2f(100.f, 25.f));
-	backgroundButton = new button("bg", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 390.f), Vector2f(100.f, 25.f));
-	graveCrossButton = new button("graveCross", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 420.f), Vector2f(100.f, 25.f));
-	extraButton = new button("extra", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 450.f), Vector2f(100.f, 25.f));
-	benchButton = new button("bench", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 480.f), Vector2f(100.f, 25.f));
-	portalButton = new button("portal", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 510.f), Vector2f(100.f, 25.f));
-	platformButton = new button("platform", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 540.f), Vector2f(100.f, 25.f));
-	thornButton = new button("thorn", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 570.f), Vector2f(100.f, 25.f));
-	wallButton = new button("wall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 780.f), Vector2f(100.f, 25.f));
+	groundButton = new button("ground", Vector2f(ViewManager::GetInstance().GetResolution().x-100.f, 100.f), Vector2f(100.f, 25.f));
+	layeredButton = new button("layered", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 130.f), Vector2f(100.f, 25.f));
+	buildingButton = new button("building", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 160.f), Vector2f(100.f, 25.f));
+	backgroundButton = new button("bg", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 190.f), Vector2f(100.f, 25.f));
+	graveCrossButton = new button("graveCross", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 220.f), Vector2f(100.f, 25.f));
+	extraButton = new button("extra", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 250.f), Vector2f(100.f, 25.f));
+	benchButton = new button("bench", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 280.f), Vector2f(100.f, 25.f));
+	portalButton = new button("portal", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 310.f), Vector2f(100.f, 25.f));
+	platformButton = new button("platform", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 340.f), Vector2f(100.f, 25.f));
+	thornButton = new button("thorn", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 370.f), Vector2f(100.f, 25.f));
+	wallButton = new button("wall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 580.f), Vector2f(100.f, 25.f));
 
 	// kings pass
-	kp_groundButton = new button("kpGround", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 600.f), Vector2f(100.f, 25.f));
-	kp_doorButton = new button("kpDoor", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 630.f), Vector2f(100.f, 25.f));
-	kp_imagesButton = new button("kpImages", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 660.f), Vector2f(100.f, 25.f));
-	kp_bgButton = new button("kpBG", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 690.f), Vector2f(100.f, 25.f));
-	kp_wallButton = new button("kpWall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 720.f), Vector2f(100.f, 25.f));
-	kp_objectButton = new button("kpObjects", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 750.f), Vector2f(100.f, 25.f));
+	kp_groundButton = new button("kpGround", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 400.f), Vector2f(100.f, 25.f));
+	kp_doorButton = new button("kpDoor", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 430.f), Vector2f(100.f, 25.f));
+	kp_imagesButton = new button("kpImages", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 460.f), Vector2f(100.f, 25.f));
+	kp_bgButton = new button("kpBG", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 490.f), Vector2f(100.f, 25.f));
+	kp_wallButton = new button("kpWall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 520.f), Vector2f(100.f, 25.f));
+	kp_objectButton = new button("kpObjects", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 550.f), Vector2f(100.f, 25.f));
+
+	// crossRoad
+	cr_groundButton = new button("crGround", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 610.f), Vector2f(100.f, 25.f));
+	cr_imagesButton = new button("crImages", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 640.f), Vector2f(100.f, 25.f));
+	cr_bgButton = new button("crBG", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 670.f), Vector2f(100.f, 25.f));
+	cr_roofButton = new button("crRoof", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 700.f), Vector2f(100.f, 25.f));
+	cr_wallButton = new button("crWall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 730.f), Vector2f(100.f, 25.f));
+	cr_objectButton = new button("crObjects", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 760.f), Vector2f(100.f, 25.f));
 
 
 	saveButton = new button("Save", Vector2f(ViewManager::GetInstance().GetResolution().x - 300.f, 950.f), Vector2f(90.f, 30.f));
@@ -95,7 +105,12 @@ void EditingScene::Init()
 	objectButtons.push_back(kp_wallButton);
 	objectButtons.push_back(kp_objectButton);
 
-
+	objectButtons.push_back(cr_groundButton);
+	objectButtons.push_back(cr_imagesButton);
+	objectButtons.push_back(cr_bgButton);
+	objectButtons.push_back(cr_roofButton);
+	objectButtons.push_back(cr_wallButton);
+	objectButtons.push_back(cr_objectButton);
 
 	objectButtons.push_back(saveButton);
 	objectButtons.push_back(loadButton);
@@ -317,6 +332,30 @@ void EditingScene::OpenImageIndex(button& btn)
 		{
 			temp = new Platform();
 		}
+		else if (selectName == "crGround")
+		{
+			temp = new CrossRoadGround();
+		}
+		else if (selectName == "crImages")
+		{
+			temp = new CrossRoadImages();
+		}
+		else if (selectName == "crBG")
+		{
+			temp = new CrossRoadBG();
+		}
+		else if (selectName == "crRoof")
+		{
+			temp = new CrossRoadRoof();
+		}
+		else if (selectName == "crWall")
+		{
+			temp = new CrossRoadWall();
+		}
+		else if (selectName == "crObjects")
+		{
+			temp = new CrossRoadObjects();
+		}
 		else if (selectName == "thorn")
 		{
 			temp = new thorn();
@@ -478,7 +517,30 @@ void EditingScene::SetLayer()
 		{
 			this->object = new KingsPassObjects(inputImageIdx);
 		}
-
+		else if (selectName == "crGround")
+		{
+			this->object = new CrossRoadGround(inputImageIdx);
+		}
+		else if (selectName == "crImages")
+		{
+			this->object = new CrossRoadImages(inputImageIdx);
+		}
+		else if (selectName == "crBG")
+		{
+			this->object = new CrossRoadBG(inputImageIdx);
+		}
+		else if (selectName == "crRoof")
+		{
+			this->object = new CrossRoadRoof(inputImageIdx);
+		}
+		else if (selectName == "crWall")
+		{
+			this->object = new CrossRoadWall(inputImageIdx);
+		}
+		else if (selectName == "crObjects")
+		{
+			this->object = new CrossRoadObjects(inputImageIdx);
+		}
 		this->object->SetLayer(layer);
 		inputImageIdx = 0;
 		positionSetting = true;
@@ -786,6 +848,30 @@ void EditingScene::AddObject(MapData& data)
 	else if (data.name == "kpObjects")
 	{
 		this->object = new KingsPassObjects(data.index);
+	}
+	else if (data.name == "crGround")
+	{
+		this->object = new CrossRoadGround(data.index);
+	}
+	else if (data.name == "crImages")
+	{
+		this->object = new CrossRoadImages(data.index);
+	}
+	else if (data.name == "crBG")
+	{
+		this->object = new CrossRoadBG(data.index);
+	}
+	else if (data.name == "crRoof")
+	{
+		this->object = new CrossRoadRoof(data.index);
+	}
+	else if (data.name == "crWall")
+	{
+		this->object = new CrossRoadWall(data.index);
+	}
+	else if (data.name == "crObjects")
+	{
+		this->object = new CrossRoadObjects(data.index);
 	}
 
 	this->object->SetLayer(data.layer);
