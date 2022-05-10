@@ -11,6 +11,7 @@ Player::Player()
 	mp = 0;
 	move = 0.f;
 	jumpTime = JUMP_MAX;
+
 }
 
 void Player::Init()
@@ -102,6 +103,7 @@ void Player::UpdateInput()
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				isWay = !isWay;
+				SetDirection(Direction::RIGHT);
 			}
 		}
 		if (InputManager::GetInstance().GetKey(Keyboard::Left))
@@ -111,6 +113,7 @@ void Player::UpdateInput()
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				isWay = !isWay;
+				SetDirection(Direction::LEFT);
 			}
 		}
 	}
@@ -202,12 +205,14 @@ void Player::Update(float dt)
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				isWay = !isWay;
+				SetDirection(Direction::LEFT);
 			}
 			if (isWay && h == 1)
 			{
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				isWay = !isWay;
+				SetDirection(Direction::RIGHT);
 			}
 		}
 
@@ -223,6 +228,7 @@ void Player::Update(float dt)
 			animation.Play("RunToIdle");
 			animation.PlayQueue("Idle");
 			string = "Idle";
+			SetDirection(Direction::NONE);
 		}
 		move = h;
 	}
@@ -231,7 +237,7 @@ void Player::Update(float dt)
 	**********************************/
 	{
 		gravity += GRAVITY * dt;
-		isFalling = true;
+		//isFalling = false;
 		if (gravity > 1000.f)
 		{
 			gravity = 1000.f;
@@ -239,8 +245,14 @@ void Player::Update(float dt)
 		if (InputManager::GetInstance().GetKey(Keyboard::Z) && canJump)
 		{
 			gravity = -700.f;
+			isFalling = true;
+			canJump = false;
 		}
-		delta.y = gravity * dt;
+
+		if (isFalling)
+		{
+			delta.y = gravity * dt;
+		}
 	}
 	/**********************************
 	* 대쉬
@@ -268,7 +280,6 @@ void Player::Update(float dt)
 			if (position.x < dashTemp.x - 500.f || position.x > dashTemp.x + 500.f)
 			{
 				isDash = false;
-				canJump = true;
 				animation.Play("RunToIdle");
 				animation.PlayQueue(string);
 				gravity = 0.f;
@@ -293,6 +304,7 @@ void Player::Update(float dt)
 			isAttack = false;
 		}
 	}
+
 
 	position += delta;
 
@@ -367,6 +379,8 @@ void Player::OnGround(float dt)
 	gravity = 0.f;
 	position.y = positionTemp.y;
 	sprite.setPosition(position);
+	isFalling = false;
+	canJump = true;
 }
 
 const RectangleShape Player::GetAttackBox()

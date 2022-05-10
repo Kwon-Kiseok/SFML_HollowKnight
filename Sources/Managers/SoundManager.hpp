@@ -19,7 +19,9 @@ public:
 	void Init();
 	void AddSound(std::string path, std::wstring id);
 	void PlayMusic(std::string path);
+	void StopMusic();
 	void PlaySound(std::wstring id);
+	Sound& GetSoundbyID(std::wstring id);
 	void Release();
 };
 

@@ -48,7 +48,6 @@ void Stable::Render(RenderWindow& window)
 
 void Stable::Update(float dt)
 {
-
 	return;
 }
 
@@ -59,4 +58,32 @@ bool Stable::Collision(GameObject* otherObj)
 
 void Stable::Release()
 {
+}
+
+/// <summary>
+/// 
+/// </summary>
+InvisibleWall::InvisibleWall(float x, float y)
+{
+	SetTag(TAG::GROUND);
+	SetSize(10.f, 1000.f);
+	collidable = true;
+	interactable = false;
+	type = Interaction_Type::NONE;
+
+	wallShape.setPosition(x, y);
+}
+
+InvisibleWall::~InvisibleWall()
+{
+}
+
+void InvisibleWall::SetSize(Vector2f size)
+{
+	wallShape.setSize(size);
+}
+
+void InvisibleWall::SetSize(float x, float y)
+{
+	wallShape.setSize(Vector2f(x, y));
 }

@@ -12,9 +12,6 @@ Portal::Portal()
 	SetTexture("Resources/Sprite/light_effect_v02.png");
 	SetSprite();
 	SetOriginCenter();
-
-	/*DebugCollision(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-	rectangleShape.setPosition(sprite.getPosition());*/
 }
 
 Portal::~Portal()
@@ -24,6 +21,16 @@ Portal::~Portal()
 MAP_TYPE& Portal::GetCurrentMap()
 {
 	return currMap;
+}
+
+MAP_TYPE& Portal::GetNextMap()
+{
+	return nextMap;
+}
+
+void Portal::SetCurrMap(MAP_TYPE curr)
+{
+	currMap = curr;
 }
 
 void Portal::SetNextMap(MAP_TYPE next)
@@ -38,7 +45,6 @@ void Portal::Interaction()
 
 void Portal::Render(RenderWindow& window)
 {
-	//window.draw(rectangleShape);
 	window.draw(sprite);
 }
 

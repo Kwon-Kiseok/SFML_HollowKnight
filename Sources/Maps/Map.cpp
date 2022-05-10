@@ -2,6 +2,19 @@
 #include "../Managers/ViewManager.hpp"
 #include "../Managers/MapManager.hpp"
 #include "../Managers/InputManager.hpp"
+#include "../Animation/rapidcsv.hpp"
+#include "../Objects/Stable/Stable.hpp"
+#include "../Objects/Stable/BackgroundImages.hpp"
+#include "../Objects/Stable/Ground.hpp"
+#include "../Objects/Stable/bench.hpp"
+#include "../Objects/Stable/Portal.hpp"
+#include "../Objects/Stable/Wall.hpp"
+
+#include "../Objects/Stable/Door.hpp"
+#include "../Objects/Stable/KingsPassImages.hpp"
+#include "../Objects/Stable/Platform.hpp"
+#include "../Objects/Stable/thorn.hpp"
+
 #include <iostream>
 
 void Map::Init()
@@ -40,6 +53,8 @@ void Map::Render(sf::RenderWindow& window)
 			{
 				(*it)->Render(window);
 			}
+
+			window.draw((*it)->GetRectangleShape());
 		}
 	}
 
@@ -49,6 +64,11 @@ void Map::Render(sf::RenderWindow& window)
 	}
 
 	for (auto it = characters.begin(); it != characters.end(); ++it)
+	{
+		(*it)->Render(window);
+	}
+
+	for (auto it = portals.begin(); it != portals.end(); ++it)
 	{
 		(*it)->Render(window);
 	}
@@ -63,6 +83,13 @@ void Map::Release()
 		*it = nullptr;
 	}
 	stableObjects.clear();
+
+	for (auto it = portals.begin(); it != portals.end(); ++it)
+	{
+		delete* it;
+		*it = nullptr;
+	}
+	portals.clear();
 
 }
 
@@ -122,6 +149,20 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
+			// ¶¥°ú ºÎµúÇûÀ» ¶§
+			if ((*it)->CompareTag(TAG::GROUND))
+			{
+				player->OnGround(dt);
+			}
+		}
+	}
+
+	for (std::vector<Portal*>::iterator it = portals.begin(); it != portals.end(); ++it)
+	{
+		if ((*it) == nullptr) continue;
+
+		if (player->CheckCollision((*it)))
+		{
 			player->Collision(*it);
 
 			// ÇÃ·¹ÀÌ¾î°¡ Æ÷Å»°ú °ãÃÆÀ» ¶§
@@ -131,19 +172,127 @@ void Map::CheckCollisions(float dt)
 				(*it)->Interaction();
 				return;
 			}
-
-			// ¶¥°ú ºÎµúÇûÀ» ¶§
-			if ((*it)->CompareTag(TAG::GROUND))
-			{
-				player->OnGround(dt);
-				std::cout << player->GetName() << " Collision Stable" << std::endl;
-			}
-			else
-			{
-				//player->SetVal(dt);
-			}
 		}
-
 	}
+}
+
+void Map::LoadMap(std::string dataFilepath)
+{
+	rapidcsv::Document dataFile(dataFilepath);
+
+	vector<string> colName = dataFile.GetColumn<string>("NAME");
+	vector<int> colIndex = dataFile.GetColumn<int>("INDEX");
+	vector<int> colLayer = dataFile.GetColumn<int>("LAYER");
+	vector<float> colX = dataFile.GetColumn<float>("X");
+	vector<float> colY = dataFile.GetColumn<float>("Y");
+	vector<float> colRotate = dataFile.GetColumn<float>("ROTATE");
+
+	int totalObjects = colName.size();
+	for (int i = 0; i < totalObjects; ++i)
+	{
+		MapData data;
+		data.name = colName[i];
+		data.index = colIndex[i];
+		data.layer = colLayer[i];
+		data.x = colX[i];
+		data.y = colY[i];
+		data.rotate = colRotate[i];
+
+		if (data.name != "portal")
+		{
+			AddObject(data);
+			if (object != nullptr)
+				stableObjects.push_back(object);
+		}
+		else if (data.name == "portal")
+		{
+			// Æ÷Å»Àº Æ÷Å»³¢¸®
+			Portal* portal = new Portal();
+			portal->SetCurrMap(MAP_TYPE::Town);
+			// temp
+			portal->SetNextMap(MAP_TYPE::KingsPass);
+			portal->SetPosition(data.x, data.y);
+			portals.push_back(portal);
+		}
+	}
+
+	cout << "Load Complete" << endl;
+}
+
+void Map::AddObject(MapData& data)
+{
+	if (data.name == "ground")
+	{
+		this->object = new Ground(data.index);
+	}
+	else if (data.name == "layered")
+	{
+		this->object = new TownLayered(data.index);
+	}
+	else if (data.name == "portal")
+	{
+		this->object = new Portal();
+	}
+	else if (data.name == "building")
+	{
+		this->object = new TownBuilding(data.index);
+	}
+	else if (data.name == "bg")
+	{
+		this->object = new TownBG(data.index);
+	}
+	else if (data.name == "graveCross")
+	{
+		this->object = new TownGraveCross(data.index);
+	}
+	else if (data.name == "extra")
+	{
+		this->object = new TownExtra(data.index);
+	}
+	else if (data.name == "bench")
+	{
+		this->object = new Bench();
+	}
+	else if (data.name == "platform")
+	{
+		this->object = new Platform(data.index);
+	}
+	else if (data.name == "thorn")
+	{
+		this->object = new thorn();
+	}
+	else if (data.name == "wall")
+	{
+		this->object = new Wall(data.index);
+	}
+	else if (data.name == "kpGround")
+	{
+		this->object = new KingsPassGround(data.index);
+	}
+	else if (data.name == "kpDoor")
+	{
+		this->object = new Door(data.index);
+	}
+	else if (data.name == "kpImages")
+	{
+		this->object = new KingsPassImages(data.index);
+	}
+	else if (data.name == "kpBG")
+	{
+		this->object = new KingsPassBG(data.index);
+	}
+	else if (data.name == "kpWall")
+	{
+		this->object = new KingsPassWall(data.index);
+	}
+	else if (data.name == "kpObjects")
+	{
+		this->object = new KingsPassObjects(data.index);
+	}
+
+	this->object->SetLayer(data.layer);
+	this->object->SetPosition(Vector2f(data.x, data.y));
+	this->object->SetOriginCenter();
+	this->object->GetSprite().setRotation(data.rotate);
 }
 
