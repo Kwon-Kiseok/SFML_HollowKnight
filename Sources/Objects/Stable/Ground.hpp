@@ -18,3 +18,11 @@ public:
 	KingsPassGround(int idx);
 	virtual ~KingsPassGround();
 };
+
+class CrossRoadGround : public Stable
+{
+public:
+	CrossRoadGround() { index_total = 13; };
+	CrossRoadGround(int idx);
+	virtual ~CrossRoadGround() {};
+};

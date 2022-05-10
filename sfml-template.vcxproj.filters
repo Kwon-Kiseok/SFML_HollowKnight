@@ -47,6 +47,7 @@
     <ClCompile Include="Sources\Objects\Stable\Door.cpp" />
     <ClCompile Include="Sources\Objects\Stable\thorn.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Wall.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\CrossRoadImages.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
@@ -70,6 +71,7 @@
     <ClInclude Include="Sources\Objects\Stable\Door.hpp" />
     <ClInclude Include="Sources\Objects\Stable\thorn.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Wall.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\CrossRoadImages.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />

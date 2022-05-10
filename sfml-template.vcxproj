@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Objects\Stable\CrossRoadImages.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Door.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Platform.cpp" />
     <ClCompile Include="Sources\Objects\Stable\KingsPassImages.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Sources\Objects\Stable\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Objects\Stable\CrossRoadImages.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Door.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Platform.hpp" />
     <ClInclude Include="Sources\Objects\Stable\KingsPassImages.hpp" />
