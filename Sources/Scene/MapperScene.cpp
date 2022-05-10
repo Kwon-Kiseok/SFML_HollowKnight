@@ -25,6 +25,9 @@ void MapperScene::Init()
 	spriteIsadela.setTexture(textureIsadela);
 	spriteIsadela.setPosition(1100, 710);
 
+//	textureIselda_idle = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/Iselda_Idle.png");
+
+
 }
 
 void MapperScene::Update(float dt)
@@ -37,6 +40,7 @@ void MapperScene::Render(RenderWindow& window)
 	window.draw(spriteIsadela);
 	window.draw(spriteDesk);
 	window.draw(spriteHome);
+//	window.draw(spriteIselda_idle);
 }
 
 void MapperScene::Release()

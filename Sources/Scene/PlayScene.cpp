@@ -6,6 +6,7 @@
 #include "../Managers/SoundManager.hpp"
 #include "../Managers/UIManager.hpp"
 #include "../Managers/MapManager.hpp"
+#include "../Managers/PlayerDataManager.hpp"
 
 PlayScene::PlayScene()
 {

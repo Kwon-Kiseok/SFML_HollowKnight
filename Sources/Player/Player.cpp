@@ -10,6 +10,7 @@ Player::Player()
 	attackBox.scale(-1, 1);
 	hp = 0;
 	mp = 0;
+	coin = 0;
 	move = 0.f;
 	jumpTime = JUMP_MAX;
 }
@@ -255,7 +256,7 @@ void Player::Update(float dt)
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash)
 		{
-//
+
 			SoundManager::GetInstance().PlaySound(L"dash");
 
 			animation.Play("Dash");
@@ -297,7 +298,7 @@ void Player::Update(float dt)
 			animation.PlayQueue(string);	// 이전 이미지로
 			isAttack = true;
 			effect.SetDraw("Slash");
-//
+
 			SoundManager::GetInstance().PlaySound(L"sword");
 		}
 		attackDelay -= dt;
@@ -306,6 +307,22 @@ void Player::Update(float dt)
 			attackDelay = ATTACK_DELAY;
 			isAttack = false;
 		}
+	}
+
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::G))
+	{
+		++coin;
+	//	std::cout << coin << ", " << PlayerDataManager::GetInstance().GetPlayerCoin() << std::endl;
+	}
+
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life����
+	{
+		hp--;
+	}
+
+	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P))	//P: Life��
+	{
+		hp++;
 	}
 
 	position += delta;
@@ -317,6 +334,7 @@ void Player::Update(float dt)
 	animation.Update(dt);
 
 	effect.Update(position);
+
 }
 
 void Player::Render(RenderWindow& window)
@@ -350,6 +368,11 @@ int Player::GetMP()
 	return mp;
 }
 
+int Player::GetCoin()
+{
+	return coin;
+}
+
 void Player::AddHP(int value)
 {
 	hp += value;
@@ -358,6 +381,11 @@ void Player::AddHP(int value)
 void Player::AddMP(int value)
 {
 	mp += value;
+}
+
+void Player::AddCoin(int value)
+{
+	coin += value;
 }
 
 bool Player::UpdateCollision()

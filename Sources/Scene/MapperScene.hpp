@@ -18,6 +18,10 @@ private:
 
 	Texture textureIsadela;
 	Sprite spriteIsadela;
+
+	Texture textureIselda_idle;
+	Sprite spriteIselda_idle;
+
 public:
 	MapperScene() {}
 	virtual ~MapperScene()noexcept = default;

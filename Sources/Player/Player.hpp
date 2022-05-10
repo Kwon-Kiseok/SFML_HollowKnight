@@ -3,6 +3,7 @@
 #include "../Animation/EffectManager.hpp"
 #include "../Objects/Moveable/Character.hpp"
 #include <map>
+#include "../Items/Coin.hpp"
 
 class Player : public Character
 {
@@ -17,6 +18,7 @@ private:
 
 	int hp;										// 체력
 	int mp;										// 기력?
+	int coin;									// 재화
 
 	AnimationController animation;
 
@@ -53,8 +55,10 @@ public:
 	virtual void Release() override;
 	int GetHP();
 	int GetMP();
+	int GetCoin();
 	void AddHP(int value);
 	void AddMP(int value);
+	void AddCoin(int value);
 	const FloatRect GetGlobalBounds();	// 충돌체크 때 필요
 	bool UpdateCollision();	//  내가 때린 판정
 	bool OnHitted(Time timeHit);	// 내가 맞은 판정

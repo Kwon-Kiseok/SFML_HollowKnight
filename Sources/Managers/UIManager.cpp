@@ -4,7 +4,7 @@
 #include "../Managers/InputManager.hpp"
 #include "../Managers/SceneManager.hpp"
 #include "../Managers/SoundManager.hpp"
-#include "../Items/Coin.hpp"
+#include "../Managers/PlayerDataManager.hpp"
 #include <sstream>
 
 void UIManager::Init_TitleScene()
@@ -47,7 +47,6 @@ void UIManager::Init_TitleScene()
 	textExit.setPosition(1920 * 0.5f, 900.f);
 
 	SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/Title.wav");
-
 }
 
 void UIManager::Update_TitleScene(float dt)
@@ -141,9 +140,7 @@ void UIManager::Init_PlayScene()
 	spriteCoin.setPosition(210, 150);
 
 	fontCALIST.loadFromFile("Resources/Fonts/CALIST.ttf");
-	stringstream ssCoin;
-	ssCoin << coin.GetCoin();
-	textCoin.setString(ssCoin.str());
+
 	textCoin.setPosition(275, 153);
 	textCoin.setCharacterSize(40);
 	textCoin.setFillColor(Color::White);
@@ -151,23 +148,24 @@ void UIManager::Init_PlayScene()
 
 	inventory.Init();
 	Init_Map();
-	
+
 }
 
 void UIManager::Update_PlayScene(float dt)
 {
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life����
-	{
-		currentHP--;
-	}
+	stringstream ssCoin;
+	ssCoin << PlayerDataManager::GetInstance().GetPlayerCoin();
+	textCoin.setString(ssCoin.str());
 
-	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P))	//P: Life��
-	{
-		currentHP++;
-	}
+	PlayerDataManager::GetInstance().GetPlayerHP();
+	PlayerDataManager::GetInstance().GetPlayerMP();
 
+/*
+
+*/
 	inventory.Update(dt);
 	Update_Map(dt);
+
 }
 
 void UIManager::Render_PlayScene(sf::RenderWindow& window)
@@ -183,7 +181,7 @@ void UIManager::Render_PlayScene(sf::RenderWindow& window)
 		window.draw(spriteNoLife[i]);
 	}
 
-	for (int i = 0; i < currentHP; i++)
+	for (int i = 0; i < PlayerDataManager::GetInstance().GetPlayerHP(); i++)
 	{
 		window.draw(spriteLifes[i]);
 	}

@@ -4,13 +4,14 @@
 
 class Coin : public Item
 {
-private:
-	int coin = 123;
+// 그려주는거랑 중력받는거
+
 public:
+	Coin() {}
+	Coin(Vector2f pos);
 	void Init();
 	void Update(float dt);
 	void Render(RenderWindow& window);
-	int GetCoin();
-	void SetCoin(int coin);
+	
 };
 

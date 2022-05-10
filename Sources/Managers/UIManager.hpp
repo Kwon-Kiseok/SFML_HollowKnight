@@ -5,15 +5,16 @@
 #include "../Scene/InventoryScene.hpp"
 #include <vector>
 #include "../Items/Coin.hpp"
+#include "../Player/Player.hpp"
 
 using namespace sf;
+
 
 class UIManager : public Singleton<UIManager>
 {
 private:
 	float Cursor_selectY = 600.f;
-	Coin coin;
-
+	
 	Texture textureBackGround;
 	Sprite spriteBackGround;
 
@@ -35,7 +36,7 @@ private:
 	Texture* textureNoLife;
 	Sprite* spriteNoLife;
 
-	int currentHP = 5;
+
 
 	Texture textureCharacterUI;
 	Sprite spriteCharacterUI;

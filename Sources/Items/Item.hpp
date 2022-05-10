@@ -1,18 +1,19 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../Objects/GameObject.hpp"
 
 using namespace sf;
-class Item 
+class Item : public GameObject
 {
 public:
 	Item();
-	virtual ~Item();
+	~Item();
 
-	virtual void Init();
-	virtual void Update(float dt);
-	virtual void Render(RenderWindow& window);
-	virtual void Release();
-
+	virtual bool Collision(GameObject* otherObj) override;
+	virtual void Init() override;
+	virtual void Update(float dt) override;
+	virtual void Render(RenderWindow& window) override;
+	virtual void Release() override;
 
 };
 
