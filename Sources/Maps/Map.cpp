@@ -80,6 +80,10 @@ void Map::CheckCollisions(float dt)
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
 				std::cout << player->GetName() << " Collision Monster" << std::endl;
+				// (*it)->GetName() == "coin" 
+				{
+					//아이템 없애고 플레이어 코인개수 증가
+				}
 			}
 		}
 	}
@@ -114,6 +118,20 @@ void Map::CheckCollisions(float dt)
 		//	// 플레이어가 몬스터의 어택박스에 적중당했을 때
 		//  // 플레이어 넉백 + 데미지 판정
 		//}
+		if ((*it)->CompareTag(TAG::MONSTER))
+		{
+			for (std::vector<Stable*>::iterator stable_it = stableObjects.begin(); stable_it != stableObjects.end(); ++stable_it)
+			{
+				if ((*it)->CheckCollision(*stable_it))
+				{
+					if ((*stable_it)->CompareTag(TAG::GROUND))
+					{
+						// 몬스터랑 바닥 충돌처리
+						(*it)->OnGround((*stable_it)->GetSprite().getGlobalBounds());
+					}
+				}
+			}
+		}
 	}
 
 	for (std::vector<Stable*>::iterator it = stableObjects.begin(); it != stableObjects.end(); ++it)
@@ -135,7 +153,7 @@ void Map::CheckCollisions(float dt)
 			// 땅과 부딪혔을 때
 			if ((*it)->CompareTag(TAG::GROUND))
 			{
-				player->OnGround(dt, (*it)->GetSprite().getGlobalBounds());
+				player->OnGround((*it)->GetSprite().getGlobalBounds());
 				std::cout << player->GetName() << " Collision Stable" << std::endl;
 			}
 			else

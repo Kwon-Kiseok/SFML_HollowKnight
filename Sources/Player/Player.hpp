@@ -32,7 +32,7 @@ private:
 	RectangleShape hitBox;
 	// 좌우 벽 충돌처리
 	RectangleShape hitBoxSide;
-	int num = 1;
+	int isMove = 1;
 
 	float gravity;								// 중력가속도 처리
 	Vector2f positionTemp;						// 전 프레임 포지션
@@ -62,7 +62,7 @@ public:
 	bool UpdateCollision();	//  내가 때린 판정
 	bool OnHitted(Time timeHit);	// 내가 맞은 판정
 
-	void OnGround(float dt, FloatRect map);
+	void OnGround(FloatRect map);
 	void SetXpos();
 	//void SetVal(float dt);
 

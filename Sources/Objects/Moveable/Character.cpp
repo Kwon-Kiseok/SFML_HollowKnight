@@ -19,6 +19,9 @@ Character::Character()
 	moveSpeed = 5.f;
 
 	state = State::IDLE;
+
+	xDir = 0;
+	yDir = 0;
 }
 
 Character::~Character()
@@ -91,12 +94,6 @@ void Character::Release()
 {
 }
 
-void Character::SetState(State _state)
+void Character::OnGround(FloatRect map)
 {
-	this->state = _state;
-}
-
-State Character::GetState()
-{
-	return state;
 }

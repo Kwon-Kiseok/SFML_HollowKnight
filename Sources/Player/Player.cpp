@@ -204,7 +204,7 @@ void Player::Update(float dt)
 		float h = InputManager::GetInstance().GetAxisRaw(Axis::Horizontal);	// -1 0 1
 		if (!isDash)
 		{
-			delta.x = h * SPEED * dt * num;
+			delta.x = h * SPEED * dt * isMove;
 			if (!isWay && h == -1)
 			{
 				sprite.scale(-1, 1);
@@ -227,14 +227,12 @@ void Player::Update(float dt)
 			animation.Play("StartMove");
 			animation.PlayQueue("Move");
 			string = "Move";
-			SetState(State::MOVE);
 		}
 		if (move != 0 && h == 0)
 		{
 			animation.Play("RunToIdle");
 			animation.PlayQueue("Idle");
 			string = "Idle";
-			SetState(State::IDLE);
 		}
 		move = h;
 	}
@@ -269,7 +267,7 @@ void Player::Update(float dt)
 			canJump = false;
 			dashTemp = position;
 		}
-		if (isDash && num != 0)
+		if (isDash && isMove != 0)
 		{
 			if (isWay)
 			{
@@ -308,7 +306,7 @@ void Player::Update(float dt)
 			isAttack = false;
 		}
 	}
-	num = 1;
+	isMove = 1;
 	position += delta;
 
 	sprite.setPosition(position);
@@ -378,7 +376,7 @@ bool Player::OnHitted(Time timeHit)
 	return false;
 }
 
-void Player::OnGround(float dt, FloatRect map)
+void Player::OnGround(FloatRect map)
 {
 	if (hitBox.getGlobalBounds().intersects(map))
 	{
@@ -392,7 +390,7 @@ void Player::OnGround(float dt, FloatRect map)
 	}
 	if (hitBoxSide.getGlobalBounds().intersects(map))
 	{
-		num = 0;
+		isMove = 0;
 		if (position.x < map.left)
 		{
 			if (InputManager::GetInstance().GetKeyDown(Keyboard::Left))

@@ -16,7 +16,7 @@ Town_Map::Town_Map(Player* player)
 	: Map(player)
 {
 	LoadMap();
-	player->SetPosition(Vector2f(100.f, -1500.f));
+	player->SetPosition(Vector2f(100.f, -2500.f));
 }
 
 void Town_Map::LoadMap()
@@ -42,6 +42,18 @@ void Town_Map::LoadMap()
 		AddObject(data);
 		stableObjects.push_back(object);
 	}
+
+	// monster = new ~~
+	crawlid = new Crawlid(-1);
+	crawlid2 = new Crawlid(-1);
+	// monster.init();
+	crawlid->SetPosition(Vector2f(100.f, 800.f));
+	crawlid->Init();
+	crawlid2->SetPosition(Vector2f(600.f, 800.f));
+	crawlid2->Init();
+	//characters.push_back(monster);
+	characters.push_back(crawlid);
+	characters.push_back(crawlid2);
 
 	cout << "Load Complete" << endl;
 }

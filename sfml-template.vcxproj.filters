@@ -42,6 +42,7 @@
     <ClCompile Include="Sources\Objects\Stable\BackgroundImages.cpp" />
     <ClCompile Include="Sources\Utils\Textbox.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Bench.cpp" />
+    <ClCompile Include="Sources\Objects\Moveable\Monster\Crawlid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
@@ -60,6 +61,7 @@
     <ClInclude Include="Sources\Objects\Stable\BackgroundImages.hpp" />
     <ClInclude Include="Sources\Utils\Textbox.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Bench.hpp" />
+    <ClInclude Include="Sources\Objects\Moveable\Monster\Crawlid.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />
