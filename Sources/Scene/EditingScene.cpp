@@ -146,6 +146,18 @@ void EditingScene::Update(float dt)
 		SetLayer();
 	// 위치 설정
 	SetObjectsPosition();
+
+	if (this->object != nullptr)
+	{
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
+		{
+			this->object->GetSprite().setRotation(this->object->GetSprite().getRotation() -10);
+		}
+		else if (InputManager::GetInstance().GetKeyDown(Keyboard::C))
+		{
+			this->object->GetSprite().setRotation(this->object->GetSprite().getRotation() + 10);
+		}
+	}
 }
 
 void EditingScene::Render(sf::RenderWindow& window)
@@ -648,29 +660,29 @@ void EditingScene::SetManual()
 	
 	if(positionSetting)
 	{
-		manualText.setString(L"RIGHT - undo\nSPACE - put\nBACK SPACE - delete");
+		manualText.setString(L"Z - rotate(-10)\nC - rotate(+10)\nRIGHT - undo\nSPACE - put\nBACK SPACE - delete");
 	}
 	else
 	{
-		manualText.setString(L"LEFT - select");
+		manualText.setString(L"LEFT - select\nTAB - info");
 	}
 }
 
 void EditingScene::Save()
 {
 	ofstream dataFile;
-	dataFile.open("data_tables/maps/KingsPass_map_data.csv");
+	dataFile.open("data_tables/maps/Town_map_data.csv");
 	if (dataFile.fail())
 	{
 		cout << "File load Failed" << endl;
 		return;
 	}
-	dataFile << "NAME,INDEX,LAYER,X,Y\n";
+	dataFile << "NAME,INDEX,LAYER,X,Y,ROTATE\n";
 	for (int i = 0; i < objects.size(); ++i)
 	{
 		dataFile << objects[i]->GetName() << "," << objects[i]->GetImageIdx() 
 			<< "," << objects[i]->GetLayer() << "," << objects[i]->GetPosition().x 
-			<< "," << objects[i]->GetPosition().y << endl;
+			<< "," << objects[i]->GetPosition().y << "," << objects[i]->GetSprite().getRotation() << endl;
 	}
 	cout << "Save Complete File" << endl;
 	dataFile.close();
@@ -678,13 +690,14 @@ void EditingScene::Save()
 
 void EditingScene::Load()
 {
-	rapidcsv::Document dataFile("data_tables/maps/KingsPass_map_data.csv");
+	rapidcsv::Document dataFile("data_tables/maps/Town_map_data.csv");
 
 	vector<string> colName = dataFile.GetColumn<string>("NAME");
 	vector<int> colIndex = dataFile.GetColumn<int>("INDEX");
 	vector<int> colLayer = dataFile.GetColumn<int>("LAYER");
 	vector<float> colX = dataFile.GetColumn<float>("X");
 	vector<float> colY = dataFile.GetColumn<float>("Y");
+	vector<float> colRotate = dataFile.GetColumn<float>("ROTATE");
 
 	int totalObjects = colName.size();
 	for (int i = 0; i < totalObjects; ++i)
@@ -695,6 +708,7 @@ void EditingScene::Load()
 		data.layer = colLayer[i];
 		data.x = colX[i];
 		data.y = colY[i];
+		data.rotate = colRotate[i];
 
 		AddObject(data);
 		objects.push_back(object);
@@ -777,4 +791,5 @@ void EditingScene::AddObject(MapData& data)
 	this->object->SetLayer(data.layer);
 	this->object->SetPosition(Vector2f(data.x, data.y));
 	this->object->SetOriginCenter();
+	this->object->GetSprite().setRotation(data.rotate);
 }

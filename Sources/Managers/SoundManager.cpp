@@ -38,10 +38,21 @@ void SoundManager::PlayMusic(std::string path)
 	music.setLoop(true);
 }
 
+void SoundManager::StopMusic()
+{
+	music.stop();
+}
+
 void SoundManager::PlaySound(std::wstring id)
 {
 	auto it = effectSounds.find(id);
 	it->second->play();
+}
+
+Sound& SoundManager::GetSoundbyID(std::wstring id)
+{
+	auto it = effectSounds.find(id);
+	return *(it->second);
 }
 
 void SoundManager::Release()

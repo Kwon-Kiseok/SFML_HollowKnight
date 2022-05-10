@@ -14,8 +14,10 @@ struct MapData
 	int layer;
 	float x;
 	float y;
+	float rotate;
 };
 
+class Stable;
 class Map
 {
 protected:
@@ -25,6 +27,8 @@ protected:
 	std::vector<Portal*> portals;
 
 	Player* player;
+	Stable* object;
+
 public:
 	Map(Player* player_) : player(player_) {}
 	virtual ~Map() {}
@@ -35,5 +39,8 @@ public:
 	virtual void Release();
 
 	virtual void CheckCollisions(float dt);
+
+	virtual void LoadMap(std::string dataFilepath);
+	virtual void AddObject(MapData& data);
 };
 

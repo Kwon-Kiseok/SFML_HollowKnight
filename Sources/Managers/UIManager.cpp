@@ -96,6 +96,7 @@ void UIManager::Update_TitleScene(float dt)
 		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
 		{
 			SceneManager::GetInstance().Load(L"Play");
+			SoundManager::GetInstance().StopMusic();
 		}
 	}
 	if (textEditor.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))

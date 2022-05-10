@@ -87,7 +87,7 @@ KingsPassImages::KingsPassImages(int idx)
 		break;
 	}
 
-	SetName("kpImage");
+	SetName("kpImages");
 	SetTexture(path + index);
 	SetSprite();
 }
