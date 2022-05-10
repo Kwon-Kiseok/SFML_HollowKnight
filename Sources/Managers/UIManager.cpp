@@ -4,7 +4,9 @@
 #include "../Managers/InputManager.hpp"
 #include "../Managers/SceneManager.hpp"
 #include "../Managers/SoundManager.hpp"
+#include "../Managers/PlayerDataManager.hpp"
 #include "../Items/Coin.hpp"
+
 #include <sstream>
 
 void UIManager::Init_TitleScene()
@@ -160,7 +162,7 @@ void UIManager::Init_PlayScene()
 
 	fontCALIST.loadFromFile("Resources/Fonts/CALIST.ttf");
 	stringstream ssCoin;
-	ssCoin << coin.GetCoin();
+	ssCoin << PlayerDataManager::GetInstance().GetPlayerHP();
 	textCoin.setString(ssCoin.str());
 	textCoin.setPosition(275, 153);
 	textCoin.setCharacterSize(40);

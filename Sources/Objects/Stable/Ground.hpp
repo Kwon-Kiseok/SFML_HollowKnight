@@ -8,7 +8,13 @@ public:
 	Ground(int idx);
 	virtual ~Ground();
 
-	void SetImageIdx(int idx);
 	virtual bool Collision(GameObject* otherObj) override;
 };
 
+class KingsPassGround : public Stable
+{
+public:
+	KingsPassGround();
+	KingsPassGround(int idx);
+	virtual ~KingsPassGround();
+};

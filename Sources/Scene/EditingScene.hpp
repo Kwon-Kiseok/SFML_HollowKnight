@@ -37,6 +37,7 @@ private:
 
 	GameObject* object;
 
+	// tut
 	button* groundButton;		// ¹Ù´Ú
 	button* layeredButton;		// 
 	button* buildingButton;		//
@@ -46,6 +47,20 @@ private:
 	button* benchButton;
 	button* portalButton;		// Æ÷Å»
 
+	button* platformButton;
+	button* thornButton;
+	button* wallButton;
+
+	// kingsPass
+	button* kp_groundButton;
+	button* kp_doorButton;
+	button* kp_imagesButton;
+	button* kp_bgButton;
+	button* kp_wallButton;
+	button* kp_objectButton;
+
+
+	//
 	button* saveButton;
 	button* loadButton;
 	button* exitButton;
