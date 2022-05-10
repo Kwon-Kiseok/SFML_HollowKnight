@@ -135,7 +135,7 @@ void Map::CheckCollisions(float dt)
 			// ¶¥°ú ºÎµúÇûÀ» ¶§
 			if ((*it)->CompareTag(TAG::GROUND))
 			{
-				player->OnGround(dt);
+				player->OnGround(dt, (*it)->GetSprite().getGlobalBounds());
 				std::cout << player->GetName() << " Collision Stable" << std::endl;
 			}
 			else
@@ -143,7 +143,6 @@ void Map::CheckCollisions(float dt)
 				//player->SetVal(dt);
 			}
 		}
-
 	}
 }
 

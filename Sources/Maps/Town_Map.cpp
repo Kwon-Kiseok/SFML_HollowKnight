@@ -16,7 +16,7 @@ Town_Map::Town_Map(Player* player)
 	: Map(player)
 {
 	LoadMap();
-	player->SetPosition(Vector2f(100.f, 700.f));
+	player->SetPosition(Vector2f(100.f, -1500.f));
 }
 
 void Town_Map::LoadMap()

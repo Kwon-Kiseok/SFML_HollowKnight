@@ -17,6 +17,8 @@ Character::Character()
 
 	jumpSpeed = 3.f;
 	moveSpeed = 5.f;
+
+	state = State::IDLE;
 }
 
 Character::~Character()
@@ -87,4 +89,14 @@ void Character::Render(RenderWindow& window)
 
 void Character::Release()
 {
+}
+
+void Character::SetState(State _state)
+{
+	this->state = _state;
+}
+
+State Character::GetState()
+{
+	return state;
 }
