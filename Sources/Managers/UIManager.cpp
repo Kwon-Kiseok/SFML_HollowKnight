@@ -9,6 +9,22 @@
 
 #include <sstream>
 
+void UIManager::Init()
+{
+}
+
+void UIManager::Update(float dt)
+{
+}
+
+void UIManager::Render(sf::RenderWindow& window)
+{
+}
+
+void UIManager::Release()
+{
+}
+
 void UIManager::Init_TitleScene()
 {
 	//std::cout << "TitleScene Load" << std::endl;
@@ -81,6 +97,7 @@ void UIManager::Update_TitleScene(float dt)
 		if (Cursor_selectY == 600.f)
 		{
 			SceneManager::GetInstance().Load(L"Play");
+			SoundManager::GetInstance().StopMusic();
 		}
 		else if (Cursor_selectY == 750.f)
 		{
@@ -221,6 +238,16 @@ void UIManager::Render_PlayScene(sf::RenderWindow& window)
 
 void UIManager::Release_PlayScene()
 {
+	delete[] textureLifes;
+	delete[] spriteLifes;
+	delete[] textureNoLife;
+	delete[] spriteNoLife;
+
+	textureLifes = nullptr;
+	spriteLifes = nullptr;
+	textureNoLife = nullptr;
+	spriteNoLife = nullptr;
+
 }
 
 // //////////////////////////////////////////////////////////////////////

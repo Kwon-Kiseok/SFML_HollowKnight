@@ -93,6 +93,7 @@ void Map::Release()
 	}
 	portals.clear();
 
+
 }
 
 void Map::CheckCollisions(float dt)

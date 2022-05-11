@@ -406,7 +406,7 @@ CrossRoadElev::CrossRoadElev(int idx)
 		break;
 	}
 
-	SetName("crElev");
+	SetName("elev");
 	SetTexture(path + index);
 	SetSprite();
 }

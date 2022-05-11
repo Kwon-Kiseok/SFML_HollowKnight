@@ -34,8 +34,15 @@ private:
 	bool positionSetting;
 
 	vector<GameObject*> objects;
-
 	GameObject* object;
+
+	// 충돌체
+	vector<RectangleShape*> colliders;
+	RectangleShape* collider;
+	button* colliderButton;
+
+	Vector2f startPos;	// 좌상점
+	Vector2f endPos;	// 우하점
 
 	// tut
 	button* groundButton;		// 바닥
@@ -50,6 +57,8 @@ private:
 	button* platformButton;
 	button* thornButton;
 	button* wallButton;
+
+	button* elevButton;			// 엘리베이터
 
 	// kingsPass
 	button* kp_groundButton;
@@ -66,6 +75,10 @@ private:
 	button* cr_roofButton;
 	button* cr_wallButton;
 	button* cr_objectButton;
+
+	// bossRoom
+	button* bossRoomButton;
+	button* centralButton;
 
 	//
 	button* saveButton;
@@ -112,5 +125,7 @@ public:
 	void Save();
 	void Load();
 	void AddObject(MapData& data);
+
+	void SetCollider();
 };
 
