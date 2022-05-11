@@ -21,6 +21,7 @@ private:
 	int hp;										// 체력
 	int mp;										// 기력?
 	int coin;									// 재화
+	
 
 	AnimationController animation;
 

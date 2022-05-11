@@ -123,6 +123,9 @@ void Crawlid::Render(RenderWindow& window)
 	window.draw(rectangleShape);
 	window.draw(gavityShape);
 	window.draw(sideShape);
+
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::H))
+		coin->Render(window);
 }
 
 void Crawlid::Release()

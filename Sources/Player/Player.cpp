@@ -5,6 +5,7 @@
 #include "../Managers/SoundManager.hpp"
 #include "../Utils/Utility.hpp"
 
+
 Player::Player()
 	: isWay(true), isDash(false), isAttack(false), firstFrame(true), secondFrame(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
 {
@@ -295,6 +296,8 @@ void Player::Update(float dt)
 			animation.PlayQueue("Idle");
 			string = "Idle";
 			SetDirection(Direction::NONE);
+			SoundManager::GetInstance().GetSoundbyID(L"walk").stop();
+
 		}
 		move = h;
 	}
@@ -394,6 +397,7 @@ void Player::Update(float dt)
 	{
 		hp++;
 	}
+
 	isMove = 1;
 	position += delta;
 
@@ -417,6 +421,7 @@ void Player::Render(RenderWindow& window)
 	window.draw(sprite);
 	window.draw(hitBox);
 	window.draw(hitBoxSide);
+
 }
 
 void Player::Release()
