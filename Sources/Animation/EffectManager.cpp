@@ -10,7 +10,7 @@ void EffectManager::Init()
 	effectSprite.setPosition(position);
 	//sprite.setOrigin(60, 60);
 	// Animator √ ±‚»≠
-	effect.SetTarget(&effectSprite);
+	animation.SetTarget(&effectSprite);
 
 	rapidcsv::Document clips("data_tables/animations/effect/effect_animation_clips.csv");
 
@@ -47,16 +47,17 @@ void EffectManager::Init()
 			}
 			clip.frames.push_back(AnimationFrame(texMap[colTexure[j]], IntRect(colL[j], colT[j], colW[j], colH[j]), Vector2f(colX[j], colY[j])));
 		}
-		effect.AddClip(clip);
+		animation.AddClip(clip);
 	}
 
-	effect.Play("Slash");
+	animation.Play("Slash");
 }
 
-void EffectManager::Update(Vector2f playerPosition)
+void EffectManager::Update(Vector2f playerPosition, float dt)
 {
 	//position = playerPosition;
 	effectSprite.setPosition(playerPosition);
+	animation.Update(dt);
 }
 
 void EffectManager::Draw(RenderWindow& window)
@@ -66,5 +67,10 @@ void EffectManager::Draw(RenderWindow& window)
 
 void EffectManager::SetDraw(std::string string)
 {
-	effect.Play(string);
+	animation.Play(string);
+}
+
+void EffectManager::SetScale()
+{
+	effectSprite.scale(-1, 1);
 }

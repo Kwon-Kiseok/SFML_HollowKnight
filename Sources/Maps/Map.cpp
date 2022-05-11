@@ -107,6 +107,10 @@ void Map::CheckCollisions(float dt)
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
 				std::cout << player->GetName() << " Collision Monster" << std::endl;
+				// (*it)->GetName() == "coin" 
+				{
+					//ì•„ì´í…œ ì—†ì• ê³  í”Œë ˆì´ì–´ ì½”ì¸ê°œìˆ˜ ì¦ê°€
+				}
 			}
 		}
 	}
@@ -119,7 +123,7 @@ void Map::CheckCollisions(float dt)
 		{
 			player->Collision(*it);
 
-			// ÇÃ·¹ÀÌ¾î¿Í ¸ó½ºÅÍ°¡ Ãæµ¹ÇßÀ» °æ¿ì
+			// í”Œë ˆì´ì–´ì™€ ëª¬ìŠ¤í„°ê°€ ì¶©ëŒí–ˆì„ ê²½ìš°
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
 				std::cout << player->GetName() << " Collision Monster" << std::endl;
@@ -127,8 +131,8 @@ void Map::CheckCollisions(float dt)
 			}
 		}
 		/******************************************
-		* ¸ó½ºÅÍ°¡ ÇÃ·¹ÀÌ¾îÀÇ °ø°Ý¹Ú½º¿¡ ºÎµúÇûÀ» °æ¿ì
-		* ÀÌ°Ô ¸Â³ª¿ä????
+		* ëª¬ìŠ¤í„°ê°€ í”Œë ˆì´ì–´ì˜ ê³µê²©ë°•ìŠ¤ì— ë¶€ë”ªí˜”ì„ ê²½ìš°
+		* ì´ê²Œ ë§žë‚˜ìš”????
 		******************************************/
 		RectangleShape attackBox = player->GetAttackBox();
 		if ((*it)->Collision_AttackBox(attackBox) && (*it)->CompareTag(TAG::MONSTER))
@@ -138,9 +142,23 @@ void Map::CheckCollisions(float dt)
 
 		//if (player->Collision_AttackBox((*it)->GetAttackBox()) && (*it)->CompareTag(TAG::MONSTER))
 		//{
-		//	// ÇÃ·¹ÀÌ¾î°¡ ¸ó½ºÅÍÀÇ ¾îÅÃ¹Ú½º¿¡ ÀûÁß´çÇßÀ» ¶§
-		//  // ÇÃ·¹ÀÌ¾î ³Ë¹é + µ¥¹ÌÁö ÆÇÁ¤
+		//	// í”Œë ˆì´ì–´ê°€ ëª¬ìŠ¤í„°ì˜ ì–´íƒë°•ìŠ¤ì— ì ì¤‘ë‹¹í–ˆì„ ë•Œ
+		//  // í”Œë ˆì´ì–´ ë„‰ë°± + ë°ë¯¸ì§€ íŒì •
 		//}
+		if ((*it)->CompareTag(TAG::MONSTER))
+		{
+			for (std::vector<Stable*>::iterator stable_it = stableObjects.begin(); stable_it != stableObjects.end(); ++stable_it)
+			{
+				if ((*it)->CheckCollision(*stable_it))
+				{
+					if ((*stable_it)->CompareTag(TAG::GROUND))
+					{
+						// ëª¬ìŠ¤í„°ëž‘ ë°”ë‹¥ ì¶©ëŒì²˜ë¦¬
+						(*it)->OnGround((*stable_it)->GetSprite().getGlobalBounds());
+					}
+				}
+			}
+		}
 	}
 
 	for (std::vector<Stable*>::iterator it = stableObjects.begin(); it != stableObjects.end(); ++it)
@@ -149,10 +167,15 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
-			// ¶¥°ú ºÎµúÇûÀ» ¶§
+			// ë•…ê³¼ ë¶€ë”ªí˜”ì„ ë•Œ
 			if ((*it)->CompareTag(TAG::GROUND))
 			{
-				player->OnGround(dt);
+				player->OnGround((*it)->GetSprite().getGlobalBounds());
+				std::cout << player->GetName() << " Collision Stable" << std::endl;
+			}
+			else
+			{
+				//player->SetVal(dt);
 			}
 		}
 	}
@@ -165,7 +188,7 @@ void Map::CheckCollisions(float dt)
 		{
 			player->Collision(*it);
 
-			// ÇÃ·¹ÀÌ¾î°¡ Æ÷Å»°ú °ãÃÆÀ» ¶§
+			// í”Œë ˆì´ì–´ê°€ í¬íƒˆê³¼ ê²¹ì³¤ì„ ë•Œ
 			if ((*it)->GetInteractionType() == Interaction_Type::PORTAL)
 			{
 				std::cout << player->GetName() << " Collision Portal" << std::endl;
@@ -206,7 +229,7 @@ void Map::LoadMap(std::string dataFilepath)
 		}
 		else if (data.name == "portal")
 		{
-			// Æ÷Å»Àº Æ÷Å»³¢¸®
+			// í¬íƒˆì€ í¬íƒˆë¼ë¦¬
 			Portal* portal = new Portal();
 			portal->SetCurrMap(MAP_TYPE::Town);
 			// temp

@@ -2,12 +2,13 @@
 #include "../Animation/rapidcsv.hpp"
 #include "../Managers/InputManager.hpp"
 #include "../Managers/PlayerDataManager.hpp"
+#include "../Utils/Utility.hpp"
 
 Player::Player()
-	: isWay(true), isDash(false), isAttack(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
+	: isWay(true), isDash(false), isAttack(false), firstFrame(true), secondFrame(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
 {
 	attackBox.scale(-1, 1);
-	hp = 0;
+	hp = 5;
 	mp = 0;
 	move = 0.f;
 	jumpTime = JUMP_MAX;
@@ -27,8 +28,8 @@ void Player::Init()
 	animation.SetTarget(&sprite);
 
 	// 공격 히트박스
-	attackBox.setSize(Vector2f(140, 100));
-	attackBox.setOrigin(Vector2f(0, 110));
+	attackBox.setSize(Vector2f(140, 90));
+	attackBox.setOrigin(Vector2f(0, 100));
 	attackBox.setPosition(position);
 	attackBox.setFillColor(Color::Transparent);
 	attackBox.setOutlineColor(Color::Yellow);
@@ -40,6 +41,13 @@ void Player::Init()
 	hitBox.setFillColor(Color::Transparent);
 	hitBox.setOutlineColor(Color::Red);
 	hitBox.setOutlineThickness(2);
+	// 좌우 벽 충돌 처리
+	hitBoxSide.setSize(Vector2f(40, 70));
+	hitBoxSide.setOrigin(Vector2f(20, 85));
+	hitBoxSide.setPosition(position);
+	hitBoxSide.setFillColor(Color::Transparent);
+	hitBoxSide.setOutlineColor(Color::Blue);
+	hitBoxSide.setOutlineThickness(2);
 
 
 	/**************************************************************************/
@@ -72,7 +80,7 @@ void Player::Init()
 		int totalFrames = colTexure.size();
 		for (int j = 0; j < totalFrames; ++j)
 		{
-			if (texMap.find(colTexure[i]) == texMap.end())
+			if (texMap.find(colTexure[j]) == texMap.end())
 			{
 				auto& ref = texMap[colTexure[j]];
 				ref.loadFromFile(colTexure[j]);
@@ -163,32 +171,85 @@ void Player::UpdateInput()
 
 void Player::Update(float dt)
 {
+	if (firstFrame)
+	{
+		if (secondFrame)
+		{
+			dt = 0.f;
+			firstFrame = false;
+		}
+		dt = 0.f;
+		secondFrame = true;
+	}
 	positionTemp = position;
 	Vector2f delta;
+	float h = InputManager::GetInstance().GetAxisRaw(Axis::Horizontal);	// -1 0 1
+	float v = InputManager::GetInstance().GetAxisRaw(Axis::Vertical);	// -1 0 1
 
-	/******************  knockback test  ****************/
+	/**********************************
+	* 공격 방향 설정
+	**********************************/
+	if (!isAttack)
 	{
-		if (isKnockback)
+		if (v == -1.f)
 		{
-			knockback -= dt;
-			if (knockback > 0.f)
-			{
-				if (!isWay)
-				{
-					position.x -= 0.2f;
-				}
-				if (isWay)
-				{
-					position.x += 0.2f;
-				}
-			}
-			else
-			{
-				isKnockback = false;
-				knockback = 0.3f;
-			}
+			attackBox.setSize(Vector2f(140, 120));
+			attackBox.setOrigin(Vector2f(70, 180));
+			attackBox.setPosition(position);
+			attackString = "UpSlash";
+			effectString = "UpSlash";
+		}
+		else if (v == 1.f && !canJump)
+		{
+			attackBox.setSize(Vector2f(140, 140));
+			attackBox.setOrigin(Vector2f(70, 50));
+			attackBox.setPosition(position);
+			attackString = "DownSlash";
+			effectString = "DownSlash";
+			knock = 1;
+		}
+		else
+		{
+			attackBox.setSize(Vector2f(140, 90));
+			attackBox.setOrigin(Vector2f(0, 100));
+			attackBox.setPosition(position);
+			attackString = "Slash";
+			effectString = "Slash";
+			knock = 0;
 		}
 	}
+
+	/******************  knockback test  ****************/
+	/*{
+		if (isKnockback)
+		{
+			knockbackTime -= dt;
+			if (knock == 0)
+			{
+				if (knockbackTime > 0.f)
+				{
+					if (!isWay)
+					{
+						position.x -= 0.2f;
+					}
+					if (isWay)
+					{
+						position.x += 0.2f;
+					}
+				}
+				else
+				{
+					isKnockback = false;
+					knockbackTime = 0.3f;
+				}
+			}
+		}
+		else if (knock == 1 && isAttack)
+		{
+			gravity = -500.f;
+			isKnockback = false;
+		}
+	}*/
 	/******************  knockback test  ****************/
 
 	/**********************************
@@ -196,14 +257,14 @@ void Player::Update(float dt)
 	**********************************/
 	{
 
-		float h = InputManager::GetInstance().GetAxisRaw(Axis::Horizontal);	// -1 0 1
 		if (!isDash)
 		{
-			delta.x = h * SPEED * dt;
+			delta.x = h * SPEED * dt * isMove;
 			if (!isWay && h == -1)
 			{
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
+				effect.SetScale();
 				isWay = !isWay;
 				SetDirection(Direction::LEFT);
 			}
@@ -211,6 +272,7 @@ void Player::Update(float dt)
 			{
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
+				effect.SetScale();
 				isWay = !isWay;
 				SetDirection(Direction::RIGHT);
 			}
@@ -236,23 +298,24 @@ void Player::Update(float dt)
 	* 중력 및 점프
 	**********************************/
 	{
-		gravity += GRAVITY * dt;
-		//isFalling = false;
+		if (isFalling)
+		{
+			gravity += GRAVITY * dt;
+		}
+		isFalling = true;
 		if (gravity > 1000.f)
 		{
 			gravity = 1000.f;
 		}
 		if (InputManager::GetInstance().GetKey(Keyboard::Z) && canJump)
 		{
+			animation.Play("Jump");
+			animation.PlayQueue("Jumping");
 			gravity = -700.f;
-			isFalling = true;
 			canJump = false;
 		}
-
-		if (isFalling)
-		{
-			delta.y = gravity * dt;
-		}
+		delta.y = gravity * dt;
+		
 	}
 	/**********************************
 	* 대쉬
@@ -265,7 +328,7 @@ void Player::Update(float dt)
 			canJump = false;
 			dashTemp = position;
 		}
-		if (isDash)
+		if (isDash && isMove != 0)
 		{
 			if (isWay)
 			{
@@ -280,7 +343,7 @@ void Player::Update(float dt)
 			if (position.x < dashTemp.x - 500.f || position.x > dashTemp.x + 500.f)
 			{
 				isDash = false;
-				animation.Play("RunToIdle");
+				//animation.Play("RunToIdle");
 				animation.PlayQueue(string);
 				gravity = 0.f;
 			}
@@ -292,10 +355,10 @@ void Player::Update(float dt)
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::X) && !isAttack)
 		{
-			animation.Play("Slash");
+			animation.Play(attackString);
 			animation.PlayQueue(string);	// 이전 이미지로
 			isAttack = true;
-			effect.SetDraw("Slash");
+			effect.SetDraw(effectString);
 		}
 		attackDelay -= dt;
 		if (attackDelay < 0.f)
@@ -304,29 +367,29 @@ void Player::Update(float dt)
 			isAttack = false;
 		}
 	}
-
-
+	isMove = 1;
 	position += delta;
 
 	sprite.setPosition(position);
 	attackBox.setPosition(position);
 	hitBox.setPosition(position);
+	hitBoxSide.setPosition(position);
 
 	animation.Update(dt);
 
-	effect.Update(position);
+	effect.Update(position, dt);
 }
 
 void Player::Render(RenderWindow& window)
 {
 	if (isAttack)
 	{
+		effect.Draw(window);		// Slash
 		window.draw(attackBox);
 	}
 	window.draw(sprite);
 	window.draw(hitBox);
-
-	effect.Draw(window);		// 왜 말을 안 듣니 너
+	window.draw(hitBoxSide);
 }
 
 void Player::Release()
@@ -335,7 +398,7 @@ void Player::Release()
 
 const FloatRect Player::GetGlobalBounds()
 {
-	return sprite.getGlobalBounds();
+	return hitBox.getGlobalBounds();
 }
 
 int Player::GetHP()
@@ -374,17 +437,87 @@ bool Player::OnHitted(Time timeHit)
 	return false;
 }
 
-void Player::OnGround(float dt)
+void Player::OnGround(FloatRect map)
 {
-	gravity = 0.f;
-	position.y = positionTemp.y;
-	sprite.setPosition(position);
-	isFalling = false;
-	canJump = true;
+	if (hitBox.getGlobalBounds().intersects(map))
+	{
+		if (!canJump)
+		{
+			animation.Play(string);
+		}
+		gravity = 0.f;
+		position.y = positionTemp.y;
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
+		{
+			position.y -= 10.f;
+		}
+		canJump = true;
+		isFalling = false;
+	}
+	if (hitBoxSide.getGlobalBounds().intersects(map))
+	{
+		isMove = 0;
+		if (position.x < map.left)
+		{
+			if (InputManager::GetInstance().GetKeyDown(Keyboard::Left))
+			{
+				position.x -= 1.f;
+			}
+		}
+		else if (position.x > map.width)
+		{
+			if (InputManager::GetInstance().GetKeyDown(Keyboard::Right))
+			{
+				position.x += 1.f;
+			}
+		}
+
+		if (isDash)
+		{
+			isDash = false;
+			animation.PlayQueue(string);
+		}
+	}
 }
+
+void Player::SetXpos()
+{
+	position.x = positionTemp.x;
+}
+
+//Vector2f Player::GetPosition()
+//{
+//	return position;
+//}
 
 const RectangleShape Player::GetAttackBox()
 {
 	return attackBox;
+}
+
+void Player::KnockBackSide()
+{
+	knockbackTime -= 0.001f;
+	if (knockbackTime > 0.f)
+	{
+		if (!isWay)
+		{
+			position.x -= 0.2f;
+		}
+		if (isWay)
+		{
+			position.x += 0.2f;
+		}
+	}
+	else
+	{
+		isKnockback = false;
+		knockbackTime = 0.3f;
+	}
+}
+
+void Player::KnockBackUp()
+{
+	gravity = -500.f;
 }
 
