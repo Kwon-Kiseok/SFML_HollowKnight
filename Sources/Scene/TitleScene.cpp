@@ -27,4 +27,5 @@ void TitleScene::Render(sf::RenderWindow& window)
 
 void TitleScene::Release()
 {
+	UIManager::GetInstance().Release_PlayScene();
 }

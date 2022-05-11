@@ -51,6 +51,8 @@ private:
 	button* thornButton;
 	button* wallButton;
 
+	button* elevButton;			// ø§∏Æ∫£¿Ã≈Õ
+
 	// kingsPass
 	button* kp_groundButton;
 	button* kp_doorButton;
@@ -66,6 +68,10 @@ private:
 	button* cr_roofButton;
 	button* cr_wallButton;
 	button* cr_objectButton;
+
+	// bossRoom
+	button* bossRoomButton;
+	button* centralButton;
 
 	//
 	button* saveButton;

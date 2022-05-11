@@ -18,6 +18,8 @@
 #include "../Objects/Stable/thorn.hpp"
 
 #include "../Objects/Stable/CrossRoadImages.hpp"
+#include "../Objects/Stable/BossRoomImages.hpp"
+#include "../Objects/Stable/Central.hpp"
 
 #include <iostream>
 #include <ostream>
@@ -35,7 +37,7 @@ void EditingScene::Init()
 	backboard.setPosition(0.f, 0.f);
 	backboard.setFillColor(Color(51,51,51));
 	//backboard.setFillColor(Color(0, 0, 0));
-	backboard.setSize(Vector2f(4000.f, 2000.f));
+	backboard.setSize(Vector2f(2000.f, 1000.f));
 
 	font.loadFromFile("Resources/Fonts/CALIST.TTF");
 	currentCursorPos.setFont(font);
@@ -64,7 +66,8 @@ void EditingScene::Init()
 	platformButton = new button("platform", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 340.f), Vector2f(100.f, 25.f));
 	thornButton = new button("thorn", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 370.f), Vector2f(100.f, 25.f));
 	wallButton = new button("wall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 580.f), Vector2f(100.f, 25.f));
-
+	elevButton = new button("elev", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 790.f), Vector2f(100.f, 25.f));
+	
 	// kings pass
 	kp_groundButton = new button("kpGround", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 400.f), Vector2f(100.f, 25.f));
 	kp_doorButton = new button("kpDoor", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 430.f), Vector2f(100.f, 25.f));
@@ -81,6 +84,9 @@ void EditingScene::Init()
 	cr_wallButton = new button("crWall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 730.f), Vector2f(100.f, 25.f));
 	cr_objectButton = new button("crObjects", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 760.f), Vector2f(100.f, 25.f));
 
+	// bossRoom
+	bossRoomButton = new button("bossRoom", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 820.f), Vector2f(100.f, 25.f));
+	centralButton = new button("central", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 850.f), Vector2f(100.f, 25.f));
 
 	saveButton = new button("Save", Vector2f(ViewManager::GetInstance().GetResolution().x - 300.f, 950.f), Vector2f(90.f, 30.f));
 	loadButton = new button("Load", Vector2f(ViewManager::GetInstance().GetResolution().x - 200.f, 950.f), Vector2f(90.f, 30.f));
@@ -97,6 +103,7 @@ void EditingScene::Init()
 	objectButtons.push_back(platformButton);
 	objectButtons.push_back(thornButton);
 	objectButtons.push_back(wallButton);
+	objectButtons.push_back(elevButton);
 
 	objectButtons.push_back(kp_groundButton);
 	objectButtons.push_back(kp_doorButton);
@@ -111,6 +118,9 @@ void EditingScene::Init()
 	objectButtons.push_back(cr_roofButton);
 	objectButtons.push_back(cr_wallButton);
 	objectButtons.push_back(cr_objectButton);
+
+	objectButtons.push_back(bossRoomButton);
+	objectButtons.push_back(centralButton);
 
 	objectButtons.push_back(saveButton);
 	objectButtons.push_back(loadButton);
@@ -332,6 +342,14 @@ void EditingScene::OpenImageIndex(button& btn)
 		{
 			temp = new Platform();
 		}
+		else if (selectName == "elev")
+		{
+			temp = new CrossRoadElev();
+		}
+		else if (selectName == "bossRoom")
+		{
+			temp = new BossRoomImages();
+		}
 		else if (selectName == "crGround")
 		{
 			temp = new CrossRoadGround();
@@ -355,6 +373,10 @@ void EditingScene::OpenImageIndex(button& btn)
 		else if (selectName == "crObjects")
 		{
 			temp = new CrossRoadObjects();
+		}
+		else if (selectName == "central")
+		{
+			temp = new Central();
 		}
 		else if (selectName == "thorn")
 		{
@@ -485,6 +507,10 @@ void EditingScene::SetLayer()
 		{
 			this->object = new Platform(inputImageIdx);
 		}
+		else if (selectName == "elev")
+		{
+			this->object = new CrossRoadElev(inputImageIdx);
+		}
 		else if (selectName == "thorn")
 		{
 			this->object = new thorn();
@@ -540,6 +566,14 @@ void EditingScene::SetLayer()
 		else if (selectName == "crObjects")
 		{
 			this->object = new CrossRoadObjects(inputImageIdx);
+		}
+		else if (selectName == "bossRoom")
+		{
+			this->object = new BossRoomImages(inputImageIdx);
+		}
+		else if (selectName == "central")
+		{
+			this->object = new Central(inputImageIdx);
 		}
 		this->object->SetLayer(layer);
 		inputImageIdx = 0;
@@ -614,22 +648,22 @@ void EditingScene::MoveView()
 	if (InputManager::GetInstance().GetKey(Keyboard::Right)
 		|| InputManager::GetInstance().GetKey(Keyboard::D))
 	{
-		ViewManager::GetInstance().GetMainView().move(1.f, 0.f);
+		ViewManager::GetInstance().GetMainView().move(2.f, 0.f);
 	}
 	else if (InputManager::GetInstance().GetKey(Keyboard::Left)
 		|| InputManager::GetInstance().GetKey(Keyboard::A))
 	{
-		ViewManager::GetInstance().GetMainView().move(-1.f, 0.f);
+		ViewManager::GetInstance().GetMainView().move(-2.f, 0.f);
 	}
 	else if (InputManager::GetInstance().GetKey(Keyboard::Up)
 		|| InputManager::GetInstance().GetKey(Keyboard::W))
 	{
-		ViewManager::GetInstance().GetMainView().move(0.f, -1.f);
+		ViewManager::GetInstance().GetMainView().move(0.f, -2.f);
 	}
 	else if (InputManager::GetInstance().GetKey(Keyboard::Down)
 		|| InputManager::GetInstance().GetKey(Keyboard::S))
 	{
-		ViewManager::GetInstance().GetMainView().move(0.f, 1.f);
+		ViewManager::GetInstance().GetMainView().move(0.f, 2.f);
 	}
 }
 
@@ -733,7 +767,7 @@ void EditingScene::SetManual()
 void EditingScene::Save()
 {
 	ofstream dataFile;
-	dataFile.open("data_tables/maps/CrossRoad_map_data.csv");
+	dataFile.open("data_tables/maps/BossRoom_map_data.csv");
 	if (dataFile.fail())
 	{
 		cout << "File load Failed" << endl;
@@ -752,7 +786,7 @@ void EditingScene::Save()
 
 void EditingScene::Load()
 {
-	rapidcsv::Document dataFile("data_tables/maps/CrossRoad_map_data.csv");
+	rapidcsv::Document dataFile("data_tables/maps/BossRoom_map_data.csv");
 
 	vector<string> colName = dataFile.GetColumn<string>("NAME");
 	vector<int> colIndex = dataFile.GetColumn<int>("INDEX");
@@ -817,6 +851,10 @@ void EditingScene::AddObject(MapData& data)
 	{
 		this->object = new Platform(data.index);
 	}
+	else if (data.name == "elev")
+	{
+		this->object = new CrossRoadElev(data.index);
+	}
 	else if (data.name == "thorn")
 	{
 		this->object = new thorn();
@@ -873,7 +911,14 @@ void EditingScene::AddObject(MapData& data)
 	{
 		this->object = new CrossRoadObjects(data.index);
 	}
-
+	else if (data.name == "bossRoom")
+	{
+		this->object = new BossRoomImages(data.index);
+	}
+	else if (data.name == "central")
+	{
+		this->object = new Central(data.index);
+	}
 	this->object->SetLayer(data.layer);
 	this->object->SetPosition(Vector2f(data.x, data.y));
 	this->object->SetOriginCenter();
