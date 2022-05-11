@@ -35,12 +35,19 @@ void Crawlid::Init()
 	rectangleShape.setOutlineColor(Color::Red);
 	rectangleShape.setOutlineThickness(2);
 
-	gavityShape.setSize(Vector2f(60, 65));
-	gavityShape.setOrigin(Vector2f(30, 75));
+	gavityShape.setSize(Vector2f(90, 65));
+	gavityShape.setOrigin(Vector2f(45, 75));
 	gavityShape.setPosition(position);
 	gavityShape.setFillColor(Color::Transparent);
 	gavityShape.setOutlineColor(Color::Blue);
 	gavityShape.setOutlineThickness(2);
+
+	sideShape.setSize(Vector2f(110, 30));
+	sideShape.setOrigin(Vector2f(55, 55));
+	sideShape.setPosition(position);
+	sideShape.setFillColor(Color::Transparent);
+	sideShape.setOutlineColor(Color::Yellow);
+	sideShape.setOutlineThickness(2);
 
 	rapidcsv::Document clips("data_tables/animations/crawlid/crawlid_animation_clips.csv");
 
@@ -105,6 +112,7 @@ void Crawlid::Update(float dt)
 	SetPosition(position);
 	rectangleShape.setPosition(position);
 	gavityShape.setPosition(position);
+	sideShape.setPosition(position);
 	// animation
 	animation.Update(dt);
 }
@@ -114,6 +122,7 @@ void Crawlid::Render(RenderWindow& window)
 	window.draw(sprite);
 	window.draw(rectangleShape);
 	window.draw(gavityShape);
+	window.draw(sideShape);
 }
 
 void Crawlid::Release()
@@ -122,9 +131,8 @@ void Crawlid::Release()
 
 void Crawlid::OnGround(FloatRect map)
 {
-	if (rectangleShape.getGlobalBounds().intersects(map))
+	if (sideShape.getGlobalBounds().intersects(map))
 	{
-		std::cout << "몬스터 충돌" << std::endl;
 		xDir = -xDir;
 		sprite.scale(-1, 1);
 	}
@@ -132,5 +140,10 @@ void Crawlid::OnGround(FloatRect map)
 	{
 		gravity = 0.f;
 		isFalling = false;
+	}
+	else
+	{
+		xDir = -xDir;
+		sprite.scale(-1, 1);
 	}
 }

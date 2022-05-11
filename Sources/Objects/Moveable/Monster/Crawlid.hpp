@@ -8,6 +8,7 @@ private:
 	AnimationController animation;
 
 	RectangleShape gavityShape;
+	RectangleShape sideShape;
 
 	Vector2f positionTemp;
 	//Texture texture;

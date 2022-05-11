@@ -7,13 +7,15 @@
 class Player : public Character
 {
 private:
-	const float ATTACK_DELAY = 0.3f;			// 공격 딜레이
+	const float ATTACK_DELAY = 0.5f;			// 공격 딜레이
 	const float GRAVITY = 1500.f;				// 중력
 	const float SPEED = 300.f;					// 이동속도
 	const float JUMP_MAX = 1.f;					// 최대 점프
 
 	bool isWay;									// true면 왼쪽을 바라보는 상황 (필요함)
 	bool isDash;								// 필요함
+	bool firstFrame;
+	bool secondFrame;
 
 	int hp;										// 체력
 	int mp;										// 기력?
@@ -43,9 +45,13 @@ private:
 	std::string string;							// 이미지 저장
 
 	bool isKnockback = false;
-	float knockback = 0.3f;
+	float knockbackTime = 0.3f;
 
-	EffectManager effect;
+	EffectManager effect;						// 이펙트
+	std::string effectString;					// 공격 이펙트 방향 저장
+	std::string attackString;					// 공격 애니메이션 방향 저장
+
+	int knock = 0;
 public:
 	Player();
 	virtual void Init() override;
@@ -68,6 +74,9 @@ public:
 
 	const RectangleShape GetAttackBox();
 	/** test **/
-	Vector2f GetPosition();
+	//Vector2f GetPosition();
+	void KnockBackSide();
+	void KnockBackUp();
+
 };
 

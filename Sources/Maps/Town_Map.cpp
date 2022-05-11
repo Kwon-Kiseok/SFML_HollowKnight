@@ -16,7 +16,7 @@ Town_Map::Town_Map(Player* player)
 	: Map(player)
 {
 	LoadMap();
-	player->SetPosition(Vector2f(100.f, -2500.f));
+	player->SetPosition(Vector2f(200.f, 800.f));
 }
 
 void Town_Map::LoadMap()
@@ -44,8 +44,8 @@ void Town_Map::LoadMap()
 	}
 
 	// monster = new ~~
-	crawlid = new Crawlid(-1);
-	crawlid2 = new Crawlid(-1);
+	crawlid = new Crawlid(1);
+	crawlid2 = new Crawlid(1);
 	// monster.init();
 	crawlid->SetPosition(Vector2f(100.f, 800.f));
 	crawlid->Init();

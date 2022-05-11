@@ -5,7 +5,7 @@
 #include "../Utils/Utility.hpp"
 
 Player::Player()
-	: isWay(true), isDash(false), isAttack(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
+	: isWay(true), isDash(false), isAttack(false), firstFrame(true), secondFrame(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
 {
 	attackBox.scale(-1, 1);
 	hp = 5;
@@ -79,7 +79,7 @@ void Player::Init()
 		int totalFrames = colTexure.size();
 		for (int j = 0; j < totalFrames; ++j)
 		{
-			if (texMap.find(colTexure[i]) == texMap.end())
+			if (texMap.find(colTexure[j]) == texMap.end())
 			{
 				auto& ref = texMap[colTexure[j]];
 				ref.loadFromFile(colTexure[j]);
@@ -168,32 +168,85 @@ void Player::UpdateInput()
 
 void Player::Update(float dt)
 {
+	if (firstFrame)
+	{
+		if (secondFrame)
+		{
+			dt = 0.f;
+			firstFrame = false;
+		}
+		dt = 0.f;
+		secondFrame = true;
+	}
 	positionTemp = position;
 	Vector2f delta;
+	float h = InputManager::GetInstance().GetAxisRaw(Axis::Horizontal);	// -1 0 1
+	float v = InputManager::GetInstance().GetAxisRaw(Axis::Vertical);	// -1 0 1
 
-	/******************  knockback test  ****************/
+	/**********************************
+	* 공격 방향 설정
+	**********************************/
+	if (!isAttack)
 	{
-		if (isKnockback)
+		if (v == -1.f)
 		{
-			knockback -= dt;
-			if (knockback > 0.f)
-			{
-				if (!isWay)
-				{
-					position.x -= 0.2f;
-				}
-				if (isWay)
-				{
-					position.x += 0.2f;
-				}
-			}
-			else
-			{
-				isKnockback = false;
-				knockback = 0.3f;
-			}
+			attackBox.setSize(Vector2f(140, 120));
+			attackBox.setOrigin(Vector2f(70, 180));
+			attackBox.setPosition(position);
+			attackString = "UpSlash";
+			effectString = "UpSlash";
+		}
+		else if (v == 1.f && !canJump)
+		{
+			attackBox.setSize(Vector2f(140, 140));
+			attackBox.setOrigin(Vector2f(70, 50));
+			attackBox.setPosition(position);
+			attackString = "DownSlash";
+			effectString = "DownSlash";
+			knock = 1;
+		}
+		else
+		{
+			attackBox.setSize(Vector2f(140, 90));
+			attackBox.setOrigin(Vector2f(0, 100));
+			attackBox.setPosition(position);
+			attackString = "Slash";
+			effectString = "Slash";
+			knock = 0;
 		}
 	}
+
+	/******************  knockback test  ****************/
+	/*{
+		if (isKnockback)
+		{
+			knockbackTime -= dt;
+			if (knock == 0)
+			{
+				if (knockbackTime > 0.f)
+				{
+					if (!isWay)
+					{
+						position.x -= 0.2f;
+					}
+					if (isWay)
+					{
+						position.x += 0.2f;
+					}
+				}
+				else
+				{
+					isKnockback = false;
+					knockbackTime = 0.3f;
+				}
+			}
+		}
+		else if (knock == 1 && isAttack)
+		{
+			gravity = -500.f;
+			isKnockback = false;
+		}
+	}*/
 	/******************  knockback test  ****************/
 
 	/**********************************
@@ -201,7 +254,6 @@ void Player::Update(float dt)
 	**********************************/
 	{
 
-		float h = InputManager::GetInstance().GetAxisRaw(Axis::Horizontal);	// -1 0 1
 		if (!isDash)
 		{
 			delta.x = h * SPEED * dt * isMove;
@@ -251,6 +303,8 @@ void Player::Update(float dt)
 		}
 		if (InputManager::GetInstance().GetKey(Keyboard::Z) && canJump)
 		{
+			animation.Play("Jump");
+			animation.PlayQueue("Jumping");
 			gravity = -700.f;
 			canJump = false;
 		}
@@ -294,10 +348,10 @@ void Player::Update(float dt)
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::X) && !isAttack)
 		{
-			animation.Play("Slash");
+			animation.Play(attackString);
 			animation.PlayQueue(string);	// 이전 이미지로
 			isAttack = true;
-			effect.SetDraw("Slash");
+			effect.SetDraw(effectString);
 		}
 		attackDelay -= dt;
 		if (attackDelay < 0.f)
@@ -323,8 +377,8 @@ void Player::Render(RenderWindow& window)
 {
 	if (isAttack)
 	{
-		window.draw(attackBox);
 		effect.Draw(window);		// Slash
+		window.draw(attackBox);
 	}
 	window.draw(sprite);
 	window.draw(hitBox);
@@ -380,12 +434,17 @@ void Player::OnGround(FloatRect map)
 {
 	if (hitBox.getGlobalBounds().intersects(map))
 	{
+		if (!canJump)
+		{
+			animation.Play(string);
+		}
 		gravity = 0.f;
 		position.y = positionTemp.y;
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
 		{
 			position.y -= 10.f;
 		}
+		canJump = true;
 		isFalling = false;
 	}
 	if (hitBoxSide.getGlobalBounds().intersects(map))
@@ -412,7 +471,6 @@ void Player::OnGround(FloatRect map)
 			animation.PlayQueue(string);
 		}
 	}
-	canJump = true;
 }
 
 void Player::SetXpos()
@@ -420,13 +478,39 @@ void Player::SetXpos()
 	position.x = positionTemp.x;
 }
 
-Vector2f Player::GetPosition()
-{
-	return position;
-}
+//Vector2f Player::GetPosition()
+//{
+//	return position;
+//}
 
 const RectangleShape Player::GetAttackBox()
 {
 	return attackBox;
+}
+
+void Player::KnockBackSide()
+{
+	knockbackTime -= 0.001f;
+	if (knockbackTime > 0.f)
+	{
+		if (!isWay)
+		{
+			position.x -= 0.2f;
+		}
+		if (isWay)
+		{
+			position.x += 0.2f;
+		}
+	}
+	else
+	{
+		isKnockback = false;
+		knockbackTime = 0.3f;
+	}
+}
+
+void Player::KnockBackUp()
+{
+	gravity = -500.f;
 }
 
