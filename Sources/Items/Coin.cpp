@@ -46,7 +46,7 @@ void Coin::Spawn(bool spawn)
 		int x = Utility::Random(0, _velocity_x);
 		int y = Utility::Random(_velocity_y, _velocity_y + gravity);
 
-		sprite.setPosition(Vector2f(position.x+ x, position.y + y));
+		sprite.setPosition(Vector2f(position.x + x, position.y + y));
 		pickCoin = true;
 	}
 }

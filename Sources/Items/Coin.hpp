@@ -26,6 +26,6 @@ public:
 	void Render(RenderWindow& window);
 
 	int PickUp();
-	void Spawn(bool spawned);
+	void Spawn(bool spawn);
 };
 
