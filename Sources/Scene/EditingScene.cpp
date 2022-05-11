@@ -35,7 +35,7 @@ void EditingScene::Init()
 	backboard.setPosition(0.f, 0.f);
 	backboard.setFillColor(Color(51,51,51));
 	//backboard.setFillColor(Color(0, 0, 0));
-	backboard.setSize(Vector2f(6000.f, 2000.f));
+	backboard.setSize(Vector2f(4000.f, 2000.f));
 
 	font.loadFromFile("Resources/Fonts/CALIST.TTF");
 	currentCursorPos.setFont(font);
@@ -733,7 +733,7 @@ void EditingScene::SetManual()
 void EditingScene::Save()
 {
 	ofstream dataFile;
-	dataFile.open("data_tables/maps/Town_map_data.csv");
+	dataFile.open("data_tables/maps/CrossRoad_map_data.csv");
 	if (dataFile.fail())
 	{
 		cout << "File load Failed" << endl;
@@ -752,7 +752,7 @@ void EditingScene::Save()
 
 void EditingScene::Load()
 {
-	rapidcsv::Document dataFile("data_tables/maps/Town_map_data.csv");
+	rapidcsv::Document dataFile("data_tables/maps/CrossRoad_map_data.csv");
 
 	vector<string> colName = dataFile.GetColumn<string>("NAME");
 	vector<int> colIndex = dataFile.GetColumn<int>("INDEX");
