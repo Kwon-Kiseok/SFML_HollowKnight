@@ -34,8 +34,15 @@ private:
 	bool positionSetting;
 
 	vector<GameObject*> objects;
-
 	GameObject* object;
+
+	// 충돌체
+	vector<RectangleShape*> colliders;
+	RectangleShape* collider;
+	button* colliderButton;
+
+	Vector2f startPos;	// 좌상점
+	Vector2f endPos;	// 우하점
 
 	// tut
 	button* groundButton;		// 바닥
@@ -118,5 +125,7 @@ public:
 	void Save();
 	void Load();
 	void AddObject(MapData& data);
+
+	void SetCollider();
 };
 

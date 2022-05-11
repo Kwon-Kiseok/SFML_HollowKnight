@@ -54,6 +54,8 @@ void EditingScene::Init()
 	manualText.setCharacterSize(20);
 	manualText.setFillColor(Color::Magenta);
 	
+	colliderButton = new button("collider", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 50.f), Vector2f(100.f, 25.f));
+
 	// 버튼 생성
 	groundButton = new button("ground", Vector2f(ViewManager::GetInstance().GetResolution().x-100.f, 100.f), Vector2f(100.f, 25.f));
 	layeredButton = new button("layered", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 130.f), Vector2f(100.f, 25.f));
@@ -91,6 +93,8 @@ void EditingScene::Init()
 	saveButton = new button("Save", Vector2f(ViewManager::GetInstance().GetResolution().x - 300.f, 950.f), Vector2f(90.f, 30.f));
 	loadButton = new button("Load", Vector2f(ViewManager::GetInstance().GetResolution().x - 200.f, 950.f), Vector2f(90.f, 30.f));
 	exitButton = new button("Exit", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 950.f), Vector2f(90.f, 30.f));
+
+	objectButtons.push_back(colliderButton);
 
 	objectButtons.push_back(groundButton);
 	objectButtons.push_back(layeredButton);
@@ -135,6 +139,9 @@ void EditingScene::Update(float dt)
 	MoveView();
 	// 현재 커서 위치 보여줌
 	CursorPosView();
+
+
+	SetCollider();
 	// 배치된 오브젝트들 정보 보기
 	ViewObjectsInfos();
 	// 배치된 오브젝트 선택
@@ -163,6 +170,7 @@ void EditingScene::Update(float dt)
 
 		ObjectSeleted(*button);
 	}
+
 
 	// 오브젝트가 선택되었다면 
 	SetImageIndex();
@@ -201,6 +209,16 @@ void EditingScene::Render(sf::RenderWindow& window)
 			if((* it)->GetLayer() == i)
 				(*it)->Render(window);
 		}
+	}
+
+	if (nullptr != collider)
+	{
+		window.draw(*collider);
+	}
+
+	for (auto it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		window.draw(**it);
 	}
 
 	if (isTabClicked)
@@ -923,4 +941,48 @@ void EditingScene::AddObject(MapData& data)
 	this->object->SetPosition(Vector2f(data.x, data.y));
 	this->object->SetOriginCenter();
 	this->object->GetSprite().setRotation(data.rotate);
+}
+
+void EditingScene::SetCollider()
+{
+	if (object != nullptr && !selectObject)
+		return;
+	else
+	{
+		// 콜라이더의 시작점이 될 좌상점의 위치를 입력받음
+		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left) && InputManager::GetInstance().GetKey(Keyboard::T))
+		{
+			collider = new RectangleShape();
+			startPos = InputManager::GetInstance().GetMouseWorldPosition();
+
+			collider->setOutlineThickness(2.f);
+			collider->setOutlineColor(Color::Green);
+			collider->setFillColor(Color(0, 0, 0, 0));
+			collider->setPosition(startPos);
+		}
+		if (InputManager::GetInstance().GetMouseButton(Mouse::Left) && InputManager::GetInstance().GetKey(Keyboard::T))
+		{
+			endPos = InputManager::GetInstance().GetMouseWorldPosition();
+			collider->setSize(Vector2f(endPos - startPos));
+		}
+		if (InputManager::GetInstance().GetMouseButtonUp(Mouse::Left) && InputManager::GetInstance().GetKey(Keyboard::T))
+		{
+			// 버튼이 떼진 위치가 우하점이 됨
+			endPos = InputManager::GetInstance().GetMouseWorldPosition();
+			// 좌상점, 우하점이 정해졌을 때의 크기로 rectangleShape의 크기 조절
+
+			if (collider != nullptr)
+			{
+				collider->setSize(Vector2f(endPos - startPos));
+				colliders.push_back(collider);
+
+				collider = nullptr;
+				delete collider;
+			}
+		}
+		// 스페이스나 결정 입력을 받으면 해당 크기로 결정됨
+		// 취소하면 그냥 지워줌?
+
+		// 확인이 되면 colliders에 저장
+	}
 }
