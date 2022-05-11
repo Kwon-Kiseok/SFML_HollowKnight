@@ -2,6 +2,7 @@
 #include "../Managers/ViewManager.hpp"
 #include "../Managers/MapManager.hpp"
 #include "../Managers/InputManager.hpp"
+#include "../Managers/PlayerDataManager.hpp"
 #include "../Animation/rapidcsv.hpp"
 #include "../Objects/Stable/Stable.hpp"
 #include "../Objects/Stable/BackgroundImages.hpp"
@@ -39,6 +40,7 @@ void Map::Update(float dt)
 		std::cout << "Player's X: " << player->GetPosition().x << " Y: " << player->GetPosition().y << std::endl;
 	}
 
+	PlayerDataManager::GetInstance().SavePlayerData(*player);
 	ViewManager::GetInstance().GetMainView().setCenter(player->GetPosition());
 }
 

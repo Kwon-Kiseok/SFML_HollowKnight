@@ -19,6 +19,7 @@ void Game::Init()
         ,ViewManager::GetInstance().GetResolution().y), "Hollow Knight", Style::Fullscreen);
     SceneManager::GetInstance().Init();
     InputManager::GetInstance().Init();
+    SoundManager::GetInstance().Init();
 }
 
 void Game::Update()

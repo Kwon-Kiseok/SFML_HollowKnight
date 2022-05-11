@@ -3,7 +3,6 @@
 Town_Map::Town_Map(Player* player)
 	: Map(player)
 {
-
 	LoadMap("data_tables/maps/Town_map_data.csv");
     
   // monster = new ~~

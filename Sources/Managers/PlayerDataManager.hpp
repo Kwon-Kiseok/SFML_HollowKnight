@@ -2,12 +2,14 @@
 #include "../include/Singleton.hpp"
 #include "../Player/Player.hpp"
 #include "../Managers/MapManager.hpp"
+#include "../Items/Coin.hpp"
 
 class PlayerDataManager : public Singleton<PlayerDataManager>
 {
 private:
-	int hp;
+	int hp = 5;
 	int mp;
+	int coin;
 	MAP_TYPE currentMap;
 
 public:
@@ -17,5 +19,6 @@ public:
 	void SavePlayerData(Player& player);
 	int GetPlayerHP();
 	int GetPlayerMP();
+	int GetPlayerCoin();
 };
 

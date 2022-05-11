@@ -1,13 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "../Items/Coin.hpp"
+#include "../Player/player.hpp"
 
 using namespace sf;
 
 class InventoryScene 
 {
 private:
-	Coin coin;
+	Player player;
 
 	Texture textureBackUI;
 	Sprite spriteBackUI;

@@ -78,7 +78,7 @@ void InventoryScene::Update(float dt)
 	}
 
 	stringstream ssCoin;
-	ssCoin << coin.GetCoin();
+	ssCoin << player.GetCoin();
 	textCoin.setString(ssCoin.str());
 	textCoin.setPosition(430, 910);
 	textCoin.setCharacterSize(40);

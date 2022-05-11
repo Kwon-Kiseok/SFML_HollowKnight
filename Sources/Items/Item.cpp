@@ -9,6 +9,11 @@ Item::~Item()
 {
 }
 
+bool Item::Collision(GameObject* otherObj)
+{
+    return false;
+}
+
 void Item::Init()
 {
 }

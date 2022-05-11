@@ -2,6 +2,7 @@
 #include "../Animation/rapidcsv.hpp"
 #include "../Managers/InputManager.hpp"
 #include "../Managers/PlayerDataManager.hpp"
+#include "../Managers/SoundManager.hpp"
 #include "../Utils/Utility.hpp"
 
 Player::Player()
@@ -10,6 +11,7 @@ Player::Player()
 	attackBox.scale(-1, 1);
 	hp = 5;
 	mp = 0;
+	coin = 0;
 	move = 0.f;
 	jumpTime = JUMP_MAX;
 
@@ -284,6 +286,8 @@ void Player::Update(float dt)
 			animation.Play("StartMove");
 			animation.PlayQueue("Move");
 			string = "Move";
+//
+			SoundManager::GetInstance().PlaySound(L"walk");
 		}
 		if (move != 0 && h == 0)
 		{
@@ -309,13 +313,13 @@ void Player::Update(float dt)
 		}
 		if (InputManager::GetInstance().GetKey(Keyboard::Z) && canJump)
 		{
+			SoundManager::GetInstance().PlaySound(L"jump");
 			animation.Play("Jump");
 			animation.PlayQueue("Jumping");
 			gravity = -700.f;
 			canJump = false;
 		}
 		delta.y = gravity * dt;
-		
 	}
 	/**********************************
 	* 대쉬
@@ -323,6 +327,9 @@ void Player::Update(float dt)
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash)
 		{
+
+			SoundManager::GetInstance().PlaySound(L"dash");
+
 			animation.Play("Dash");
 			isDash = true;
 			canJump = false;
@@ -348,6 +355,8 @@ void Player::Update(float dt)
 				gravity = 0.f;
 			}
 		}
+	
+
 	}
 	/**********************************
 	* 공격
@@ -358,6 +367,9 @@ void Player::Update(float dt)
 			animation.Play(attackString);
 			animation.PlayQueue(string);	// 이전 이미지로
 			isAttack = true;
+			effect.SetDraw("Slash");
+
+			SoundManager::GetInstance().PlaySound(L"sword");
 			effect.SetDraw(effectString);
 		}
 		attackDelay -= dt;
@@ -366,6 +378,21 @@ void Player::Update(float dt)
 			attackDelay = ATTACK_DELAY;
 			isAttack = false;
 		}
+	}
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::G))
+	{
+		++coin;
+	//	std::cout << coin << ", " << PlayerDataManager::GetInstance().GetPlayerCoin() << std::endl;
+	}
+
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life����
+	{
+		hp--;
+	}
+
+	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P))	//P: Life��
+	{
+		hp++;
 	}
 	isMove = 1;
 	position += delta;
@@ -411,6 +438,11 @@ int Player::GetMP()
 	return mp;
 }
 
+int Player::GetCoin()
+{
+	return coin;
+}
+
 void Player::AddHP(int value)
 {
 	hp += value;
@@ -419,6 +451,11 @@ void Player::AddHP(int value)
 void Player::AddMP(int value)
 {
 	mp += value;
+}
+
+void Player::AddCoin(int value)
+{
+	coin += value;
 }
 
 bool Player::UpdateCollision()

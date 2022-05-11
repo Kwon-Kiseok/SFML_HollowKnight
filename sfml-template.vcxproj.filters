@@ -42,6 +42,7 @@
     <ClCompile Include="Sources\Objects\Stable\BackgroundImages.cpp" />
     <ClCompile Include="Sources\Utils\Textbox.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Bench.cpp" />
+    <ClCompile Include="Sources\Scene\MapperScene.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Monster\Crawlid.cpp" />
     <ClCompile Include="Sources\Objects\Stable\KingsPassImages.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Platform.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="Sources\Objects\Stable\BackgroundImages.hpp" />
     <ClInclude Include="Sources\Utils\Textbox.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Bench.hpp" />
+    <ClInclude Include="Sources\Scene\MapperScene.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\Crawlid.hpp" />
     <ClInclude Include="Sources\Objects\Stable\KingsPassImages.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Platform.hpp" />

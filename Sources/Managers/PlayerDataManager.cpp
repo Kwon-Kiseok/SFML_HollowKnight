@@ -4,8 +4,7 @@ void PlayerDataManager::SavePlayerData(Player& player)
 {
 	hp = player.GetHP();
 	mp = player.GetMP();
-
-	// 파일입출력으로 저장?
+	coin = player.GetCoin();
 }
 
 int PlayerDataManager::GetPlayerHP()
@@ -16,4 +15,9 @@ int PlayerDataManager::GetPlayerHP()
 int PlayerDataManager::GetPlayerMP()
 {
 	return mp;
+}
+
+int PlayerDataManager::GetPlayerCoin()
+{
+	return coin;
 }

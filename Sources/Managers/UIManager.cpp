@@ -49,7 +49,6 @@ void UIManager::Init_TitleScene()
 	textExit.setPosition(1920 * 0.5f, 900.f);
 
 	SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/Title.wav");
-
 }
 
 void UIManager::Update_TitleScene(float dt)
@@ -58,6 +57,8 @@ void UIManager::Update_TitleScene(float dt)
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
 	{
+		SoundManager::GetInstance().PlaySound(L"changeMenu");
+
 		Cursor_selectY -= 150;
 		if (Cursor_selectY < 600.f)
 		{
@@ -67,6 +68,8 @@ void UIManager::Update_TitleScene(float dt)
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Down))
 	{
+		SoundManager::GetInstance().PlaySound(L"changeMenu");
+
 		Cursor_selectY += 150;
 		if (Cursor_selectY > 900.f)
 		{
@@ -87,6 +90,7 @@ void UIManager::Update_TitleScene(float dt)
 		{
 			
 		}
+		SoundManager::GetInstance().PlaySound(L"select");
 	}
 
 	if (textPlay.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
@@ -162,6 +166,7 @@ void UIManager::Init_PlayScene()
 	spriteCoin.setPosition(210, 150);
 
 	fontCALIST.loadFromFile("Resources/Fonts/CALIST.ttf");
+
 	stringstream ssCoin;
 	ssCoin << PlayerDataManager::GetInstance().GetPlayerHP();
 	textCoin.setString(ssCoin.str());
@@ -172,28 +177,21 @@ void UIManager::Init_PlayScene()
 
 	inventory.Init();
 	Init_Map();
-	
+
 }
 
 void UIManager::Update_PlayScene(float dt)
 {
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life����
-	{
-		currentHP--;
-		if (currentHP < 0)
-			currentHP = 0;
-	}
+	stringstream ssCoin;
+	ssCoin << PlayerDataManager::GetInstance().GetPlayerCoin();
+	textCoin.setString(ssCoin.str());
 
-	else if (InputManager::GetInstance().GetKeyDown(Keyboard::K))	//P: Life��
-	{
-		currentHP++;
-		if (currentHP > 5)
-			currentHP = 5;
-
-	}
+	PlayerDataManager::GetInstance().GetPlayerHP();
+	PlayerDataManager::GetInstance().GetPlayerMP();
 
 	inventory.Update(dt);
 	Update_Map(dt);
+
 }
 
 void UIManager::Render_PlayScene(sf::RenderWindow& window)
@@ -209,7 +207,7 @@ void UIManager::Render_PlayScene(sf::RenderWindow& window)
 		window.draw(spriteNoLife[i]);
 	}
 
-	for (int i = 0; i < currentHP; i++)
+	for (int i = 0; i < PlayerDataManager::GetInstance().GetPlayerHP(); i++)
 	{
 		window.draw(spriteLifes[i]);
 	}
