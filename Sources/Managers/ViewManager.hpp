@@ -26,5 +26,8 @@ public:
 	View& GetUiView() const;
 	Vector2i& GetResolution();
 	void draw(RenderWindow& window);
+
+	// view 바운딩 처리 관련 move 함수를 통해 바운딩,,,, >> 맵 전체 사이즈 받앙와야 할 것임
+
 };
 

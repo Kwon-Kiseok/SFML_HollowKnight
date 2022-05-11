@@ -53,6 +53,7 @@ public:
 	Vector2f GetOrigin();
 	Texture& GetTexture();
 	Sprite& GetSprite();
+	RectangleShape& GetRectangleShape();
 	TAG GetTag();
 	bool GetIsVisible();
 	int GetLayer();

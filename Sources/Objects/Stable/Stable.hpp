@@ -29,3 +29,15 @@ public:
 	virtual void Release() override;
 };
 
+class InvisibleWall : public Stable
+{
+private:
+	RectangleShape wallShape;
+public:
+	InvisibleWall(float x, float y);
+	virtual ~InvisibleWall();
+
+	void SetSize(Vector2f size);
+	void SetSize(float x, float y);
+
+};

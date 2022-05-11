@@ -1,4 +1,5 @@
 #include "Character.hpp"
+#include "../../Utils/Utility.hpp"
 
 Character::Character()
 {
@@ -6,7 +7,7 @@ Character::Character()
 	canJump = true;
 	canMove = true;
 	currentDir = Direction::NONE;
-	prevDir = Direction::NONE;
+	colDir = Vector2f(0.f, 0.f);
 	deltaTime = 0.f;
 	gravity = 980.f;
 	health = 10;
@@ -17,6 +18,11 @@ Character::Character()
 
 	jumpSpeed = 3.f;
 	moveSpeed = 5.f;
+
+	state = State::IDLE;
+
+	xDir = 0;
+	yDir = 0;
 }
 
 Character::~Character()
@@ -28,9 +34,24 @@ int Character::GetHealth()
 	return health;
 }
 
-Direction Character::GetPrevDirection()
+Vector2f& Character::SetColDirection(GameObject* otherObj)
 {
-	return prevDir;
+	colDir.x = this->position.x - otherObj->GetPosition().x;
+	colDir.y = this->position.y - otherObj->GetPosition().y;
+
+	colDir = Utility::Normalize(colDir);
+
+	return colDir;
+}
+
+Vector2f& Character::GetColDirection()
+{
+	return colDir;
+}
+
+Direction Character::GetDirection()
+{
+	return currentDir;
 }
 
 void Character::SetX(float x)
@@ -86,5 +107,9 @@ void Character::Render(RenderWindow& window)
 }
 
 void Character::Release()
+{
+}
+
+void Character::OnGround(FloatRect map)
 {
 }

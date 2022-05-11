@@ -8,13 +8,15 @@
 class Player : public Character
 {
 private:
-	const float ATTACK_DELAY = 0.3f;			// 공격 딜레이
+	const float ATTACK_DELAY = 0.5f;			// 공격 딜레이
 	const float GRAVITY = 1500.f;				// 중력
 	const float SPEED = 300.f;					// 이동속도
 	const float JUMP_MAX = 1.f;					// 최대 점프
 
 	bool isWay;									// true면 왼쪽을 바라보는 상황 (필요함)
 	bool isDash;								// 필요함
+	bool firstFrame;
+	bool secondFrame;
 
 	int hp;										// 체력
 	int mp;										// 기력?
@@ -32,6 +34,9 @@ private:
 	float attackDelay;							// 공격 딜레이
 	// 플레이어 히트박스
 	RectangleShape hitBox;
+	// 좌우 벽 충돌처리
+	RectangleShape hitBoxSide;
+	int isMove = 1;
 
 	float gravity;								// 중력가속도 처리
 	Vector2f positionTemp;						// 전 프레임 포지션
@@ -42,9 +47,13 @@ private:
 	std::string string;							// 이미지 저장
 
 	bool isKnockback = false;
-	float knockback = 0.3f;
+	float knockbackTime = 0.3f;
 
-	EffectManager effect;
+	EffectManager effect;						// 이펙트
+	std::string effectString;					// 공격 이펙트 방향 저장
+	std::string attackString;					// 공격 애니메이션 방향 저장
+
+	int knock = 0;
 public:
 	Player();
 	virtual void Init() override;
@@ -63,9 +72,15 @@ public:
 	bool UpdateCollision();	//  내가 때린 판정
 	bool OnHitted(Time timeHit);	// 내가 맞은 판정
 
-	void OnGround(float dt);
+	void OnGround(FloatRect map);
+	void SetXpos();
 	//void SetVal(float dt);
 
 	const RectangleShape GetAttackBox();
+	/** test **/
+	//Vector2f GetPosition();
+	void KnockBackSide();
+	void KnockBackUp();
+
 };
 
