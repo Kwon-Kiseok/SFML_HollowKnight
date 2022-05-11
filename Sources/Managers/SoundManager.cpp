@@ -15,6 +15,7 @@ void SoundManager::Init()
 	AddSound("Resources/AudioClip/Hero/hero_jump.wav", L"jump");
 	AddSound("Resources/AudioClip/Hero/hero_dash.wav", L"dash");
 	AddSound("Resources/AudioClip/sword_3.wav", L"sword");
+	AddSound("Resources/AudioClip/geo_small_collect_1.wav", L"coin");
 }
 
 void SoundManager::AddSound(std::string path, std::wstring id)
