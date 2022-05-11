@@ -9,7 +9,7 @@ class Character : public GameObject
 {
 protected:
 	int health;					// 캐릭터의 체력
-	Direction prevDir;			// 캐릭터의 이전 방향
+	Vector2f colDir;			// 캐릭터의 충돌 방향
 	Direction currentDir;		// 캐릭터의 현재 방향
 	float gravity;				// 중력값
 	float moveSpeed;			// 이동속도	
@@ -37,8 +37,9 @@ public:
 
 	// Get Function
 	int GetHealth();
-	Direction GetPrevDirection();
-
+	Vector2f& SetColDirection(GameObject* otherObj);
+	Vector2f& GetColDirection();
+	Direction GetDirection();
 
 	// SetFunction
 	void SetX(float x);

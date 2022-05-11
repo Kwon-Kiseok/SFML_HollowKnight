@@ -2,6 +2,7 @@
 #include "../Managers/ViewManager.hpp"
 #include "../Managers/TextureManager.hpp"
 #include "../Managers/InputManager.hpp"
+#include "../Managers/SceneManager.hpp"
 #include "../Utils/Utility.hpp"
 #include "../Animation/rapidcsv.hpp"
 #include "../Objects/Stable/Stable.hpp"
@@ -9,6 +10,14 @@
 #include "../Objects/Stable/Ground.hpp"
 #include "../Objects/Stable/bench.hpp"
 #include "../Objects/Stable/Portal.hpp"
+#include "../Objects/Stable/Wall.hpp"
+
+#include "../Objects/Stable/Door.hpp"
+#include "../Objects/Stable/KingsPassImages.hpp"
+#include "../Objects/Stable/Platform.hpp"
+#include "../Objects/Stable/thorn.hpp"
+
+#include "../Objects/Stable/CrossRoadImages.hpp"
 
 #include <iostream>
 #include <ostream>
@@ -25,7 +34,8 @@ void EditingScene::Init()
 {
 	backboard.setPosition(0.f, 0.f);
 	backboard.setFillColor(Color(51,51,51));
-	backboard.setSize(Vector2f(3000.f, 1000.f));
+	//backboard.setFillColor(Color(0, 0, 0));
+	backboard.setSize(Vector2f(4000.f, 2000.f));
 
 	font.loadFromFile("Resources/Fonts/CALIST.TTF");
 	currentCursorPos.setFont(font);
@@ -43,14 +53,34 @@ void EditingScene::Init()
 	manualText.setFillColor(Color::Magenta);
 	
 	// 버튼 생성
-	groundButton = new button("ground", Vector2f(ViewManager::GetInstance().GetResolution().x-100.f, 300.f), Vector2f(100.f, 25.f));
-	layeredButton = new button("layered", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 330.f), Vector2f(100.f, 25.f));
-	buildingButton = new button("building", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 360.f), Vector2f(100.f, 25.f));
-	backgroundButton = new button("bg", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 390.f), Vector2f(100.f, 25.f));
-	graveCrossButton = new button("graveCross", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 420.f), Vector2f(100.f, 25.f));
-	extraButton = new button("extra", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 450.f), Vector2f(100.f, 25.f));
-	benchButton = new button("bench", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 480.f), Vector2f(100.f, 25.f));
-	portalButton = new button("portal", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 510.f), Vector2f(100.f, 25.f));
+	groundButton = new button("ground", Vector2f(ViewManager::GetInstance().GetResolution().x-100.f, 100.f), Vector2f(100.f, 25.f));
+	layeredButton = new button("layered", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 130.f), Vector2f(100.f, 25.f));
+	buildingButton = new button("building", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 160.f), Vector2f(100.f, 25.f));
+	backgroundButton = new button("bg", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 190.f), Vector2f(100.f, 25.f));
+	graveCrossButton = new button("graveCross", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 220.f), Vector2f(100.f, 25.f));
+	extraButton = new button("extra", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 250.f), Vector2f(100.f, 25.f));
+	benchButton = new button("bench", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 280.f), Vector2f(100.f, 25.f));
+	portalButton = new button("portal", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 310.f), Vector2f(100.f, 25.f));
+	platformButton = new button("platform", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 340.f), Vector2f(100.f, 25.f));
+	thornButton = new button("thorn", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 370.f), Vector2f(100.f, 25.f));
+	wallButton = new button("wall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 580.f), Vector2f(100.f, 25.f));
+
+	// kings pass
+	kp_groundButton = new button("kpGround", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 400.f), Vector2f(100.f, 25.f));
+	kp_doorButton = new button("kpDoor", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 430.f), Vector2f(100.f, 25.f));
+	kp_imagesButton = new button("kpImages", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 460.f), Vector2f(100.f, 25.f));
+	kp_bgButton = new button("kpBG", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 490.f), Vector2f(100.f, 25.f));
+	kp_wallButton = new button("kpWall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 520.f), Vector2f(100.f, 25.f));
+	kp_objectButton = new button("kpObjects", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 550.f), Vector2f(100.f, 25.f));
+
+	// crossRoad
+	cr_groundButton = new button("crGround", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 610.f), Vector2f(100.f, 25.f));
+	cr_imagesButton = new button("crImages", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 640.f), Vector2f(100.f, 25.f));
+	cr_bgButton = new button("crBG", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 670.f), Vector2f(100.f, 25.f));
+	cr_roofButton = new button("crRoof", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 700.f), Vector2f(100.f, 25.f));
+	cr_wallButton = new button("crWall", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 730.f), Vector2f(100.f, 25.f));
+	cr_objectButton = new button("crObjects", Vector2f(ViewManager::GetInstance().GetResolution().x - 100.f, 760.f), Vector2f(100.f, 25.f));
+
 
 	saveButton = new button("Save", Vector2f(ViewManager::GetInstance().GetResolution().x - 300.f, 950.f), Vector2f(90.f, 30.f));
 	loadButton = new button("Load", Vector2f(ViewManager::GetInstance().GetResolution().x - 200.f, 950.f), Vector2f(90.f, 30.f));
@@ -64,6 +94,23 @@ void EditingScene::Init()
 	objectButtons.push_back(extraButton);
 	objectButtons.push_back(benchButton);
 	objectButtons.push_back(portalButton);
+	objectButtons.push_back(platformButton);
+	objectButtons.push_back(thornButton);
+	objectButtons.push_back(wallButton);
+
+	objectButtons.push_back(kp_groundButton);
+	objectButtons.push_back(kp_doorButton);
+	objectButtons.push_back(kp_imagesButton);
+	objectButtons.push_back(kp_bgButton);
+	objectButtons.push_back(kp_wallButton);
+	objectButtons.push_back(kp_objectButton);
+
+	objectButtons.push_back(cr_groundButton);
+	objectButtons.push_back(cr_imagesButton);
+	objectButtons.push_back(cr_bgButton);
+	objectButtons.push_back(cr_roofButton);
+	objectButtons.push_back(cr_wallButton);
+	objectButtons.push_back(cr_objectButton);
 
 	objectButtons.push_back(saveButton);
 	objectButtons.push_back(loadButton);
@@ -98,6 +145,11 @@ void EditingScene::Update(float dt)
 			Load();
 			loadButton->ResetIsClicked();
 		}
+		else if (exitButton->IsButtonClicked())
+		{
+			SceneManager::GetInstance().Load(L"Title");
+			return;
+		}
 
 		ObjectSeleted(*button);
 	}
@@ -109,6 +161,18 @@ void EditingScene::Update(float dt)
 		SetLayer();
 	// 위치 설정
 	SetObjectsPosition();
+
+	if (this->object != nullptr)
+	{
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
+		{
+			this->object->GetSprite().setRotation(this->object->GetSprite().getRotation() -10);
+		}
+		else if (InputManager::GetInstance().GetKeyDown(Keyboard::C))
+		{
+			this->object->GetSprite().setRotation(this->object->GetSprite().getRotation() + 10);
+		}
+	}
 }
 
 void EditingScene::Render(sf::RenderWindow& window)
@@ -236,6 +300,71 @@ void EditingScene::OpenImageIndex(button& btn)
 		{
 			temp = new TownExtra();
 		}
+		else if (selectName == "wall")
+		{
+			temp = new Wall();
+		}
+		else if (selectName == "kpGround")
+		{
+			temp = new KingsPassGround();
+		}
+		else if (selectName == "kpDoor")
+		{
+			temp = new Door();
+		}
+		else if (selectName == "kpImages")
+		{
+			temp = new KingsPassImages();
+		}
+		else if (selectName == "kpBG")
+		{
+			temp = new KingsPassBG();
+		}
+		else if (selectName == "kpWall")
+		{
+			temp = new KingsPassWall();
+		}
+		else if (selectName == "kpObjects")
+		{
+			temp = new KingsPassObjects();
+		}
+		else if (selectName == "platform")
+		{
+			temp = new Platform();
+		}
+		else if (selectName == "crGround")
+		{
+			temp = new CrossRoadGround();
+		}
+		else if (selectName == "crImages")
+		{
+			temp = new CrossRoadImages();
+		}
+		else if (selectName == "crBG")
+		{
+			temp = new CrossRoadBG();
+		}
+		else if (selectName == "crRoof")
+		{
+			temp = new CrossRoadRoof();
+		}
+		else if (selectName == "crWall")
+		{
+			temp = new CrossRoadWall();
+		}
+		else if (selectName == "crObjects")
+		{
+			temp = new CrossRoadObjects();
+		}
+		else if (selectName == "thorn")
+		{
+			temp = new thorn();
+			stringstream ss;
+			ss << 1;
+			button* objectName = new button(ss.str(), Vector2f(ViewManager::GetInstance().GetResolution().x - 175.f, 10.f), Vector2f(50.f, 25.f));
+			ImageIndexList.push_back(objectName);
+			return;
+		}
 		else if (selectName == "bench")
 		{
 			temp = new Bench();
@@ -352,7 +481,66 @@ void EditingScene::SetLayer()
 		{
 			this->object = new Bench();
 		}
-
+		else if (selectName == "platform")
+		{
+			this->object = new Platform(inputImageIdx);
+		}
+		else if (selectName == "thorn")
+		{
+			this->object = new thorn();
+		}
+		else if (selectName == "wall")
+		{
+			this->object = new Wall(inputImageIdx);
+		}
+		else if (selectName == "kpGround")
+		{
+			this->object = new KingsPassGround(inputImageIdx);
+		}
+		else if (selectName == "kpDoor")
+		{
+			this->object = new Door(inputImageIdx);
+		}
+		else if (selectName == "kpImages")
+		{
+			this->object = new KingsPassImages(inputImageIdx);
+		}
+		else if (selectName == "kpBG")
+		{
+			this->object = new KingsPassBG(inputImageIdx);
+		}
+		else if (selectName == "kpWall")
+		{
+			this->object = new KingsPassWall(inputImageIdx);
+		}
+		else if (selectName == "kpObjects")
+		{
+			this->object = new KingsPassObjects(inputImageIdx);
+		}
+		else if (selectName == "crGround")
+		{
+			this->object = new CrossRoadGround(inputImageIdx);
+		}
+		else if (selectName == "crImages")
+		{
+			this->object = new CrossRoadImages(inputImageIdx);
+		}
+		else if (selectName == "crBG")
+		{
+			this->object = new CrossRoadBG(inputImageIdx);
+		}
+		else if (selectName == "crRoof")
+		{
+			this->object = new CrossRoadRoof(inputImageIdx);
+		}
+		else if (selectName == "crWall")
+		{
+			this->object = new CrossRoadWall(inputImageIdx);
+		}
+		else if (selectName == "crObjects")
+		{
+			this->object = new CrossRoadObjects(inputImageIdx);
+		}
 		this->object->SetLayer(layer);
 		inputImageIdx = 0;
 		positionSetting = true;
@@ -534,29 +722,29 @@ void EditingScene::SetManual()
 	
 	if(positionSetting)
 	{
-		manualText.setString(L"RIGHT - undo\nSPACE - put\nBACK SPACE - delete");
+		manualText.setString(L"Z - rotate(-10)\nC - rotate(+10)\nRIGHT - undo\nSPACE - put\nBACK SPACE - delete");
 	}
 	else
 	{
-		manualText.setString(L"LEFT - select");
+		manualText.setString(L"LEFT - select\nTAB - info");
 	}
 }
 
 void EditingScene::Save()
 {
 	ofstream dataFile;
-	dataFile.open("data_tables/maps/Town_map_data.csv");
+	dataFile.open("data_tables/maps/CrossRoad_map_data.csv");
 	if (dataFile.fail())
 	{
 		cout << "File load Failed" << endl;
 		return;
 	}
-	dataFile << "NAME,INDEX,LAYER,X,Y\n";
+	dataFile << "NAME,INDEX,LAYER,X,Y,ROTATE\n";
 	for (int i = 0; i < objects.size(); ++i)
 	{
 		dataFile << objects[i]->GetName() << "," << objects[i]->GetImageIdx() 
 			<< "," << objects[i]->GetLayer() << "," << objects[i]->GetPosition().x 
-			<< "," << objects[i]->GetPosition().y << endl;
+			<< "," << objects[i]->GetPosition().y << "," << objects[i]->GetSprite().getRotation() << endl;
 	}
 	cout << "Save Complete File" << endl;
 	dataFile.close();
@@ -564,13 +752,14 @@ void EditingScene::Save()
 
 void EditingScene::Load()
 {
-	rapidcsv::Document dataFile("data_tables/maps/Town_map_data.csv");
+	rapidcsv::Document dataFile("data_tables/maps/CrossRoad_map_data.csv");
 
 	vector<string> colName = dataFile.GetColumn<string>("NAME");
 	vector<int> colIndex = dataFile.GetColumn<int>("INDEX");
 	vector<int> colLayer = dataFile.GetColumn<int>("LAYER");
 	vector<float> colX = dataFile.GetColumn<float>("X");
 	vector<float> colY = dataFile.GetColumn<float>("Y");
+	vector<float> colRotate = dataFile.GetColumn<float>("ROTATE");
 
 	int totalObjects = colName.size();
 	for (int i = 0; i < totalObjects; ++i)
@@ -581,6 +770,7 @@ void EditingScene::Load()
 		data.layer = colLayer[i];
 		data.x = colX[i];
 		data.y = colY[i];
+		data.rotate = colRotate[i];
 
 		AddObject(data);
 		objects.push_back(object);
@@ -623,8 +813,69 @@ void EditingScene::AddObject(MapData& data)
 	{
 		this->object = new Bench();
 	}
+	else if (data.name == "platform")
+	{
+		this->object = new Platform(data.index);
+	}
+	else if (data.name == "thorn")
+	{
+		this->object = new thorn();
+	}
+	else if (data.name == "wall")
+	{
+		this->object = new Wall(data.index);
+	}
+	else if (data.name == "kpGround")
+	{
+		this->object = new KingsPassGround(data.index);
+	}
+	else if (data.name == "kpDoor")
+	{
+		this->object = new Door(data.index);
+	}
+	else if (data.name == "kpImages")
+	{
+		this->object = new KingsPassImages(data.index);
+	}
+	else if (data.name == "kpBG")
+	{
+		this->object = new KingsPassBG(data.index);
+	}
+	else if (data.name == "kpWall")
+	{
+		this->object = new KingsPassWall(data.index);
+	}
+	else if (data.name == "kpObjects")
+	{
+		this->object = new KingsPassObjects(data.index);
+	}
+	else if (data.name == "crGround")
+	{
+		this->object = new CrossRoadGround(data.index);
+	}
+	else if (data.name == "crImages")
+	{
+		this->object = new CrossRoadImages(data.index);
+	}
+	else if (data.name == "crBG")
+	{
+		this->object = new CrossRoadBG(data.index);
+	}
+	else if (data.name == "crRoof")
+	{
+		this->object = new CrossRoadRoof(data.index);
+	}
+	else if (data.name == "crWall")
+	{
+		this->object = new CrossRoadWall(data.index);
+	}
+	else if (data.name == "crObjects")
+	{
+		this->object = new CrossRoadObjects(data.index);
+	}
 
 	this->object->SetLayer(data.layer);
 	this->object->SetPosition(Vector2f(data.x, data.y));
 	this->object->SetOriginCenter();
+	this->object->GetSprite().setRotation(data.rotate);
 }

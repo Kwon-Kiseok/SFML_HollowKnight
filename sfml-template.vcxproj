@@ -148,6 +148,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Objects\Stable\CrossRoadImages.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Door.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Platform.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\KingsPassImages.cpp" />
     <ClCompile Include="Sources\Items\Item.cpp" />
     <ClCompile Include="Sources\Items\Coin.cpp" />
     <ClCompile Include="Sources\Animation\EffectManager.cpp" />
@@ -190,8 +194,14 @@
     <ClCompile Include="Sources\Objects\Moveable\Monster\tempMob.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Stable.cpp" />
     <ClCompile Include="Sources\Utils\Textbox.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\thorn.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Objects\Stable\CrossRoadImages.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Door.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Platform.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\KingsPassImages.hpp" />
     <ClInclude Include="Sources\Items\Item.hpp" />
     <ClInclude Include="Sources\Items\Coin.hpp" />
     <ClInclude Include="Sources\Animation\EffectManager.hpp" />
@@ -238,6 +248,8 @@
     <ClInclude Include="Sources\Objects\Moveable\Monster\tempMob.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Stable.hpp" />
     <ClInclude Include="Sources\Utils\Textbox.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\thorn.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Wall.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

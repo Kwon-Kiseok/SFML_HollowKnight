@@ -12,6 +12,7 @@ Player::Player()
 	mp = 0;
 	move = 0.f;
 	jumpTime = JUMP_MAX;
+
 }
 
 void Player::Init()
@@ -110,6 +111,7 @@ void Player::UpdateInput()
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				isWay = !isWay;
+				SetDirection(Direction::RIGHT);
 			}
 		}
 		if (InputManager::GetInstance().GetKey(Keyboard::Left))
@@ -119,6 +121,7 @@ void Player::UpdateInput()
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				isWay = !isWay;
+				SetDirection(Direction::LEFT);
 			}
 		}
 	}
@@ -263,6 +266,7 @@ void Player::Update(float dt)
 				attackBox.scale(-1, 1);
 				effect.SetScale();
 				isWay = !isWay;
+				SetDirection(Direction::LEFT);
 			}
 			if (isWay && h == 1)
 			{
@@ -270,6 +274,7 @@ void Player::Update(float dt)
 				attackBox.scale(-1, 1);
 				effect.SetScale();
 				isWay = !isWay;
+				SetDirection(Direction::RIGHT);
 			}
 		}
 
@@ -285,6 +290,7 @@ void Player::Update(float dt)
 			animation.Play("RunToIdle");
 			animation.PlayQueue("Idle");
 			string = "Idle";
+			SetDirection(Direction::NONE);
 		}
 		move = h;
 	}
@@ -309,6 +315,7 @@ void Player::Update(float dt)
 			canJump = false;
 		}
 		delta.y = gravity * dt;
+		
 	}
 	/**********************************
 	* 대쉬

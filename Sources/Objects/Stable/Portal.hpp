@@ -12,6 +12,8 @@ public:
 	virtual ~Portal();
 
 	MAP_TYPE& GetCurrentMap();
+	MAP_TYPE& GetNextMap();
+	void SetCurrMap(MAP_TYPE curr);
 	void SetNextMap(MAP_TYPE next);
 	virtual void Interaction() override;
 	virtual void Render(RenderWindow& window) override;

@@ -4,9 +4,7 @@
 #include <vector>
 
 using namespace sf;
-using namespace std;
 
-class Stable;
 class Town_Map : public Map
 {
 private:	
@@ -15,11 +13,10 @@ private:
 	//
 	Crawlid* crawlid;
 	Crawlid* crawlid2;
+
 public:
 	Town_Map(Player* player_);
-	~Town_Map() {}
+	virtual ~Town_Map() {}
 
-	void LoadMap();
-	void AddObject(MapData& data);
 };
 

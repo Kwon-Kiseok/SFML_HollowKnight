@@ -43,6 +43,12 @@
     <ClCompile Include="Sources\Utils\Textbox.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Bench.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Monster\Crawlid.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\KingsPassImages.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Platform.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Door.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\thorn.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\Wall.cpp" />
+    <ClCompile Include="Sources\Objects\Stable\CrossRoadImages.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
@@ -62,6 +68,12 @@
     <ClInclude Include="Sources\Utils\Textbox.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Bench.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\Crawlid.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\KingsPassImages.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Platform.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Door.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\thorn.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\Wall.hpp" />
+    <ClInclude Include="Sources\Objects\Stable\CrossRoadImages.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />

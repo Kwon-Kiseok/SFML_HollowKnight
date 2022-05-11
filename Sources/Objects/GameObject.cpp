@@ -109,6 +109,11 @@ Sprite& GameObject::GetSprite()
 	return sprite;
 }
 
+RectangleShape& GameObject::GetRectangleShape()
+{
+	return rectangleShape;
+}
+
 void GameObject::SetOriginCenter()
 {
 	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);

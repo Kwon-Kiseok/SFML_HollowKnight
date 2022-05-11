@@ -2,6 +2,19 @@
 #include "../Managers/ViewManager.hpp"
 #include "../Managers/MapManager.hpp"
 #include "../Managers/InputManager.hpp"
+#include "../Animation/rapidcsv.hpp"
+#include "../Objects/Stable/Stable.hpp"
+#include "../Objects/Stable/BackgroundImages.hpp"
+#include "../Objects/Stable/Ground.hpp"
+#include "../Objects/Stable/bench.hpp"
+#include "../Objects/Stable/Portal.hpp"
+#include "../Objects/Stable/Wall.hpp"
+
+#include "../Objects/Stable/Door.hpp"
+#include "../Objects/Stable/KingsPassImages.hpp"
+#include "../Objects/Stable/Platform.hpp"
+#include "../Objects/Stable/thorn.hpp"
+
 #include <iostream>
 
 void Map::Init()
@@ -40,6 +53,8 @@ void Map::Render(sf::RenderWindow& window)
 			{
 				(*it)->Render(window);
 			}
+
+			window.draw((*it)->GetRectangleShape());
 		}
 	}
 
@@ -49,6 +64,11 @@ void Map::Render(sf::RenderWindow& window)
 	}
 
 	for (auto it = characters.begin(); it != characters.end(); ++it)
+	{
+		(*it)->Render(window);
+	}
+
+	for (auto it = portals.begin(); it != portals.end(); ++it)
 	{
 		(*it)->Render(window);
 	}
@@ -63,6 +83,13 @@ void Map::Release()
 		*it = nullptr;
 	}
 	stableObjects.clear();
+
+	for (auto it = portals.begin(); it != portals.end(); ++it)
+	{
+		delete* it;
+		*it = nullptr;
+	}
+	portals.clear();
 
 }
 
@@ -82,7 +109,7 @@ void Map::CheckCollisions(float dt)
 				std::cout << player->GetName() << " Collision Monster" << std::endl;
 				// (*it)->GetName() == "coin" 
 				{
-					//¾ÆÀÌÅÛ ¾ø¾Ö°í ÇÃ·¹ÀÌ¾î ÄÚÀÎ°³¼ö Áõ°¡
+					//ì•„ì´í…œ ì—†ì• ê³  í”Œë ˆì´ì–´ ì½”ì¸ê°œìˆ˜ ì¦ê°€
 				}
 			}
 		}
@@ -96,7 +123,7 @@ void Map::CheckCollisions(float dt)
 		{
 			player->Collision(*it);
 
-			// ÇÃ·¹ÀÌ¾î¿Í ¸ó½ºÅÍ°¡ Ãæµ¹ÇßÀ» °æ¿ì
+			// í”Œë ˆì´ì–´ì™€ ëª¬ìŠ¤í„°ê°€ ì¶©ëŒí–ˆì„ ê²½ìš°
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
 				std::cout << player->GetName() << " Collision Monster" << std::endl;
@@ -104,8 +131,8 @@ void Map::CheckCollisions(float dt)
 			}
 		}
 		/******************************************
-		* ¸ó½ºÅÍ°¡ ÇÃ·¹ÀÌ¾îÀÇ °ø°Ý¹Ú½º¿¡ ºÎµúÇûÀ» °æ¿ì
-		* ÀÌ°Ô ¸Â³ª¿ä????
+		* ëª¬ìŠ¤í„°ê°€ í”Œë ˆì´ì–´ì˜ ê³µê²©ë°•ìŠ¤ì— ë¶€ë”ªí˜”ì„ ê²½ìš°
+		* ì´ê²Œ ë§žë‚˜ìš”????
 		******************************************/
 		RectangleShape attackBox = player->GetAttackBox();
 		if ((*it)->Collision_AttackBox(attackBox) && (*it)->CompareTag(TAG::MONSTER))
@@ -115,8 +142,8 @@ void Map::CheckCollisions(float dt)
 
 		//if (player->Collision_AttackBox((*it)->GetAttackBox()) && (*it)->CompareTag(TAG::MONSTER))
 		//{
-		//	// ÇÃ·¹ÀÌ¾î°¡ ¸ó½ºÅÍÀÇ ¾îÅÃ¹Ú½º¿¡ ÀûÁß´çÇßÀ» ¶§
-		//  // ÇÃ·¹ÀÌ¾î ³Ë¹é + µ¥¹ÌÁö ÆÇÁ¤
+		//	// í”Œë ˆì´ì–´ê°€ ëª¬ìŠ¤í„°ì˜ ì–´íƒë°•ìŠ¤ì— ì ì¤‘ë‹¹í–ˆì„ ë•Œ
+		//  // í”Œë ˆì´ì–´ ë„‰ë°± + ë°ë¯¸ì§€ íŒì •
 		//}
 		if ((*it)->CompareTag(TAG::MONSTER))
 		{
@@ -126,7 +153,7 @@ void Map::CheckCollisions(float dt)
 				{
 					if ((*stable_it)->CompareTag(TAG::GROUND))
 					{
-						// ¸ó½ºÅÍ¶û ¹Ù´Ú Ãæµ¹Ã³¸®
+						// ëª¬ìŠ¤í„°ëž‘ ë°”ë‹¥ ì¶©ëŒì²˜ë¦¬
 						(*it)->OnGround((*stable_it)->GetSprite().getGlobalBounds());
 					}
 				}
@@ -140,17 +167,7 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
-			player->Collision(*it);
-
-			// ÇÃ·¹ÀÌ¾î°¡ Æ÷Å»°ú °ãÃÆÀ» ¶§
-			if ((*it)->GetInteractionType() == Interaction_Type::PORTAL)
-			{
-				std::cout << player->GetName() << " Collision Portal" << std::endl;
-				(*it)->Interaction();
-				return;
-			}
-
-			// ¶¥°ú ºÎµúÇûÀ» ¶§
+			// ë•…ê³¼ ë¶€ë”ªí˜”ì„ ë•Œ
 			if ((*it)->CompareTag(TAG::GROUND))
 			{
 				player->OnGround((*it)->GetSprite().getGlobalBounds());
@@ -162,5 +179,143 @@ void Map::CheckCollisions(float dt)
 			}
 		}
 	}
+
+	for (std::vector<Portal*>::iterator it = portals.begin(); it != portals.end(); ++it)
+	{
+		if ((*it) == nullptr) continue;
+
+		if (player->CheckCollision((*it)))
+		{
+			player->Collision(*it);
+
+			// í”Œë ˆì´ì–´ê°€ í¬íƒˆê³¼ ê²¹ì³¤ì„ ë•Œ
+			if ((*it)->GetInteractionType() == Interaction_Type::PORTAL)
+			{
+				std::cout << player->GetName() << " Collision Portal" << std::endl;
+				(*it)->Interaction();
+				return;
+			}
+		}
+	}
+}
+
+void Map::LoadMap(std::string dataFilepath)
+{
+	rapidcsv::Document dataFile(dataFilepath);
+
+	vector<string> colName = dataFile.GetColumn<string>("NAME");
+	vector<int> colIndex = dataFile.GetColumn<int>("INDEX");
+	vector<int> colLayer = dataFile.GetColumn<int>("LAYER");
+	vector<float> colX = dataFile.GetColumn<float>("X");
+	vector<float> colY = dataFile.GetColumn<float>("Y");
+	vector<float> colRotate = dataFile.GetColumn<float>("ROTATE");
+
+	int totalObjects = colName.size();
+	for (int i = 0; i < totalObjects; ++i)
+	{
+		MapData data;
+		data.name = colName[i];
+		data.index = colIndex[i];
+		data.layer = colLayer[i];
+		data.x = colX[i];
+		data.y = colY[i];
+		data.rotate = colRotate[i];
+
+		if (data.name != "portal")
+		{
+			AddObject(data);
+			if (object != nullptr)
+				stableObjects.push_back(object);
+		}
+		else if (data.name == "portal")
+		{
+			// í¬íƒˆì€ í¬íƒˆë¼ë¦¬
+			Portal* portal = new Portal();
+			portal->SetCurrMap(MAP_TYPE::Town);
+			// temp
+			portal->SetNextMap(MAP_TYPE::KingsPass);
+			portal->SetPosition(data.x, data.y);
+			portals.push_back(portal);
+		}
+	}
+
+	cout << "Load Complete" << endl;
+}
+
+void Map::AddObject(MapData& data)
+{
+	if (data.name == "ground")
+	{
+		this->object = new Ground(data.index);
+	}
+	else if (data.name == "layered")
+	{
+		this->object = new TownLayered(data.index);
+	}
+	else if (data.name == "portal")
+	{
+		this->object = new Portal();
+	}
+	else if (data.name == "building")
+	{
+		this->object = new TownBuilding(data.index);
+	}
+	else if (data.name == "bg")
+	{
+		this->object = new TownBG(data.index);
+	}
+	else if (data.name == "graveCross")
+	{
+		this->object = new TownGraveCross(data.index);
+	}
+	else if (data.name == "extra")
+	{
+		this->object = new TownExtra(data.index);
+	}
+	else if (data.name == "bench")
+	{
+		this->object = new Bench();
+	}
+	else if (data.name == "platform")
+	{
+		this->object = new Platform(data.index);
+	}
+	else if (data.name == "thorn")
+	{
+		this->object = new thorn();
+	}
+	else if (data.name == "wall")
+	{
+		this->object = new Wall(data.index);
+	}
+	else if (data.name == "kpGround")
+	{
+		this->object = new KingsPassGround(data.index);
+	}
+	else if (data.name == "kpDoor")
+	{
+		this->object = new Door(data.index);
+	}
+	else if (data.name == "kpImages")
+	{
+		this->object = new KingsPassImages(data.index);
+	}
+	else if (data.name == "kpBG")
+	{
+		this->object = new KingsPassBG(data.index);
+	}
+	else if (data.name == "kpWall")
+	{
+		this->object = new KingsPassWall(data.index);
+	}
+	else if (data.name == "kpObjects")
+	{
+		this->object = new KingsPassObjects(data.index);
+	}
+
+	this->object->SetLayer(data.layer);
+	this->object->SetPosition(Vector2f(data.x, data.y));
+	this->object->SetOriginCenter();
+	this->object->GetSprite().setRotation(data.rotate);
 }
 
