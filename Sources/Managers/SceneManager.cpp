@@ -27,7 +27,7 @@ void SceneManager::Init()
 
 	Scenes[L"MapTest"] = new MapTestPlayScene();
 
-	currentScene = Scenes[L"Title"];
+	currentScene = Scenes[L"Editor"];
 
 	currentScene->Init();
 }
