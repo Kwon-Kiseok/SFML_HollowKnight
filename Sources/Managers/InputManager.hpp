@@ -46,6 +46,9 @@ public:
 	InputManager() noexcept = default;
 	~InputManager() noexcept = default;
 
+	void HorizontalInit();
+	void VerticalInit();
+
 public:
 	void Init() noexcept;
 	void ProcessInput(const Event& event);

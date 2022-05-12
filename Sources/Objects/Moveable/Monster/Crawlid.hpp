@@ -1,6 +1,7 @@
 #pragma once
 #include "Monster.hpp"
 #include "../../Sources/Animation/AnimationController.hpp"
+#include "../../Sources/Managers/InputManager.hpp"
 
 class Crawlid : public Monster
 {
@@ -27,5 +28,9 @@ public:
 	virtual void Release() override;
 
 	virtual void OnGround(FloatRect map) override;
+
+	//const FloatRect GetGlobalBounds();	// 충돌체크 때 필요
+	bool UpdateCollision();	//  내가 때린 판정
+	bool OnHitted(Time timeHit);	// 내가 맞은 판정
 };
 

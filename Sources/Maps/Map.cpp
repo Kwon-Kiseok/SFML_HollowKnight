@@ -125,22 +125,26 @@ void Map::CheckCollisions(float dt)
 		if (player->CheckCollision(*it))
 		{
 			player->Collision(*it);
+			//player->GetHitBox().getGlobalBounds().intersects((*it)->GetSprite().getGlobalBounds());
 
 			// 플레이어와 몬스터가 충돌했을 경우
-			if ((*it)->CompareTag(TAG::MONSTER))
+			if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetIsAlivve())
 			{
+				player->SetHP(dt);
 				std::cout << player->GetName() << " Collision Monster" << std::endl;
 				//player->OnHitted(dt);
 			}
 		}
 		/******************************************
 		* 몬스터가 플레이어의 공격박스에 부딪혔을 경우
-		* 이게 맞나요????
 		******************************************/
 		RectangleShape attackBox = player->GetAttackBox();
-		if ((*it)->Collision_AttackBox(attackBox) && (*it)->CompareTag(TAG::MONSTER))
+		if (((*it)->Collision_AttackBox(attackBox) && (*it)->CompareTag(TAG::MONSTER)) &&
+			player->GetIsAttackBox() && (*it)->GetIsAlivve())
 		{
 			player->UpdateCollision();
+			player->SetIsAttackBox(false);
+			(*it)->SetHealth(-1);
 		}
 
 		//if (player->Collision_AttackBox((*it)->GetAttackBox()) && (*it)->CompareTag(TAG::MONSTER))

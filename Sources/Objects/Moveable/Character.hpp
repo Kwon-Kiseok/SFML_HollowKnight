@@ -16,6 +16,7 @@ protected:
 	float jumpSpeed;			// 점프속도	
 	float deltaTime;			// dt
 	
+	bool isAlive;				// 생존 확인
 	bool isJumping;				// 현재 점프 중인지
 	bool isFalling;				// 현재 떨어지는 중인지
 	bool isColliding;			// 현재 충돌중인지
@@ -62,5 +63,6 @@ public:
 	virtual void Release();
 
 	virtual void OnGround(FloatRect map);
+	virtual bool GetIsAlivve();
 };
 
