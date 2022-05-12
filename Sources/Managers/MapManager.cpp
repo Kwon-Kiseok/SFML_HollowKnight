@@ -2,7 +2,7 @@
 #include "../Maps/Town_Map.hpp"
 #include "../Maps/KingsPass_Map.hpp"
 #include "../Maps/CrossRoad_Map.hpp"
-
+#include "../Maps/BossRoom_Map.hpp"
 #include <iostream>
 
 MapManager::~MapManager() noexcept
@@ -33,9 +33,14 @@ void MapManager::LoadMap(MAP_TYPE type)
 	case MAP_TYPE::CrossRoad:
 		map = new CrossRoad_Map(player);
 		break;
+	case MAP_TYPE::BossRoom:
+		map = new BossRoom_Map(player);
 	default:
 		break;
 	}
+	//
+	player->SetCurrentMap(type);
+	player->SetPosition(startPos);
 	map->Init();
 	std::cout << static_cast<int>(type) << std::endl;
 }
@@ -64,4 +69,9 @@ void MapManager::Release()
 Map* MapManager::GetCurrentMap()
 {
 	return map;
+}
+
+void MapManager::SetStartPos(sf::Vector2f pos)
+{
+	startPos = pos;
 }

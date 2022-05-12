@@ -521,3 +521,27 @@ void Player::SetIsAttackBox(bool is)
 {
 	hitAttack = is;
 }
+
+MAP_TYPE Player::GetCurrentMap()
+{
+	return currMap;
+}
+
+void Player::SetCurrentMap(MAP_TYPE type)
+{
+	currMap = type;
+}
+bool Player::UpdateCollision(const std::list<Coin*> coins)
+{
+	FloatRect bounds = sprite.getGlobalBounds();
+	bool isCollided = false;
+	for (auto coin : coins)
+	{
+		if (bounds.intersects(coin->GetGlobalBounds()))
+		{
+			coin += coin->PickUp();
+		}
+		isCollided = true;
+	}
+	return false;
+}

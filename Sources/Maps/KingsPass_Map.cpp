@@ -1,4 +1,5 @@
 #include "KingsPass_Map.hpp"
+#include "../Objects/Stable/Portal.hpp"
 
 KingsPass_Map::KingsPass_Map(Player* player_)
 	: Map(player_)
@@ -20,4 +21,13 @@ KingsPass_Map::KingsPass_Map(Player* player_)
 	characters.push_back(crawlid);
 	characters.push_back(crawlid2);
 	characters.push_back(vengefly);
+
+	// portal set
+	kpToCR = new Portal();
+	kpToCR->SetCurrMap(MAP_TYPE::KingsPass);
+	kpToCR->SetNextMap(MAP_TYPE::CrossRoad, Vector2f(50.f, 300.f));
+	// Æ÷Áö¼Ç
+	kpToCR->SetPosition(Vector2f(6757.f, -316.f));
+
+	portals.push_back(kpToCR);
 }

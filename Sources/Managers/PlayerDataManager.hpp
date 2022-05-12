@@ -16,11 +16,11 @@ public:
 	PlayerDataManager() {}
 	~PlayerDataManager() {}
 
-	void SavePlayerData(Player& player);
+	void UpdatePlayerData(Player& player);
 	int GetPlayerHP();
 	int GetPlayerMP();
 	int GetPlayerCoin();
-
+	MAP_TYPE GetPlayerCurrentMap();
 	int AddCoin(int value);
 };
 

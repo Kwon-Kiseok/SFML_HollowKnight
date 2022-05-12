@@ -7,6 +7,8 @@ class Portal : public Stable
 private:
 	MAP_TYPE currMap;
 	MAP_TYPE nextMap;
+	Vector2f spawnPos;
+
 public:
 	Portal();
 	virtual ~Portal();
@@ -14,7 +16,7 @@ public:
 	MAP_TYPE& GetCurrentMap();
 	MAP_TYPE& GetNextMap();
 	void SetCurrMap(MAP_TYPE curr);
-	void SetNextMap(MAP_TYPE next);
+	void SetNextMap(MAP_TYPE next, Vector2f pos);
 	virtual void Interaction() override;
 	virtual void Render(RenderWindow& window) override;
 	virtual bool Collision(GameObject* otherObj) override;
