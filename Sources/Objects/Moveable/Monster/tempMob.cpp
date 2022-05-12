@@ -9,7 +9,7 @@ void tempMob::Init()
 	SetLayer(0); // юс╫ц
 	SetName("tempMob");
 	
-	DebugCollision(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
+	DebugCollision();
 }
 
 void tempMob::Update(float dt)

@@ -9,6 +9,7 @@ enum class TAG
 	NONE,
 	PLAYER,
 	MONSTER,
+	COLLIDER,
 	GROUND,
 	BENCH,
 	BACKGROUND,
@@ -31,7 +32,6 @@ protected:
 	int imageIdx;
 
 	RectangleShape rectangleShape;
-	FloatRect boundingBox;
 public:
 	GameObject();
 	virtual ~GameObject();
@@ -63,9 +63,7 @@ public:
 	// 
 	bool CompareTag(TAG tag);
 	
-	void DebugCollision(Vector2f size);
-	bool CollisionPoint(Vector2f point);
-	bool CollisionBox(FloatRect box);
+	void DebugCollision();
 
 	virtual bool CheckCollision(GameObject* otherObj);
 	virtual bool Collision(GameObject* otherObj) = 0;

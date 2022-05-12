@@ -3,6 +3,7 @@
 GameObject::GameObject()
 	:isVisible(true), layer(0), tag(TAG::NONE)
 {
+	DebugCollision();
 }
 
 GameObject::~GameObject()
@@ -119,9 +120,9 @@ void GameObject::SetOriginCenter()
 	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
 }
 
-void GameObject::DebugCollision(Vector2f size)
+void GameObject::DebugCollision()
 {
-	rectangleShape.setSize(size);
+	rectangleShape.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
 	rectangleShape.setPosition(sprite.getPosition());
 	rectangleShape.setOrigin(sprite.getOrigin());
 
@@ -130,21 +131,12 @@ void GameObject::DebugCollision(Vector2f size)
 	rectangleShape.setFillColor(Color::Color(0, 0, 0, 0));
 }
 
-bool GameObject::CollisionPoint(Vector2f point)
-{
-	if (boundingBox.contains(point))
-		return true;
-	return false;
-}
-
-bool GameObject::CollisionBox(FloatRect box)
-{
-	if (boundingBox.intersects(box))
-		return true;
-	return false;
-}
-
 bool GameObject::CheckCollision(GameObject* otherObj)
 {
+	if (otherObj->CompareTag(TAG::COLLIDER))
+	{
+		return this->GetSprite().getGlobalBounds().intersects(otherObj->GetRectangleShape().getGlobalBounds());
+	}
+
 	return this->GetSprite().getGlobalBounds().intersects(otherObj->GetSprite().getGlobalBounds());
 }
