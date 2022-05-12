@@ -88,5 +88,6 @@ public:
 
 	MAP_TYPE GetCurrentMap();
 	void SetCurrentMap(MAP_TYPE type);
+	bool UpdateCollision(const std::list<Coin*> coins);
 };
 

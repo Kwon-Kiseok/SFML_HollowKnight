@@ -129,12 +129,22 @@ void Map::CheckCollisions(float dt)
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
 				//std::cout << player->GetName() << " Collision Monster" << std::endl;
-				// (*it)->GetName() == "coin" 
+			}
+			if ((*it)->CompareTag(TAG::COIN))
+			{
+				for (std::vector<Collider*>::iterator collider_it = colliders.begin(); collider_it != colliders.end(); ++collider_it)
 				{
-					//아이템 없애고 플레이어 코인개수 증가
+					if ((*it)->CheckCollision(*collider_it))
+					{
+						if ((*collider_it)->CompareTag(TAG::COLLIDER))
+						{
+							std::cout << player->GetName() << "Collision Coin" << std::endl;
+						//	(*it)->Player::UpdateCollision((*collider_it)->GetShape().getGlobalBounds());
+						}
+					}
 				}
 			}
-		}
+		}		
 	}
 
 	for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
@@ -163,7 +173,6 @@ void Map::CheckCollisions(float dt)
 			if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetIsAlivve())
 			{
 				player->SetHP(dt);
-
 			}
 		}
 		/******************************************

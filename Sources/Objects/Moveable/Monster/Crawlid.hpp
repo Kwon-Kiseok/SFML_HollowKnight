@@ -17,10 +17,6 @@ private:
 
 	const float GRAVITY = 1500.f;				// 중력
 	float gravity;								// 중력가속도 처리
-	
-	Texture textureCoin;
-	Sprite spriteCoin;
-	Vector2f position;
 
 	Texture* textureDroppedCoin;
 	Sprite* spriteDroppedCoin;
