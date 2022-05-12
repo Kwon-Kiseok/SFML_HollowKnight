@@ -1,10 +1,10 @@
 #pragma once
 #include "Monster.hpp"
-
+#include "../../Collider.hpp"
 class tempMob : public Monster
 {
 private:
-
+	Collider colliderBox;
 public:
 	tempMob() {}
 	virtual ~tempMob() {}

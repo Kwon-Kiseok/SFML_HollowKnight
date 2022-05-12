@@ -30,6 +30,7 @@ EditingScene::EditingScene() noexcept
 	positionSetting = false;
 	layer = 0;
 	isTabClicked = false;
+	collisionSetting = false;
 }
 
 void EditingScene::Init()
@@ -206,19 +207,16 @@ void EditingScene::Render(sf::RenderWindow& window)
 	{
 		for (auto it = objects.begin(); it != objects.end(); ++it)
 		{
-			if((* it)->GetLayer() == i)
+			if (((*it)->GetLayer() == i))
+			{
 				(*it)->Render(window);
+			}
 		}
 	}
 
 	if (nullptr != collider)
 	{
-		window.draw(*collider);
-	}
-
-	for (auto it = colliders.begin(); it != colliders.end(); ++it)
-	{
-		window.draw(**it);
+		collider->Render(window);
 	}
 
 	if (isTabClicked)
@@ -632,6 +630,7 @@ void EditingScene::SetObjectsPosition()
 			else
 				selectObject = false;
 			positionSetting = false;
+			object = nullptr;
 		}
 		else if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Right))
 		{
@@ -755,14 +754,17 @@ void EditingScene::ClickObject()
 
 	for (auto object : objects)
 	{
-		if (object->GetSprite().getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
+		if (!InputManager::GetInstance().GetKey(Keyboard::T))
 		{
-			if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
+			if (object->GetSprite().getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
 			{
-				selectObject = true;
-				this->object = object;
-				prevPos = object->GetPosition();
-				positionSetting = true;
+				if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
+				{
+					selectObject = true;
+					this->object = object;
+					prevPos = object->GetPosition();
+					positionSetting = true;
+				}
 			}
 		}
 	}
@@ -776,27 +778,32 @@ void EditingScene::SetManual()
 	{
 		manualText.setString(L"Z - rotate(-10)\nC - rotate(+10)\nRIGHT - undo\nSPACE - put\nBACK SPACE - delete");
 	}
+	else if (collisionSetting)
+	{
+		manualText.setString(L"BUTTON UP - set size\nSPACE - put");
+	}
 	else
 	{
-		manualText.setString(L"LEFT - select\nTAB - info");
+		manualText.setString(L"LEFT - select\nTAB - info\nT+LEFT - collider\nDELETE - del collider");
 	}
 }
 
 void EditingScene::Save()
 {
 	ofstream dataFile;
-	dataFile.open("data_tables/maps/BossRoom_map_data.csv");
+	dataFile.open("data_tables/maps/KingsPass_map_data.csv");
 	if (dataFile.fail())
 	{
 		cout << "File load Failed" << endl;
 		return;
 	}
-	dataFile << "NAME,INDEX,LAYER,X,Y,ROTATE\n";
+	dataFile << "NAME,INDEX,LAYER,X,Y,ROTATE,SIZE_X,SIZE_Y\n";
 	for (int i = 0; i < objects.size(); ++i)
 	{
-		dataFile << objects[i]->GetName() << "," << objects[i]->GetImageIdx() 
-			<< "," << objects[i]->GetLayer() << "," << objects[i]->GetPosition().x 
-			<< "," << objects[i]->GetPosition().y << "," << objects[i]->GetSprite().getRotation() << endl;
+		dataFile << objects[i]->GetName() << "," << objects[i]->GetImageIdx()
+			<< "," << objects[i]->GetLayer() << "," << objects[i]->GetPosition().x
+			<< "," << objects[i]->GetPosition().y << "," << objects[i]->GetSprite().getRotation()
+			<< "," << objects[i]->GetRectangleShape().getSize().x << "," << objects[i]->GetRectangleShape().getSize().y << endl;
 	}
 	cout << "Save Complete File" << endl;
 	dataFile.close();
@@ -804,7 +811,7 @@ void EditingScene::Save()
 
 void EditingScene::Load()
 {
-	rapidcsv::Document dataFile("data_tables/maps/BossRoom_map_data.csv");
+	rapidcsv::Document dataFile("data_tables/maps/KingsPass_map_data.csv");
 
 	vector<string> colName = dataFile.GetColumn<string>("NAME");
 	vector<int> colIndex = dataFile.GetColumn<int>("INDEX");
@@ -812,6 +819,8 @@ void EditingScene::Load()
 	vector<float> colX = dataFile.GetColumn<float>("X");
 	vector<float> colY = dataFile.GetColumn<float>("Y");
 	vector<float> colRotate = dataFile.GetColumn<float>("ROTATE");
+	vector<float> colSize_x = dataFile.GetColumn<float>("SIZE_X");
+	vector<float> colSize_y = dataFile.GetColumn<float>("SIZE_Y");
 
 	int totalObjects = colName.size();
 	for (int i = 0; i < totalObjects; ++i)
@@ -823,8 +832,17 @@ void EditingScene::Load()
 		data.x = colX[i];
 		data.y = colY[i];
 		data.rotate = colRotate[i];
+		data.size_x = colSize_x[i];
+		data.size_y = colSize_y[i];
 
-		AddObject(data);
+		if (data.name == "collider")
+		{
+			LoadCollision(data);
+		}
+		else
+		{
+			AddObject(data);
+		}
 		objects.push_back(object);
 	}
 
@@ -943,46 +961,64 @@ void EditingScene::AddObject(MapData& data)
 	this->object->GetSprite().setRotation(data.rotate);
 }
 
+void EditingScene::LoadCollision(MapData& data)
+{
+	this->object = new Collider(Vector2f(data.size_x, data.size_y), Vector2f(data.x, data.y));
+}
+
 void EditingScene::SetCollider()
 {
-	if (object != nullptr && !selectObject)
-		return;
-	else
+	for (auto it = objects.begin(); it != objects.end(); it++)
+	{
+		if ((*it)->CompareTag(TAG::COLLIDER) &&
+			(*it)->GetRectangleShape().getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
+		{
+			if (InputManager::GetInstance().GetKeyDown(Keyboard::Delete))
+			{
+				objects.erase(it);
+				break;
+			}
+		}
+	}
+
+	if (InputManager::GetInstance().GetKey(Keyboard::T))
 	{
 		// 콜라이더의 시작점이 될 좌상점의 위치를 입력받음
-		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left) && InputManager::GetInstance().GetKey(Keyboard::T))
+		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
 		{
-			collider = new RectangleShape();
+			collisionSetting = true;
+			collider = new Collider();
 			startPos = InputManager::GetInstance().GetMouseWorldPosition();
 
-			collider->setOutlineThickness(2.f);
-			collider->setOutlineColor(Color::Green);
-			collider->setFillColor(Color(0, 0, 0, 0));
-			collider->setPosition(startPos);
+			collider->GetShape().setOutlineThickness(2.f);
+			collider->GetShape().setOutlineColor(Color::Green);
+			collider->GetShape().setFillColor(Color(0, 0, 0, 0));
+			collider->GetShape().setPosition(startPos);
 		}
-		if (InputManager::GetInstance().GetMouseButton(Mouse::Left) && InputManager::GetInstance().GetKey(Keyboard::T))
+		if (InputManager::GetInstance().GetMouseButton(Mouse::Left))
 		{
 			endPos = InputManager::GetInstance().GetMouseWorldPosition();
-			collider->setSize(Vector2f(endPos - startPos));
+			collider->GetShape().setSize(Vector2f(endPos - startPos));
 		}
-		if (InputManager::GetInstance().GetMouseButtonUp(Mouse::Left) && InputManager::GetInstance().GetKey(Keyboard::T))
+		if (InputManager::GetInstance().GetMouseButtonUp(Mouse::Left))
 		{
 			// 버튼이 떼진 위치가 우하점이 됨
 			endPos = InputManager::GetInstance().GetMouseWorldPosition();
 			// 좌상점, 우하점이 정해졌을 때의 크기로 rectangleShape의 크기 조절
-
-			if (collider != nullptr)
-			{
-				collider->setSize(Vector2f(endPos - startPos));
-				colliders.push_back(collider);
-
-				collider = nullptr;
-				delete collider;
-			}
+			collider->GetShape().setSize(Vector2f(endPos - startPos));
 		}
-		// 스페이스나 결정 입력을 받으면 해당 크기로 결정됨
-		// 취소하면 그냥 지워줌?
-
-		// 확인이 되면 colliders에 저장
 	}
+	// 스페이스나 결정 입력을 받으면 해당 크기로 결정됨
+	// 취소하면 그냥 지워줌?
+	if (collider != nullptr && InputManager::GetInstance().GetKeyDown(Keyboard::Space))
+	{
+		collider->SetPosition(startPos);
+		objects.push_back(collider);
+
+		collider = nullptr;
+		delete collider;
+
+		collisionSetting = false;
+	}
+	// 확인이 되면 colliders에 저장
 }

@@ -75,6 +75,11 @@ void Map::Render(sf::RenderWindow& window)
 		(*it)->Render(window);
 	}
 
+	for (auto it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		(*it)->Render(window);
+	}
+
 }
 
 void Map::Release()
@@ -109,11 +114,24 @@ void Map::CheckCollisions(float dt)
 
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
-				std::cout << player->GetName() << " Collision Monster" << std::endl;
+				//std::cout << player->GetName() << " Collision Monster" << std::endl;
 				// (*it)->GetName() == "coin" 
 				{
 					//아이템 없애고 플레이어 코인개수 증가
 				}
+			}
+		}
+	}
+
+	for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		if (*it == nullptr) continue;
+
+		if (player->CheckCollision(*it))
+		{
+			if ((*it)->CompareTag(TAG::COLLIDER))
+			{
+				player->OnGround((*it)->GetShape().getGlobalBounds());
 			}
 		}
 	}
@@ -129,7 +147,7 @@ void Map::CheckCollisions(float dt)
 			// 플레이어와 몬스터가 충돌했을 경우
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
-				std::cout << player->GetName() << " Collision Monster" << std::endl;
+				//std::cout << player->GetName() << " Collision Monster" << std::endl;
 				//player->OnHitted(dt);
 			}
 		}
@@ -150,14 +168,14 @@ void Map::CheckCollisions(float dt)
 		//}
 		if ((*it)->CompareTag(TAG::MONSTER))
 		{
-			for (std::vector<Stable*>::iterator stable_it = stableObjects.begin(); stable_it != stableObjects.end(); ++stable_it)
+			for (std::vector<Collider*>::iterator collider_it = colliders.begin(); collider_it != colliders.end(); ++collider_it)
 			{
-				if ((*it)->CheckCollision(*stable_it))
+				if ((*it)->CheckCollision(*collider_it))
 				{
-					if ((*stable_it)->CompareTag(TAG::GROUND))
+					if ((*collider_it)->CompareTag(TAG::COLLIDER))
 					{
 						// 몬스터랑 바닥 충돌처리
-						(*it)->OnGround((*stable_it)->GetSprite().getGlobalBounds());
+						(*it)->OnGround((*collider_it)->GetShape().getGlobalBounds());
 					}
 				}
 			}
@@ -171,10 +189,9 @@ void Map::CheckCollisions(float dt)
 		if (player->CheckCollision(*it))
 		{
 			// 땅과 부딪혔을 때
-			if ((*it)->CompareTag(TAG::GROUND))
+			if ((*it)->CompareTag(TAG::COLLIDER))
 			{
-				player->OnGround((*it)->GetSprite().getGlobalBounds());
-				std::cout << player->GetName() << " Collision Stable" << std::endl;
+				//player->OnGround((*it)->GetSprite().getGlobalBounds());
 			}
 			else
 			{
@@ -212,6 +229,8 @@ void Map::LoadMap(std::string dataFilepath)
 	vector<float> colX = dataFile.GetColumn<float>("X");
 	vector<float> colY = dataFile.GetColumn<float>("Y");
 	vector<float> colRotate = dataFile.GetColumn<float>("ROTATE");
+	vector<float> colSize_x = dataFile.GetColumn<float>("SIZE_X");
+	vector<float> colSize_y = dataFile.GetColumn<float>("SIZE_Y");
 
 	int totalObjects = colName.size();
 	for (int i = 0; i < totalObjects; ++i)
@@ -223,12 +242,18 @@ void Map::LoadMap(std::string dataFilepath)
 		data.x = colX[i];
 		data.y = colY[i];
 		data.rotate = colRotate[i];
+		data.size_x = colSize_x[i];
+		data.size_y = colSize_y[i];
 
-		if (data.name != "portal")
+		if (data.name != "portal" && data.name != "collider")
 		{
 			AddObject(data);
 			if (object != nullptr)
 				stableObjects.push_back(object);
+		}
+		else if (data.name == "collider")
+		{
+			LoadCollision(data);
 		}
 		else if (data.name == "portal")
 		{
@@ -320,5 +345,12 @@ void Map::AddObject(MapData& data)
 	this->object->SetPosition(Vector2f(data.x, data.y));
 	this->object->SetOriginCenter();
 	this->object->GetSprite().setRotation(data.rotate);
+}
+
+void Map::LoadCollision(MapData& data)
+{
+	this->collider = new Collider(Vector2f(data.size_x, data.size_y), Vector2f(data.x, data.y));
+	if(nullptr != collider)
+		colliders.push_back(collider);
 }
 

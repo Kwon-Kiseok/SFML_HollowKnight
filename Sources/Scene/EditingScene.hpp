@@ -5,10 +5,8 @@
 #include <string>
 #include "../Utils/button.hpp"
 #include "../Objects/GameObject.hpp"
+#include "../Objects/Collider.hpp"
 #include "../Maps/Map.hpp"
-
-#define MAX_LAYER 10
-#define MIN_LAYER 0
 
 using namespace sf;
 using namespace std;
@@ -37,9 +35,9 @@ private:
 	GameObject* object;
 
 	// 충돌체
-	vector<RectangleShape*> colliders;
-	RectangleShape* collider;
+	Collider* collider;
 	button* colliderButton;
+	bool collisionSetting;
 
 	Vector2f startPos;	// 좌상점
 	Vector2f endPos;	// 우하점
@@ -125,7 +123,7 @@ public:
 	void Save();
 	void Load();
 	void AddObject(MapData& data);
-
+	void LoadCollision(MapData& data);
 	void SetCollider();
 };
 
