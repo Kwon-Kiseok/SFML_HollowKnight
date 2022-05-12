@@ -29,7 +29,7 @@ void SceneManager::Init()
 	Scenes[L"MapTest"] = new MapTestPlayScene();
 	Scenes[L"Mapper"] = new MapperScene();
 
-	currentScene = Scenes[L"Play"];
+	currentScene = Scenes[L"Title"];
 
 	currentScene->Init();
 }

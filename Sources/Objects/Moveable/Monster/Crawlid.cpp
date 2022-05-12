@@ -1,23 +1,27 @@
 #include "Crawlid.hpp"
 #include "../../Sources/Animation/rapidcsv.hpp"
-#include "../../Sources/Managers/InputManager.hpp"
+//#include "../../Sources/Managers/InputManager.hpp"
+#include "../../Sources/Utils/Utility.hpp"
 
 Crawlid::Crawlid()
 	:gravity(GRAVITY)
 {
+	isAlive = true;
+	health = 2;
 }
 
 Crawlid::Crawlid(int xdir)
 	: gravity(GRAVITY)
 {
-	if (xdir > 0)				// Ã³À½¿¡ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
+	if (xdir > 0)				// ì²˜ìŒì— ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™
 	{
 		xDir = 1;
 	}
-	else if (xdir < 0)			// Ã³À½¿¡ ¿ŞÂÊÀ¸·Î ÀÌµ¿
+	else if (xdir < 0)			// ì²˜ìŒì— ì™¼ìª½ìœ¼ë¡œ ì´ë™
 	{
 		xDir = -1;
 	}
+	health = 2;
 }
 
 void Crawlid::Init()
@@ -25,7 +29,7 @@ void Crawlid::Init()
 	SetTag(TAG::MONSTER);
 	moveSpeed = 100.f;
 	//sprite.setOrigin(60, 60);
-	// Animator ÃÊ±âÈ­
+	// Animator ì´ˆê¸°í™”
 	animation.SetTarget(&sprite);
 
 	rectangleShape.setSize(Vector2f(110, 55));
@@ -94,25 +98,33 @@ void Crawlid::Init()
 
 void Crawlid::Update(float dt)
 {
-	positionTemp = position;
-
-	if (isFalling)
+	if (health <= 0)
 	{
-		gravity += GRAVITY * dt;
-		if (gravity > 1000.f)
-		{
-			gravity = 1000.f;
-		}
-		position.y += gravity * dt;
+		isAlive = false;
+		animation.Play("Die");
 	}
-	isFalling = true;
+	if (isAlive)
+	{
+		positionTemp = position;
 
-	position.x += (moveSpeed * dt) * xDir;
-	// position
-	SetPosition(position);
-	rectangleShape.setPosition(position);
-	gavityShape.setPosition(position);
-	sideShape.setPosition(position);
+		if (isFalling)
+		{
+			gravity += GRAVITY * dt;
+			if (gravity > 1000.f)
+			{
+				gravity = 1000.f;
+			}
+			position.y += gravity * dt;
+		}
+		isFalling = true;
+
+		position.x += (moveSpeed * dt) * xDir;
+		// position
+		SetPosition(position);
+		rectangleShape.setPosition(position);
+		gavityShape.setPosition(position);
+		sideShape.setPosition(position);
+	}
 	// animation
 	animation.Update(dt);
 }
@@ -121,11 +133,8 @@ void Crawlid::Render(RenderWindow& window)
 {
 	window.draw(sprite);
 	window.draw(rectangleShape);
-	window.draw(gavityShape);
-	window.draw(sideShape);
-
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::H))
-		coin->Render(window);
+	//window.draw(gavityShape);
+	//window.draw(sideShape);
 }
 
 void Crawlid::Release()
@@ -134,19 +143,84 @@ void Crawlid::Release()
 
 void Crawlid::OnGround(FloatRect map)
 {
-	if (sideShape.getGlobalBounds().intersects(map))
+	if (rectangleShape.getGlobalBounds().intersects(map))
 	{
-		xDir = -xDir;
-		sprite.scale(-1, 1);
+		if (rectangleShape.getGlobalBounds().intersects(map))
+		{
+			Pivots pivot = Utility::CollisionDir(map, rectangleShape.getGlobalBounds());
+
+			switch (pivot)
+			{
+			case Pivots::LC:
+				if (position.y - map.top > -10.f &&
+					position.y - map.top < 30.f)
+				{
+					position.y -= position.y - map.top + 10;
+					break;
+				}
+				position.x += (map.left + map.width) - (rectangleShape.getGlobalBounds().left);
+				InputManager::GetInstance().HorizontalInit();
+				//InputManager::HorizontalInit();
+				break;
+
+			case Pivots::RC:
+				if (position.y - map.top > -10.f &&
+					position.y - map.top < 30.f)
+				{
+					position.y -= position.y - map.top + 10;
+					break;
+				}
+				position.x -= (rectangleShape.getGlobalBounds().left + rectangleShape.getGlobalBounds().width) - (map.left);
+				InputManager::GetInstance().HorizontalInit();
+				//InputManager::HorizontalInit();0
+				break;
+
+			case Pivots::CT:
+				gravity = 0.f;
+				position.y += (map.top + map.height) - (rectangleShape.getGlobalBounds().top);
+				InputManager::GetInstance().HorizontalInit();
+				//InputManager::VerticalInit();
+				break;
+
+			case Pivots::CB:
+				gravity = 0.f;
+				position.y -= (rectangleShape.getGlobalBounds().top + rectangleShape.getGlobalBounds().height) - (map.top);
+				InputManager::GetInstance().HorizontalInit();
+				break;
+
+			defalut:
+				break;
+			}
+		}
 	}
-	if (gavityShape.getGlobalBounds().intersects(map))
-	{
-		gravity = 0.f;
-		isFalling = false;
-	}
-	else
-	{
-		xDir = -xDir;
-		sprite.scale(-1, 1);
-	}
+}
+
+//void Crawlid::OnGround(FloatRect map)
+//{
+//	if (sideShape.getGlobalBounds().intersects(map))
+//	{
+//		xDir = -xDir;
+//		sprite.scale(-1, 1);
+//	}
+//	if (gavityShape.getGlobalBounds().intersects(map))
+//	{
+//		gravity = 0.f;
+//		isFalling = false;
+//	}
+//	else
+//	{
+//		xDir = -xDir;
+//		sprite.scale(-1, 1);
+//	}
+//}
+
+bool Crawlid::UpdateCollision()
+{
+	return false;
+}
+
+bool Crawlid::OnHitted(Time timeHit)
+{
+	health--;
+	return false;
 }
