@@ -17,7 +17,7 @@ public:
 	MAP_TYPE& GetNextMap();
 	void SetCurrMap(MAP_TYPE curr);
 	void SetNextMap(MAP_TYPE next, Vector2f pos);
-	virtual void Interaction() override;
+	virtual void Interaction(Player& player) override;
 	virtual void Render(RenderWindow& window) override;
 	virtual bool Collision(GameObject* otherObj) override;
 };

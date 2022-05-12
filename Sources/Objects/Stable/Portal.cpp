@@ -39,7 +39,7 @@ void Portal::SetNextMap(MAP_TYPE next, Vector2f pos)
 	spawnPos = pos;
 }
 
-void Portal::Interaction()
+void Portal::Interaction(Player& player)
 {
 	MapManager::GetInstance().SetStartPos(spawnPos);
 	MapManager::GetInstance().LoadMap(nextMap);

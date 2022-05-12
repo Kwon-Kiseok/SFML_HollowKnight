@@ -1,5 +1,6 @@
 #pragma once
 #include "../GameObject.hpp"
+#include "../../Player/Player.hpp"
 
 enum class Interaction_Type { NONE, DAMAGED, BROKEN, PORTAL, CHECKPOINT, BENCH, };
 
@@ -20,7 +21,7 @@ public:
 	virtual void SetInteractable(bool is);
 
 	virtual Interaction_Type GetInteractionType();
-	virtual void Interaction();
+	virtual void Interaction(Player& player);
 	virtual int GetIndexTotal();
 
 	virtual void Init() override;

@@ -215,14 +215,14 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
-			// 땅과 부딪혔을 때
-			if ((*it)->CompareTag(TAG::COLLIDER))
+			// 벤치와 부딪혔을 때
+			if ((*it)->CompareTag(TAG::BENCH))
 			{
-				//player->OnGround((*it)->GetSprite().getGlobalBounds());
-			}
-			else
-			{
-				//player->SetVal(dt);
+				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
+				{
+					(*it)->SetInteractable(true);
+					(*it)->Interaction(*player);
+				}
 			}
 		}
 	}
@@ -242,7 +242,7 @@ void Map::CheckCollisions(float dt)
 				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
 					(*it)->SetInteractable(true);
 				if((*it)->IsInteractable())
-					(*it)->Interaction();
+					(*it)->Interaction(*player);
 				return;
 			}
 		}

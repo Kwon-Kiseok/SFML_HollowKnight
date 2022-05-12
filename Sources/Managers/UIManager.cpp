@@ -203,9 +203,6 @@ void UIManager::Update_PlayScene(float dt)
 	ssCoin << PlayerDataManager::GetInstance().GetPlayerCoin();
 	textCoin.setString(ssCoin.str());
 
-	PlayerDataManager::GetInstance().GetPlayerHP();
-	PlayerDataManager::GetInstance().GetPlayerMP();
-
 	inventory.Update(dt);
 	Update_Map(dt);
 
