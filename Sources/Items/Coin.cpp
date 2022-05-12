@@ -18,15 +18,15 @@ void Coin::Init()
 
 void Coin::Update(float dt)
 {
-	if (isFalling)
-	{
-		fallingSpeed += GRAVITY * dt;
-		if (fallingSpeed > 3000.f)
-		{
-			fallingSpeed = 3000.f;
-		}
-		PositionCoin.y = fallingSpeed * dt;
-	}
+	//if (isFalling)
+	//{
+	//	fallingSpeed += GRAVITY * dt;
+	//	if (fallingSpeed > 3000.f)
+	//	{
+	//		fallingSpeed = 3000.f;
+	//	}
+	//	PositionCoin.y = fallingSpeed * dt;
+	//}
 }
 
 void Coin::OnGround()
@@ -63,4 +63,10 @@ void Coin::Spawn(bool spawn)
 		sprite.setPosition(Vector2f(position.x + x, position.y + y));
 		pickCoin = true;
 	}
+
+}
+
+void Coin::SetPosition(Vector2f crawlidPosition)
+{
+	sprite.setPosition(crawlidPosition);
 }

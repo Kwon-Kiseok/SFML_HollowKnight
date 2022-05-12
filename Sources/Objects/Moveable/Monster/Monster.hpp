@@ -1,6 +1,7 @@
 #pragma once
 #include "../Character.hpp"
 #include "../../../Items/Coin.hpp"
+#include "../../../Managers/PlayerDataManager.hpp"
 
 class Monster : public Character
 {
@@ -8,7 +9,7 @@ protected:
 	Vector2f startPos;
 	Vector2f endPos;
 
-	Coin* coin;
+	int coin;					//몬스터의 코인량
 
 public:
 	Monster();

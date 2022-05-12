@@ -21,3 +21,8 @@ int PlayerDataManager::GetPlayerCoin()
 {
 	return coin;
 }
+
+int PlayerDataManager::AddCoin(int value)
+{
+	return this->coin += value;
+}
