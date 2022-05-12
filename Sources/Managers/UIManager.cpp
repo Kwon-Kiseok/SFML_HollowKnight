@@ -81,6 +81,7 @@ void UIManager::Update_TitleScene(float dt)
 		if (Cursor_selectY == 600.f)
 		{
 			SceneManager::GetInstance().Load(L"Play");
+			SoundManager::GetInstance().StopMusic();
 		}
 		else if (Cursor_selectY == 750.f)
 		{

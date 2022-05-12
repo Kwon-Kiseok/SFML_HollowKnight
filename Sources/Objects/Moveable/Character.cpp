@@ -3,6 +3,7 @@
 
 Character::Character()
 {
+	isAlive = true;
 	canFall = false;
 	canJump = true;
 	canMove = true;
@@ -10,7 +11,7 @@ Character::Character()
 	colDir = Vector2f(0.f, 0.f);
 	deltaTime = 0.f;
 	gravity = 980.f;
-	health = 10;
+	health = 0;
 
 	isColliding = false;
 	isFalling = false;
@@ -66,7 +67,7 @@ void Character::SetY(float y)
 
 void Character::SetHealth(int health)
 {
-	this->health = health;
+	this->health += health;
 }
 
 void Character::SetDirection(Direction dir)
@@ -112,4 +113,9 @@ void Character::Release()
 
 void Character::OnGround(FloatRect map)
 {
+}
+
+bool Character::GetIsAlivve()
+{
+	return isAlive;
 }
