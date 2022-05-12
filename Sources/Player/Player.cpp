@@ -304,12 +304,12 @@ void Player::Update(float dt)
 		//	std::cout << coin << ", " << PlayerDataManager::GetInstance().GetPlayerCoin() << std::endl;
 	}
 
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life����
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::L) && (health > 0))	//L: Life����
 	{
 		health--;
 	}
 
-	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P))	//P: Life��
+	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P) && (health < 5))	//P: Life��
 	{
 		health++;
 	}
@@ -536,4 +536,19 @@ bool Player::GetIsAttackBox()
 void Player::SetIsAttackBox(bool is)
 {
 	hitAttack = is;
+}
+
+bool Player::UpdateCollision(const std::list<Coin*> coins)
+{
+	FloatRect bounds = sprite.getGlobalBounds();
+	bool isCollided = false;
+	for (auto coin : coins)
+	{
+		if (bounds.intersects(coin->GetGlobalBounds()))
+		{
+			coin += coin->PickUp();
+		}
+		isCollided = true;
+	}
+	return false;
 }

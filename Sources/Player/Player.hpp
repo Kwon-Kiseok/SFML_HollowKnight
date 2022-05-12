@@ -84,5 +84,7 @@ public:
 	void SetHP(float dt);
 	bool GetIsAttackBox();
 	void SetIsAttackBox(bool is);
+
+	bool UpdateCollision(const std::list<Coin*> coins);
 };
 

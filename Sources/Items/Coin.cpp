@@ -13,6 +13,7 @@ void Coin::Init()
 	SetTag(TAG::COIN);
 	texture = TextureManager::GetInstance().GetTexture("Resourcese/Sprite/UI/HUD_coin_shop.png");
 	sprite.setTexture(texture);
+	sprite.setOrigin(sprite.getGlobalBounds().width * 0.5f, sprite.getGlobalBounds().height);
 	sprite.setPosition(position);
 }
 
@@ -40,11 +41,6 @@ void Coin::OnGround()
 	sprite.setPosition(pos);
 }
 
-void Coin::Render(RenderWindow& window)
-{
-	window.draw(sprite);
-}
-
 int Coin::PickUp()
 {
 	SoundManager::GetInstance().PlaySound(L"coin");
@@ -69,4 +65,9 @@ void Coin::Spawn(bool spawn)
 void Coin::SetPosition(Vector2f crawlidPosition)
 {
 	sprite.setPosition(crawlidPosition);
+}
+
+FloatRect Coin::GetGlobalBounds()
+{
+	return sprite.getGlobalBounds();
 }
