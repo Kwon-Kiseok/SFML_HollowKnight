@@ -29,6 +29,7 @@ Crawlid::Crawlid(int xdir)
 void Crawlid::Init()
 {
 	SetTag(TAG::MONSTER);
+	SetName("Crawlid");
 	moveSpeed = 100.f;
 	//sprite.setOrigin(60, 60);
 	// Animator 초기화

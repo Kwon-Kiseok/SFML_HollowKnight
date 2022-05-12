@@ -2,14 +2,14 @@
 
 Collider::Collider()
 {
+	SetTag(TAG::COLLIDER);
+	SetName("collider");
+	SetLayer(-1);
 }
 
 Collider::Collider(Vector2f size, Vector2f pos)
 	:Collider()
 {
-	SetTag(TAG::COLLIDER);
-	SetName("collider");
-	SetLayer(-1);
 	rectangleShape.setSize(size);
 	position = pos;
 	rectangleShape.setPosition(position);

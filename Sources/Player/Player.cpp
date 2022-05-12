@@ -537,3 +537,13 @@ void Player::SetIsAttackBox(bool is)
 {
 	hitAttack = is;
 }
+
+MAP_TYPE Player::GetCurrentMap()
+{
+	return currMap;
+}
+
+void Player::SetCurrentMap(MAP_TYPE type)
+{
+	currMap = type;
+}

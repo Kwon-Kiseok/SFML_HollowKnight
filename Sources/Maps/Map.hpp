@@ -23,6 +23,8 @@ struct MapData
 	float size_y;
 };
 
+
+
 class Stable;
 class Map
 {

@@ -6,6 +6,7 @@
 
 using namespace sf;
 
+class Portal;
 class Town_Map : public Map
 {
 private:	
@@ -16,9 +17,11 @@ private:
 	Crawlid* crawlid2;
 
 	Vengefly* vengefly;
+
+	Portal* townToKP;
+	Portal* townToCrossRoad;
 public:
 	Town_Map(Player* player_);
 	virtual ~Town_Map() {}
-
 };
 

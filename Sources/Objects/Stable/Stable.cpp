@@ -22,6 +22,11 @@ bool Stable::IsInteractable()
 	return interactable;
 }
 
+void Stable::SetInteractable(bool is)
+{
+	interactable = is;
+}
+
 Interaction_Type Stable::GetInteractionType()
 {
 	return type;

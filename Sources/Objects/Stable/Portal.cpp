@@ -33,13 +33,15 @@ void Portal::SetCurrMap(MAP_TYPE curr)
 	currMap = curr;
 }
 
-void Portal::SetNextMap(MAP_TYPE next)
+void Portal::SetNextMap(MAP_TYPE next, Vector2f pos)
 {
 	nextMap = next;
+	spawnPos = pos;
 }
 
 void Portal::Interaction()
 {
+	MapManager::GetInstance().SetStartPos(spawnPos);
 	MapManager::GetInstance().LoadMap(nextMap);
 }
 
