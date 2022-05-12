@@ -1,7 +1,9 @@
 #pragma once
 #include "Map.hpp"
+#include "../Objects/Moveable/Monster/Crawlid.hpp"
+#include "../Objects/Moveable/Monster/Vengefly.hpp"
 
-// ÇÃ·¹ÀÌ¾î ·¹ÀÌ¾î 5¸¦ ±âÁØÀ¸·Î ÀâÀ½
+// í”Œë ˆì´ì–´ ë ˆì´ì–´ 5ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì¡ìŒ
 
 using namespace sf;
 
@@ -9,6 +11,10 @@ class Portal;
 class KingsPass_Map : public Map
 {
 private:
+	Crawlid* crawlid;
+	Crawlid* crawlid2;
+
+	Vengefly* vengefly;
 	Portal* kpToCR;
 public:
 	KingsPass_Map(Player* player_);

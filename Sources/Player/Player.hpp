@@ -16,7 +16,7 @@ private:
 
 	bool isWay;									// true면 왼쪽을 바라보는 상황 (필요함)
 	bool isDash;								// 필요함
-	float lodingTime;
+	bool canDash = false;						// 공중에서 대쉬 한번만 할 수 있게
 
 	//int hp;										// 체력
 	int mp;										// 기력?
@@ -38,7 +38,6 @@ private:
 	RectangleShape hitBox;
 	// 좌우 벽 충돌처리
 	RectangleShape hitBoxSide;
-	int isMove = 1;
 
 	float gravity;								// 중력가속도 처리
 	Vector2f positionTemp;						// 전 프레임 포지션
@@ -49,7 +48,7 @@ private:
 	std::string string;							// 이미지 저장
 
 	bool isKnockback = false;
-	float knockbackTime = 0.3f;
+	float knockbackTime;
 
 	EffectManager effect;						// 이펙트
 	std::string effectString;					// 공격 이펙트 방향 저장

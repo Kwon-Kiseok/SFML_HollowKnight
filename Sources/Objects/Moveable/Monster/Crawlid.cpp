@@ -28,6 +28,7 @@ Crawlid::Crawlid(int xdir)
 
 void Crawlid::Init()
 {
+	SetName("crawlid");
 	SetTag(TAG::MONSTER);
 	SetName("Crawlid");
 	moveSpeed = 100.f;
@@ -111,6 +112,12 @@ void Crawlid::Init()
 
 void Crawlid::Update(float dt, Vector2f player)
 {
+	if (lodingTime > 0.f)
+	{
+		lodingTime -= dt;
+		gravity = 0.f;
+	}
+
 	positionTemp = position;
 
 	if (isFalling)
@@ -135,7 +142,8 @@ void Crawlid::Update(float dt, Vector2f player)
 		position.x += (moveSpeed * dt) * xDir;
 	}
 	// position
-	SetPosition(position);
+	//SetPosition(position);
+	sprite.setPosition(position);
 	rectangleShape.setPosition(position);
 	gavityShape.setPosition(position);
 	sideShape.setPosition(position);
@@ -170,6 +178,13 @@ void Crawlid::Release()
 
 void Crawlid::OnGround(FloatRect map)
 {
+	if (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width > map.left + map.width ||
+		sprite.getGlobalBounds().left < map.left)
+	{
+		xDir = -xDir;
+		sprite.scale(-1, 1);
+	}
+
 	if (rectangleShape.getGlobalBounds().intersects(map))
 	{
 		if (rectangleShape.getGlobalBounds().intersects(map))
@@ -179,27 +194,13 @@ void Crawlid::OnGround(FloatRect map)
 			switch (pivot)
 			{
 			case Pivots::LC:
-				if (position.y - map.top > -10.f &&
-					position.y - map.top < 30.f)
-				{
-					position.y -= position.y - map.top + 10;
-					break;
-				}
-				position.x += (map.left + map.width) - (rectangleShape.getGlobalBounds().left);
-				InputManager::GetInstance().HorizontalInit();
-				//InputManager::HorizontalInit();
+				sprite.setScale(-1, 1);
+				xDir = 1;
 				break;
 
 			case Pivots::RC:
-				if (position.y - map.top > -10.f &&
-					position.y - map.top < 30.f)
-				{
-					position.y -= position.y - map.top + 10;
-					break;
-				}
-				position.x -= (rectangleShape.getGlobalBounds().left + rectangleShape.getGlobalBounds().width) - (map.left);
-				InputManager::GetInstance().HorizontalInit();
-				//InputManager::HorizontalInit();
+				sprite.setScale(1, 1);
+				xDir = -1;
 				break;
 
 			case Pivots::CT:
@@ -214,7 +215,6 @@ void Crawlid::OnGround(FloatRect map)
 				position.y -= (rectangleShape.getGlobalBounds().top + rectangleShape.getGlobalBounds().height) - (map.top);
 				InputManager::GetInstance().HorizontalInit();
 				break;
-
 			defalut:
 				break;
 			}

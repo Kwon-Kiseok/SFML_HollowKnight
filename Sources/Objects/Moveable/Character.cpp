@@ -3,7 +3,6 @@
 
 Character::Character()
 {
-	isAlive = true;
 	canFall = false;
 	canJump = true;
 	canMove = true;
@@ -14,6 +13,7 @@ Character::Character()
 	health = 0;
 	
 
+	isAlive = true;
 	isColliding = false;
 	isFalling = false;
 	isJumping = false;
@@ -27,6 +27,7 @@ Character::Character()
 	yDir = 0;
 
 	isDetect = false;
+	lodingTime = 2.f;
 }
 
 Character::~Character()
