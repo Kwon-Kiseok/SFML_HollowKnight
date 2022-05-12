@@ -20,7 +20,7 @@ private:
 	
 	Texture textureCoin;
 	Sprite spriteCoin;
-	Vector2f position;
+	//Vector2f position;
 
 	Texture* textureDroppedCoin;
 	Sprite* spriteDroppedCoin;

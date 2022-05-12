@@ -27,6 +27,7 @@ Vengefly::Vengefly(int xdir)
 
 void Vengefly::Init()
 {
+	SetName("vengefly");
 	SetTag(TAG::MONSTER);
 	moveSpeed = 100.f;
 	//sprite.setOrigin(60, 60);
@@ -164,24 +165,12 @@ void Vengefly::OnGround(FloatRect map)
 			switch (pivot)
 			{
 			case Pivots::LC:
-				if (position.y - map.top > -10.f &&
-					position.y - map.top < 30.f)
-				{
-					position.y -= position.y - map.top + 10;
-					break;
-				}
 				position.x += (map.left + map.width) - (rectangleShape.getGlobalBounds().left);
 				InputManager::GetInstance().HorizontalInit();
 				//InputManager::HorizontalInit();
 				break;
 
 			case Pivots::RC:
-				if (position.y - map.top > -10.f &&
-					position.y - map.top < 30.f)
-				{
-					position.y -= position.y - map.top + 10;
-					break;
-				}
 				position.x -= (rectangleShape.getGlobalBounds().left + rectangleShape.getGlobalBounds().width) - (map.left);
 				InputManager::GetInstance().HorizontalInit();
 				//InputManager::HorizontalInit();0

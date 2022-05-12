@@ -92,29 +92,61 @@ float Utility::GetAngle(const Vector2f& from, const Vector2f& to)
 
 Pivots Utility::CollisionDir(FloatRect start, FloatRect comp)
 {
-	if (comp.left < start.left + start.width
-		&& comp.left + comp.width > start.left + start.width)
+	float startLeft = start.left;
+	float startWidth = start.left + start.width;
+	float startTop = start.top;
+	float startHeight = start.top + start.height;
+
+	float compLeft = comp.left;
+	float compWidth = comp.left + comp.width;
+	float compTop = comp.top;
+	float compHeight = comp.top + comp.height;
+
+	// start = 맵, comp = 충돌체
+	// 왼쪽
+	if (compLeft < startWidth && compWidth > startWidth)
 	{
 		return Pivots::LC;
 	}
-
-	//오른쪽
-	else if (comp.left + comp.width > start.left && comp.left < start.left)
+	// 오른쪽
+	else if (compWidth > startLeft && compLeft < startLeft)
 	{
 		return Pivots::RC;
 	}
-
-	//위
-	else if (comp.top < start.top + start.height && comp.top + comp.height > start.top + start.height)
+	// 위
+	else if (compTop < startHeight && compHeight > startHeight)
 	{
 		return Pivots::CT;
 	}
-
-	//아래
-	else
+	// 아래
+	else if(compHeight > startTop && compTop < startTop)
 	{
 		return Pivots::CB;
 	}
+	//// 좌하단
+	//else if ((compLeft < startWidth && compWidth > startWidth) &&
+	//	(compHeight > startTop && compTop < startTop))
+	//{
+	//	return Pivots::LB;
+	//}
+	//// 좌상단
+	//else if ((compLeft < startWidth && compWidth > startWidth) &&
+	//	(compTop < startHeight && compHeight > startHeight))
+	//{
+	//	return Pivots::LT;
+	//}
+	//// 우하단
+	//else if ((compWidth > startLeft && compLeft < startLeft) &&
+	//	(compHeight > startTop && compTop < startTop))
+	//{
+	//	return Pivots::RB;
+	//}
+	//// 우상단
+	//else /*if ((compWidth > startLeft && compLeft < startLeft) &&
+	//	(compTop < startHeight && compHeight > startHeight))*/
+	//{
+	//	return Pivots::RT;
+	//}
 
 	return Pivots();
 }

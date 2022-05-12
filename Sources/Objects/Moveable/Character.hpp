@@ -31,6 +31,7 @@ protected:
 
 	RectangleShape detectShape;	// 추격 박스
 	bool isDetect;				// 추격 판단
+	float lodingTime;			// 로딩 시간
 public:
 	bool canMove;			// 움직일 수 있는 상태인지
 	bool canJump;			// 점프할 수 있는 상태인지

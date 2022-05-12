@@ -16,7 +16,7 @@ Player::Player()
 	move = 0.f;
 	jumpTime = JUMP_MAX;
 	collisionTime = 1.f;
-	lodingTime = 2.f;
+	knockbackTime = 0.3f;
 }
 
 void Player::Init()
@@ -106,7 +106,7 @@ void Player::Update(float dt)
 	if (lodingTime > 0.f)
 	{
 		lodingTime -= dt;
-		return;
+		gravity = 0.f;
 	}
 
 	collisionTime -= dt; // 맞는거 딜레이를 위해서 필요함	
@@ -179,7 +179,7 @@ void Player::Update(float dt)
 
 		if (!isDash)
 		{
-			delta.x = h * SPEED * dt * isMove;
+			delta.x = h * SPEED * dt;
 			if (!isWay && h == -1)
 			{
 				sprite.scale(-1, 1);
@@ -221,7 +221,7 @@ void Player::Update(float dt)
 	* 중력 및 점프
 	**********************************/
 	{
-		if (isFalling)
+		if (isFalling && lodingTime < 0.f)
 		{
 			gravity += GRAVITY * dt;
 		}
@@ -236,7 +236,7 @@ void Player::Update(float dt)
 			animation.Play("Jump");
 			animation.PlayQueue("Jumping");
 			gravity = -1000.f;
-			//canJump = false;
+			canJump = false;
 		}
 		delta.y = gravity * dt;
 	}
@@ -244,16 +244,16 @@ void Player::Update(float dt)
 	* 대쉬
 	**********************************/
 	{
-		if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash)
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash && canDash)
 		{
-
 			SoundManager::GetInstance().PlaySound(L"dash");
 			gravity = 0.f;
 			animation.Play("Dash");
 			isDash = true;
 			dashTemp = position;
+			canDash = false;
 		}
-		if (isDash && isMove != 0)
+		if (isDash)
 		{
 			if (isWay)
 			{
@@ -265,7 +265,7 @@ void Player::Update(float dt)
 				position.x += SPEED * dt * 5.f;
 				position.y = dashTemp.y;
 			}
-			if (position.x < dashTemp.x - 500.f || position.x > dashTemp.x + 500.f)
+			if (position.x < dashTemp.x - 300.f || position.x > dashTemp.x + 300.f)
 			{
 				isDash = false;
 				animation.PlayQueue(string);
@@ -304,17 +304,16 @@ void Player::Update(float dt)
 		//	std::cout << coin << ", " << PlayerDataManager::GetInstance().GetPlayerCoin() << std::endl;
 	}
 
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::L))	//L: Life����
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::L) && (health > 0))	//L: Life����
 	{
 		health--;
 	}
 
-	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P))	//P: Life��
+	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P) && (health < 5))	//P: Life��
 	{
 		health++;
 	}
 
-	isMove = 1;
 	position += delta;
 
 	sprite.setPosition(position);
@@ -408,45 +407,30 @@ void Player::OnGround(FloatRect map)
 			switch (pivot)
 			{
 			case Pivots::LC:
-				if (position.y - map.top > -10.f &&
-					position.y - map.top < 30.f)
-				{
-					position.y -= position.y - map.top + 10;
-					break;
-				}
 				position.x += (map.left + map.width) - (hitBox.getGlobalBounds().left);
 				InputManager::GetInstance().HorizontalInit();
 				isDash = false;
-				//InputManager::HorizontalInit();
 				break;
 
 			case Pivots::RC:
-				if (position.y - map.top > -10.f &&
-					position.y - map.top < 30.f)
-				{
-					position.y -= position.y - map.top + 10;
-					break;
-				}
 				position.x -= (hitBox.getGlobalBounds().left + hitBox.getGlobalBounds().width) - (map.left);
 				InputManager::GetInstance().HorizontalInit();
 				isDash = false;
-				//InputManager::HorizontalInit();0
 				break;
 
 			case Pivots::CT:
 				gravity = 0.f;
 				position.y += (map.top + map.height) - (hitBox.getGlobalBounds().top);
 				InputManager::GetInstance().HorizontalInit();
-				//InputManager::VerticalInit();
 				break;
 
 			case Pivots::CB:
-				gravity = 0.f;
 				position.y -= (hitBox.getGlobalBounds().top + hitBox.getGlobalBounds().height) - (map.top);
+				gravity = 0.f;
 				isFalling = false;
 				canJump = true;
+				canDash = true;
 				InputManager::GetInstance().HorizontalInit();
-				//InputManager::VerticalInit();
 				break;
 
 			defalut:
