@@ -13,11 +13,11 @@ Crawlid::Crawlid()
 Crawlid::Crawlid(int xdir)
 	: gravity(GRAVITY)
 {
-	if (xdir > 0)				// Ã³À½¿¡ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
+	if (xdir > 0)				// ì²˜ìŒì— ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™
 	{
 		xDir = 1;
 	}
-	else if (xdir < 0)			// Ã³À½¿¡ ¿ÞÂÊÀ¸·Î ÀÌµ¿
+	else if (xdir < 0)			// ì²˜ìŒì— ì™¼ìª½ìœ¼ë¡œ ì´ë™
 	{
 		xDir = -1;
 	}
@@ -29,7 +29,7 @@ void Crawlid::Init()
 	SetTag(TAG::MONSTER);
 	moveSpeed = 100.f;
 	//sprite.setOrigin(60, 60);
-	// Animator ÃÊ±âÈ­
+	// Animator ì´ˆê¸°í™”
 	animation.SetTarget(&sprite);
 
 	rectangleShape.setSize(Vector2f(110, 55));

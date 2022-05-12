@@ -5,6 +5,7 @@
 #include "../Managers/SoundManager.hpp"
 #include "../Utils/Utility.hpp"
 
+
 Player::Player()
 	: isWay(true), isDash(false), isAttack(false), firstFrame(true), secondFrame(false), hitAttack(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
 {
@@ -316,6 +317,7 @@ void Player::Update(float dt)
 	{
 		health++;
 	}
+
 	isMove = 1;
 	position += delta;
 
@@ -338,6 +340,7 @@ void Player::Render(RenderWindow& window)
 	window.draw(sprite);
 	window.draw(hitBox);
 	window.draw(hitBoxSide);
+
 	effect.Draw(window);		// Slash
 }
 

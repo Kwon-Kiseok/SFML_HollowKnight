@@ -36,8 +36,6 @@ private:
 	Texture* textureNoLife;
 	Sprite* spriteNoLife;
 
-
-
 	Texture textureCharacterUI;
 	Sprite spriteCharacterUI;
 

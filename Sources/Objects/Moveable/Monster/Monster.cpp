@@ -1,4 +1,5 @@
 #include "Monster.hpp"
+#include "../../../Managers/InputManager.hpp"
 
 Monster::Monster()
 {

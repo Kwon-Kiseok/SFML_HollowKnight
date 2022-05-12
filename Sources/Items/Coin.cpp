@@ -1,6 +1,7 @@
 #include "Coin.hpp"
 #include "../Managers/InputManager.hpp"
 #include "../Managers/TextureManager.hpp"
+#include "../Objects/Moveable/Monster/Monster.hpp"
 
 Coin::Coin(Vector2f pos)
 {
@@ -9,6 +10,7 @@ Coin::Coin(Vector2f pos)
 
 void Coin::Init()
 {
+	SetTag(TAG::COIN);
 	texture = TextureManager::GetInstance().GetTexture("Resourcese/Sprite/UI/HUD_coin_shop.png");
 	sprite.setTexture(texture);
 	sprite.setPosition(position);
@@ -16,14 +18,26 @@ void Coin::Init()
 
 void Coin::Update(float dt)
 {
-	Vector2f delta;
-	gravity += Gravity * dt;
-	isFalling = true;
-	if (gravity > 1000.f)
+	if (isFalling)
 	{
-		gravity = 1000.f;
+		fallingSpeed += GRAVITY * dt;
+		if (fallingSpeed > 3000.f)
+		{
+			fallingSpeed = 3000.f;
+		}
+		PositionCoin.y = fallingSpeed * dt;
 	}
-	delta.y = gravity * dt;
+}
+
+void Coin::OnGround()
+{
+	isFalling = false;
+	Vector2f pos = sprite.getPosition();
+	isCollideCoin = true;
+
+	sprite.setPosition(pos);
+	PositionCoin = pos;
+	sprite.setPosition(pos);
 }
 
 void Coin::Render(RenderWindow& window)
@@ -44,7 +58,7 @@ void Coin::Spawn(bool spawn)
 	if (spawned)
 	{
 		int x = Utility::Random(0, _velocity_x);
-		int y = Utility::Random(_velocity_y, _velocity_y + gravity);
+		int y = Utility::Random(_velocity_y, _velocity_y + fallingSpeed);
 
 		sprite.setPosition(Vector2f(position.x + x, position.y + y));
 		pickCoin = true;
