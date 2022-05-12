@@ -32,7 +32,7 @@ Interaction_Type Stable::GetInteractionType()
 	return type;
 }
 
-void Stable::Interaction()
+void Stable::Interaction(Player& player)
 {
 	return;
 }
