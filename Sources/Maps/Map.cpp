@@ -16,6 +16,10 @@
 #include "../Objects/Stable/Platform.hpp"
 #include "../Objects/Stable/thorn.hpp"
 
+#include "../Objects/Stable/CrossRoadImages.hpp"
+#include "../Objects/Stable/BossRoomImages.hpp"
+#include "../Objects/Stable/Central.hpp"
+
 #include <iostream>
 
 void Map::Init()
@@ -34,18 +38,18 @@ void Map::Update(float dt)
 	{
 		if ((*it)->CompareTag(TAG::MONSTER))
 		{
+			if (InputManager::GetInstance().GetKeyDown(Keyboard::P))
+			{
+				std::cout << (*it)->GetName() << " X: " << (*it)->GetPosition().x << " Y: " << (*it)->GetPosition().y << std::endl;
+			}
+
 			(*it)->Update(dt, player->GetPosition());
 			continue;
 		}
 		(*it)->Update(dt);
 	}
 
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::P))
-	{
-		std::cout << "Player's X: " << player->GetPosition().x << " Y: " << player->GetPosition().y << std::endl;
-	}
-
-	PlayerDataManager::GetInstance().SavePlayerData(*player);
+	PlayerDataManager::GetInstance().UpdatePlayerData(*player);
 	ViewManager::GetInstance().GetMainView().setCenter(player->GetPosition());
 }
 
@@ -103,7 +107,12 @@ void Map::Release()
 	}
 	portals.clear();
 
-
+	for (auto it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		delete* it;
+		*it = nullptr;
+	}
+	colliders.clear();
 }
 
 void Map::CheckCollisions(float dt)
@@ -164,7 +173,6 @@ void Map::CheckCollisions(float dt)
 			if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetIsAlivve())
 			{
 				player->SetHP(dt);
-				std::cout << player->GetName() << " Collision Monster" << std::endl;
 			}
 		}
 		/******************************************
@@ -230,8 +238,11 @@ void Map::CheckCollisions(float dt)
 			// 플레이어가 포탈과 겹쳤을 때
 			if ((*it)->GetInteractionType() == Interaction_Type::PORTAL)
 			{
-				std::cout << player->GetName() << " Collision Portal" << std::endl;
-				(*it)->Interaction();
+				// 위키를 눌러서 다음 맵 이동
+				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
+					(*it)->SetInteractable(true);
+				if((*it)->IsInteractable())
+					(*it)->Interaction();
 				return;
 			}
 		}
@@ -264,7 +275,7 @@ void Map::LoadMap(std::string dataFilepath)
 		data.size_x = colSize_x[i];
 		data.size_y = colSize_y[i];
 
-		if (data.name != "portal" && data.name != "collider")
+		if (data.name != "collider")
 		{
 			AddObject(data);
 			if (object != nullptr)
@@ -273,16 +284,6 @@ void Map::LoadMap(std::string dataFilepath)
 		else if (data.name == "collider")
 		{
 			LoadCollision(data);
-		}
-		else if (data.name == "portal")
-		{
-			// 포탈은 포탈끼리
-			Portal* portal = new Portal();
-			portal->SetCurrMap(MAP_TYPE::Town);
-			// temp
-			portal->SetNextMap(MAP_TYPE::KingsPass);
-			portal->SetPosition(data.x, data.y);
-			portals.push_back(portal);
 		}
 	}
 
@@ -327,6 +328,10 @@ void Map::AddObject(MapData& data)
 	{
 		this->object = new Platform(data.index);
 	}
+	else if (data.name == "elev")
+	{
+		this->object = new CrossRoadElev(data.index);
+	}
 	else if (data.name == "thorn")
 	{
 		this->object = new thorn();
@@ -358,6 +363,38 @@ void Map::AddObject(MapData& data)
 	else if (data.name == "kpObjects")
 	{
 		this->object = new KingsPassObjects(data.index);
+	}
+	else if (data.name == "crGround")
+	{
+		this->object = new CrossRoadGround(data.index);
+	}
+	else if (data.name == "crImages")
+	{
+		this->object = new CrossRoadImages(data.index);
+	}
+	else if (data.name == "crBG")
+	{
+		this->object = new CrossRoadBG(data.index);
+	}
+	else if (data.name == "crRoof")
+	{
+		this->object = new CrossRoadRoof(data.index);
+	}
+	else if (data.name == "crWall")
+	{
+		this->object = new CrossRoadWall(data.index);
+	}
+	else if (data.name == "crObjects")
+	{
+		this->object = new CrossRoadObjects(data.index);
+	}
+	else if (data.name == "bossRoom")
+	{
+		this->object = new BossRoomImages(data.index);
+	}
+	else if (data.name == "central")
+	{
+		this->object = new Central(data.index);
 	}
 
 	this->object->SetLayer(data.layer);

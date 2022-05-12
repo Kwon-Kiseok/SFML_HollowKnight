@@ -2,6 +2,7 @@
 #include "../Animation/AnimationController.hpp"
 #include "../Animation/EffectManager.hpp"
 #include "../Objects/Moveable/Character.hpp"
+#include "../Managers/MapManager.hpp"
 #include <map>
 #include "../Items/Coin.hpp"
 
@@ -20,7 +21,7 @@ private:
 	//int hp;										// 체력
 	int mp;										// 기력?
 	int coin;									// 재화
-	
+	MAP_TYPE currMap;							// 현재 맵
 
 	AnimationController animation;
 
@@ -85,6 +86,8 @@ public:
 	bool GetIsAttackBox();
 	void SetIsAttackBox(bool is);
 
+	MAP_TYPE GetCurrentMap();
+	void SetCurrentMap(MAP_TYPE type);
 	bool UpdateCollision(const std::list<Coin*> coins);
 };
 

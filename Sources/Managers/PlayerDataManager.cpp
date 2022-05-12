@@ -1,10 +1,11 @@
 #include "PlayerDataManager.hpp"
 
-void PlayerDataManager::SavePlayerData(Player& player)
+void PlayerDataManager::UpdatePlayerData(Player& player)
 {
 	hp = player.GetHP();
 	mp = player.GetMP();
 	coin = player.GetCoin();
+	currentMap = player.GetCurrentMap();
 }
 
 int PlayerDataManager::GetPlayerHP()
@@ -20,6 +21,11 @@ int PlayerDataManager::GetPlayerMP()
 int PlayerDataManager::GetPlayerCoin()
 {
 	return coin;
+}
+
+MAP_TYPE PlayerDataManager::GetPlayerCurrentMap()
+{
+	return currentMap;
 }
 
 int PlayerDataManager::AddCoin(int value)

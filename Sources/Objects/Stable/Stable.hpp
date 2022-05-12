@@ -15,8 +15,9 @@ public:
 	Stable();
 	virtual ~Stable();
 
-	bool IsCollidable();
-	bool IsInteractable();
+	virtual bool IsCollidable();
+	virtual bool IsInteractable();
+	virtual void SetInteractable(bool is);
 
 	virtual Interaction_Type GetInteractionType();
 	virtual void Interaction();
