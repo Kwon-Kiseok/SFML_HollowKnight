@@ -9,6 +9,7 @@ class Character : public GameObject
 {
 protected:
 	int health;					// 캐릭터의 체력
+	
 	Vector2f colDir;			// 캐릭터의 충돌 방향
 	Direction currentDir;		// 캐릭터의 현재 방향
 	float gravity;				// 중력값

@@ -1,6 +1,7 @@
 #include "Crawlid.hpp"
 #include "../../Sources/Animation/rapidcsv.hpp"
 //#include "../../Sources/Managers/InputManager.hpp"
+#include "../../Sources/Managers/TextureManager.hpp"
 #include "../../Sources/Utils/Utility.hpp"
 
 Crawlid::Crawlid()
@@ -8,6 +9,7 @@ Crawlid::Crawlid()
 	isAlive = true;
 	health = 2;
 	gravity = GRAVITY;
+	coin = 3;
 }
 
 Crawlid::Crawlid(int xdir)
@@ -94,6 +96,14 @@ void Crawlid::Init()
 	animation.Play("Idle");
 
 	sprite.setScale(-xDir, 1);
+
+	textureDroppedCoin = new Texture[3];
+	spriteDroppedCoin = new Sprite[3];
+	for (int i = 0; i < 3; i++)
+	{
+		textureDroppedCoin[i] = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/select_game_HUD_coin_v020004.png");
+		spriteDroppedCoin[i].setTexture(textureDroppedCoin[i]);
+	}
 }
 
 void Crawlid::Update(float dt, Vector2f player)
@@ -131,6 +141,14 @@ void Crawlid::Update(float dt, Vector2f player)
 	sideShape.setPosition(position);
 	// animation
 	animation.Update(dt);
+
+	if (!isAlive)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			spriteDroppedCoin[i].setPosition(position);
+		}
+	}
 }
 
 void Crawlid::Render(RenderWindow& window)
@@ -139,6 +157,11 @@ void Crawlid::Render(RenderWindow& window)
 	window.draw(rectangleShape);
 	//window.draw(gavityShape);
 	//window.draw(sideShape);
+
+	for (int i = 0; i < 3; i++)
+	{
+		window.draw(spriteDroppedCoin[i]);
+	}
 }
 
 void Crawlid::Release()
@@ -176,7 +199,7 @@ void Crawlid::OnGround(FloatRect map)
 				}
 				position.x -= (rectangleShape.getGlobalBounds().left + rectangleShape.getGlobalBounds().width) - (map.left);
 				InputManager::GetInstance().HorizontalInit();
-				//InputManager::HorizontalInit();0
+				//InputManager::HorizontalInit();
 				break;
 
 			case Pivots::CT:
@@ -226,5 +249,9 @@ bool Crawlid::UpdateCollision()
 bool Crawlid::OnHitted(Time timeHit)
 {
 	health--;
+	if (health == 0)
+	{
+		PlayerDataManager::GetInstance().AddCoin(3);
+	}
 	return false;
 }

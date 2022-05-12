@@ -20,5 +20,7 @@ public:
 	int GetPlayerHP();
 	int GetPlayerMP();
 	int GetPlayerCoin();
+
+	int AddCoin(int value);
 };
 

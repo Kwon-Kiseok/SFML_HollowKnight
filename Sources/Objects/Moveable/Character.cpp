@@ -12,6 +12,7 @@ Character::Character()
 	deltaTime = 0.f;
 	gravity = 980.f;
 	health = 0;
+	
 
 	isColliding = false;
 	isFalling = false;

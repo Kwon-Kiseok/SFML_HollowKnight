@@ -20,6 +20,8 @@ private:
 	bool isFalling;
 	bool isCollideCoin;
 	Vector2f PositionCoin;
+
+
 public:
 	Coin() {}
 	Coin(Vector2f pos);
@@ -30,5 +32,6 @@ public:
 
 	int PickUp();
 	void Spawn(bool spawn);
+	void SetPosition(Vector2f crawlidPosition);
 };
 

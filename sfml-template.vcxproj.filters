@@ -53,6 +53,7 @@
     <ClCompile Include="Sources\Objects\Stable\BossRoomImages.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Central.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Monster\Vengefly.cpp" />
+    <ClCompile Include="Sources\Objects\Collider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
@@ -82,6 +83,7 @@
     <ClInclude Include="Sources\Objects\Stable\BossRoomImages.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Central.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\Vengefly.hpp" />
+    <ClInclude Include="Sources\Objects\Collider.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />
