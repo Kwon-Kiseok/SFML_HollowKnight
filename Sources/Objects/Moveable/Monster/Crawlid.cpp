@@ -101,8 +101,10 @@ void Crawlid::Init()
 	spriteDroppedCoin = new Sprite[3];
 	for (int i = 0; i < 3; i++)
 	{
-		textureDroppedCoin[i] = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/select_game_HUD_coin_v020004.png");
+		textureDroppedCoin[i] = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/HUD_coin_v020004_.png");
 		spriteDroppedCoin[i].setTexture(textureDroppedCoin[i]);
+		spriteDroppedCoin[i].setOrigin(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height + 40.f);
+
 	}
 }
 
@@ -129,10 +131,7 @@ void Crawlid::Update(float dt, Vector2f player)
 
 	if (isAlive)
 	{
-		
-
 		position.x += (moveSpeed * dt) * xDir;
-		
 	}
 	// position
 	SetPosition(position);

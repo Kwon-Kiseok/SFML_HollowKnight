@@ -28,10 +28,11 @@ public:
 	void Init();
 	void Update(float dt);
 	void OnGround();
-	void Render(RenderWindow& window);
 
 	int PickUp();
 	void Spawn(bool spawn);
 	void SetPosition(Vector2f crawlidPosition);
+
+	FloatRect GetGlobalBounds();
 };
 

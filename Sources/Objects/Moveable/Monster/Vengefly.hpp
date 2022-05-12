@@ -13,6 +13,9 @@ private:
 	std::map<std::string, Texture> texMap;
 
 	const float GRAVITY = 1500.f;				// ม฿ทย
+
+	Texture* textureDroppedCoin;
+	Sprite* spriteDroppedCoin;
 public:
 	Vengefly();
 	Vengefly(int xdir);
