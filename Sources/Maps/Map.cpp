@@ -32,6 +32,11 @@ void Map::Update(float dt)
 
 	for (auto it = characters.begin(); it != characters.end(); ++it)
 	{
+		if ((*it)->CompareTag(TAG::MONSTER))
+		{
+			(*it)->Update(dt, player->GetPosition());
+			continue;
+		}
 		(*it)->Update(dt);
 	}
 
@@ -147,23 +152,23 @@ void Map::CheckCollisions(float dt)
 			(*it)->SetHealth(-1);
 		}
 
-		//if (player->Collision_AttackBox((*it)->GetAttackBox()) && (*it)->CompareTag(TAG::MONSTER))
-		//{
-		//	// 플레이어가 몬스터의 어택박스에 적중당했을 때
-		//  // 플레이어 넉백 + 데미지 판정
-		//}
 		if ((*it)->CompareTag(TAG::MONSTER))
 		{
+			// 몬스터랑 바닥 충돌처리
 			for (std::vector<Stable*>::iterator stable_it = stableObjects.begin(); stable_it != stableObjects.end(); ++stable_it)
 			{
 				if ((*it)->CheckCollision(*stable_it))
 				{
 					if ((*stable_it)->CompareTag(TAG::GROUND))
-					{
-						// 몬스터랑 바닥 충돌처리
+					{						
 						(*it)->OnGround((*stable_it)->GetSprite().getGlobalBounds());
 					}
 				}
+			}
+			// 플레이어 추격
+			if ((*it)->GetDetectShape().getGlobalBounds().intersects(player->GetGlobalBounds()))
+			{
+				(*it)->SetIsDetect(true);
 			}
 		}
 	}

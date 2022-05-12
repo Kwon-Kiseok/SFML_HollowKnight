@@ -15,8 +15,7 @@ private:
 
 	bool isWay;									// true면 왼쪽을 바라보는 상황 (필요함)
 	bool isDash;								// 필요함
-	bool firstFrame;
-	bool secondFrame;
+	float lodingTime;
 
 	//int hp;										// 체력
 	int mp;										// 기력?

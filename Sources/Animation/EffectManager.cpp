@@ -50,7 +50,7 @@ void EffectManager::Init()
 		animation.AddClip(clip);
 	}
 
-	animation.Play("Slash");
+	//animation.Play("Slash");
 }
 
 void EffectManager::Update(Vector2f playerPosition, float dt)
@@ -70,7 +70,7 @@ void EffectManager::SetDraw(std::string string)
 	animation.Play(string);
 }
 
-void EffectManager::SetScale()
+void EffectManager::SwapScale()
 {
 	effectSprite.scale(-1, 1);
 }

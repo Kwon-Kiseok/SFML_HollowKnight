@@ -7,7 +7,7 @@
 
 
 Player::Player()
-	: isWay(true), isDash(false), isAttack(false), firstFrame(true), secondFrame(false), hitAttack(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
+	: isWay(true), isDash(false), isAttack(false), hitAttack(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
 {
 	attackBox.scale(-1, 1);
 	health = 5;
@@ -16,7 +16,7 @@ Player::Player()
 	move = 0.f;
 	jumpTime = JUMP_MAX;
 	collisionTime = 1.f;
-
+	lodingTime = 2.f;
 }
 
 void Player::Init()
@@ -103,18 +103,14 @@ void Player::Init()
 
 void Player::Update(float dt)
 {
-	collisionTime -= dt; // 맞는거 딜레이를 위해서 필요함
-
-	if (firstFrame)
+	if (lodingTime > 0.f)
 	{
-		if (secondFrame)
-		{
-			dt = 0.f;
-			firstFrame = false;
-		}
-		dt = 0.f;
-		secondFrame = true;
+		lodingTime -= dt;
+		return;
 	}
+
+	collisionTime -= dt; // 맞는거 딜레이를 위해서 필요함	
+
 	positionTemp = position;
 	Vector2f delta;
 	float h = InputManager::GetInstance().GetAxisRaw(Axis::Horizontal);	// -1 0 1
@@ -188,7 +184,7 @@ void Player::Update(float dt)
 			{
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
-				effect.SetScale();
+				effect.SwapScale();
 				isWay = !isWay;
 				SetDirection(Direction::LEFT);
 			}
@@ -196,7 +192,7 @@ void Player::Update(float dt)
 			{
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
-				effect.SetScale();
+				effect.SwapScale();
 				isWay = !isWay;
 				SetDirection(Direction::RIGHT);
 			}
@@ -340,7 +336,6 @@ void Player::Render(RenderWindow& window)
 	window.draw(sprite);
 	window.draw(hitBox);
 	window.draw(hitBoxSide);
-
 	effect.Draw(window);		// Slash
 }
 
@@ -391,7 +386,6 @@ bool Player::UpdateCollision()
 		isKnockback = true;
 		if (hitAttack)
 		{
-			std::cout << "zzzzzzzzzzzzzzzzzzzz!!!!!!!" << std::endl;
 			//hitAttack = false;
 		}
 	}

@@ -27,6 +27,9 @@ protected:
 
 	int xDir;// x축에 대한 방향
 	int yDir;// y축에 대한 방향
+
+	RectangleShape detectShape;	// 추격 박스
+	bool isDetect;				// 추격 판단
 public:
 	bool canMove;			// 움직일 수 있는 상태인지
 	bool canJump;			// 점프할 수 있는 상태인지
@@ -59,10 +62,14 @@ public:
 
 	virtual void Init();
 	virtual void Update(float dt);
+	virtual void Update(float dt, Vector2f pos);
 	virtual void Render(RenderWindow& window);
 	virtual void Release();
 
 	virtual void OnGround(FloatRect map);
 	virtual bool GetIsAlivve();
+	// 플레이어 추격
+	virtual RectangleShape GetDetectShape();
+	virtual void SetIsDetect(bool is);
 };
 

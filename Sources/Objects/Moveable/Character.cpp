@@ -18,12 +18,14 @@ Character::Character()
 	isJumping = false;
 
 	jumpSpeed = 3.f;
-	moveSpeed = 5.f;
+	moveSpeed = 10.f;
 
 	state = State::IDLE;
 
 	xDir = 0;
 	yDir = 0;
+
+	isDetect = false;
 }
 
 Character::~Character()
@@ -103,6 +105,10 @@ void Character::Update(float dt)
 {
 }
 
+void Character::Update(float dt, Vector2f pos)
+{
+}
+
 void Character::Render(RenderWindow& window)
 {
 }
@@ -118,4 +124,13 @@ void Character::OnGround(FloatRect map)
 bool Character::GetIsAlivve()
 {
 	return isAlive;
+}
+
+RectangleShape Character::GetDetectShape()
+{
+	return detectShape;
+}
+
+void Character::SetIsDetect(bool is)
+{
 }

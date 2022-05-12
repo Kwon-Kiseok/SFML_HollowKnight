@@ -199,8 +199,10 @@
     <ClCompile Include="Sources\Utils\Textbox.cpp" />
     <ClCompile Include="Sources\Objects\Stable\thorn.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Wall.cpp" />
+    <ClCompile Include="Sources\Objects\Moveable\Monster\Vengefly.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Objects\Moveable\Monster\Vengefly.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Central.hpp" />
     <ClInclude Include="Sources\Objects\Stable\BossRoomImages.hpp" />
     <ClInclude Include="Sources\Scene\MapperScene.hpp" />
