@@ -1,24 +1,23 @@
-#include "Crawlid.hpp"
+#include "Vengefly.hpp"
+
 #include "../../Sources/Animation/rapidcsv.hpp"
 //#include "../../Sources/Managers/InputManager.hpp"
-#include "../../Sources/Managers/TextureManager.hpp"
 #include "../../Sources/Utils/Utility.hpp"
 
-Crawlid::Crawlid()
+Vengefly::Vengefly()
 {
 	isAlive = true;
 	health = 2;
 	gravity = GRAVITY;
-	coin = 3;
 }
 
-Crawlid::Crawlid(int xdir)
+Vengefly::Vengefly(int xdir)
 {
-	if (xdir > 0)				// Ï≤òÏùåÏóê Ïò§Î•∏Ï™ΩÏúºÎ°ú Ïù¥Îèô
+	if (xdir > 0)				// √≥¿Ωø° ø¿∏•¬ ¿∏∑Œ ¿Ãµø
 	{
 		xDir = 1;
 	}
-	else if (xdir < 0)			// Ï≤òÏùåÏóê ÏôºÏ™ΩÏúºÎ°ú Ïù¥Îèô
+	else if (xdir < 0)			// √≥¿Ωø° øﬁ¬ ¿∏∑Œ ¿Ãµø
 	{
 		xDir = -1;
 	}
@@ -26,12 +25,12 @@ Crawlid::Crawlid(int xdir)
 	gravity = GRAVITY;
 }
 
-void Crawlid::Init()
+void Vengefly::Init()
 {
 	SetTag(TAG::MONSTER);
 	moveSpeed = 100.f;
 	//sprite.setOrigin(60, 60);
-	// Animator Ï¥àÍ∏∞Ìôî
+	// Animator √ ±‚»≠
 	animation.SetTarget(&sprite);
 
 	rectangleShape.setSize(Vector2f(110, 55));
@@ -41,19 +40,12 @@ void Crawlid::Init()
 	rectangleShape.setOutlineColor(Color::Red);
 	rectangleShape.setOutlineThickness(2);
 
-	gavityShape.setSize(Vector2f(90, 65));
-	gavityShape.setOrigin(Vector2f(45, 75));
-	gavityShape.setPosition(position);
-	gavityShape.setFillColor(Color::Transparent);
-	gavityShape.setOutlineColor(Color::Blue);
-	gavityShape.setOutlineThickness(2);
-
-	sideShape.setSize(Vector2f(110, 30));
-	sideShape.setOrigin(Vector2f(55, 55));
-	sideShape.setPosition(position);
-	sideShape.setFillColor(Color::Transparent);
-	sideShape.setOutlineColor(Color::Yellow);
-	sideShape.setOutlineThickness(2);
+	detectShape.setSize(Vector2f(400, 400));
+	detectShape.setOrigin(Vector2f(200, 250));
+	detectShape.setPosition(position);
+	detectShape.setFillColor(Color::Transparent);
+	detectShape.setOutlineColor(Color::Blue);
+	detectShape.setOutlineThickness(2);
 
 	rapidcsv::Document clips("data_tables/animations/crawlid/crawlid_animation_clips.csv");
 
@@ -96,79 +88,72 @@ void Crawlid::Init()
 	animation.Play("Idle");
 
 	sprite.setScale(-xDir, 1);
-
-	textureDroppedCoin = new Texture[3];
-	spriteDroppedCoin = new Sprite[3];
-	for (int i = 0; i < 3; i++)
-	{
-		textureDroppedCoin[i] = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/select_game_HUD_coin_v020004.png");
-		spriteDroppedCoin[i].setTexture(textureDroppedCoin[i]);
-	}
 }
 
-void Crawlid::Update(float dt, Vector2f player)
+void Vengefly::Update(float dt, Vector2f playerPos)
 {
-	positionTemp = position;
-
-	if (isFalling)
-	{
-		gravity += GRAVITY * dt;
-		if (gravity > 1000.f)
-		{
-			gravity = 1000.f;
-		}
-		position.y += gravity * dt;
-	}
-	isFalling = true;
-
 	if (health <= 0)
 	{
 		isAlive = false;
 		animation.Play("Die");
 	}
-
 	if (isAlive)
 	{
-		
+		if (isDetect)
+		{
+			Vector2f positionTemp = position;
 
-		position.x += (moveSpeed * dt) * xDir;
-		
+			float x = playerPos.x - position.x;
+			float y = playerPos.y - position.y;
+			Vector2f dir(x, y);
+
+			dir = Utility::Normalize(dir);
+
+
+			position += dir * moveSpeed * dt;	// v = dt			
+		}
+		if (playerPos.x < position.x)
+		{
+			sprite.setScale(1, 1);
+		}
+		else
+		{
+			sprite.setScale(-1, 1);
+		}
+	}
+	else
+	{
+		if (isFalling)
+		{
+			gravity += GRAVITY * dt;
+			if (gravity > 500.f)
+			{
+				gravity = 500.f;
+			}
+			position.y += gravity * dt;
+		}
+		isFalling = true;
 	}
 	// position
 	SetPosition(position);
 	rectangleShape.setPosition(position);
-	gavityShape.setPosition(position);
-	sideShape.setPosition(position);
+	detectShape.setPosition(position);
 	// animation
 	animation.Update(dt);
-
-	if (!isAlive)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			spriteDroppedCoin[i].setPosition(position);
-		}
-	}
 }
 
-void Crawlid::Render(RenderWindow& window)
+void Vengefly::Render(RenderWindow& window)
 {
 	window.draw(sprite);
 	window.draw(rectangleShape);
-	//window.draw(gavityShape);
-	//window.draw(sideShape);
-
-	for (int i = 0; i < 3; i++)
-	{
-		window.draw(spriteDroppedCoin[i]);
-	}
+	window.draw(detectShape);
 }
 
-void Crawlid::Release()
+void Vengefly::Release()
 {
 }
 
-void Crawlid::OnGround(FloatRect map)
+void Vengefly::OnGround(FloatRect map)
 {
 	if (rectangleShape.getGlobalBounds().intersects(map))
 	{
@@ -199,7 +184,7 @@ void Crawlid::OnGround(FloatRect map)
 				}
 				position.x -= (rectangleShape.getGlobalBounds().left + rectangleShape.getGlobalBounds().width) - (map.left);
 				InputManager::GetInstance().HorizontalInit();
-				//InputManager::HorizontalInit();
+				//InputManager::HorizontalInit();0
 				break;
 
 			case Pivots::CT:
@@ -241,17 +226,23 @@ void Crawlid::OnGround(FloatRect map)
 //	}
 //}
 
-bool Crawlid::UpdateCollision()
+bool Vengefly::UpdateCollision()
 {
 	return false;
 }
 
-bool Crawlid::OnHitted(Time timeHit)
+bool Vengefly::OnHitted(Time timeHit)
 {
 	health--;
-	if (health == 0)
-	{
-		PlayerDataManager::GetInstance().AddCoin(3);
-	}
 	return false;
+}
+
+RectangleShape Vengefly::GetDetectShape()
+{
+	return detectShape;
+}
+
+void Vengefly::SetIsDetect(bool is)
+{
+	isDetect = is;
 }

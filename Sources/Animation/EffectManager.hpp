@@ -19,6 +19,6 @@ public:
 	void Draw(RenderWindow& window);
 
 	void SetDraw(std::string string);
-	void SetScale();
+	void SwapScale();
 };
 

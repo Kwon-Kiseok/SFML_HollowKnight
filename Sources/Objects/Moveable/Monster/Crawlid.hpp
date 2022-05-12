@@ -15,8 +15,8 @@ private:
 	//Texture texture;
 	std::map<std::string, Texture> texMap;
 
-	const float GRAVITY = 1500.f;				// Áß·Â
-	float gravity;								// Áß·Â°¡¼Óµµ Ã³¸®
+	const float GRAVITY = 1500.f;				// ì¤‘ë ¥
+	float gravity;								// ì¤‘ë ¥ê°€ì†ë„ ì²˜ë¦¬
 	
 	Texture textureCoin;
 	Sprite spriteCoin;
@@ -30,15 +30,15 @@ public:
 	virtual ~Crawlid() {}
 
 	virtual void Init() override;
-	virtual void Update(float dt) override;
+	virtual void Update(float dt, Vector2f player) override;
 	virtual void Render(RenderWindow& window) override;
 	virtual void Release() override;
 
 	virtual void OnGround(FloatRect map) override;
 
-	//const FloatRect GetGlobalBounds();	// Ãæµ¹Ã¼Å© ¶§ ÇÊ¿ä
-	bool UpdateCollision();	//  ³»°¡ ¶§¸° ÆÇÁ¤
-	bool OnHitted(Time timeHit);	// ³»°¡ ¸ÂÀº ÆÇÁ¤
+	//const FloatRect GetGlobalBounds();	// ì¶©ëŒì²´í¬ ë•Œ í•„ìš”
+	bool UpdateCollision();	//  ë‚´ê°€ ë•Œë¦° íŒì •
+	bool OnHitted(Time timeHit);	// ë‚´ê°€ ë§ì€ íŒì •
 
 
 };
