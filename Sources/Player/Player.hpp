@@ -18,9 +18,10 @@ private:
 	bool firstFrame;
 	bool secondFrame;
 
-	int hp;										// 체력
+	//int hp;										// 체력
 	int mp;										// 기력?
 	int coin;									// 재화
+	
 
 	AnimationController animation;
 
@@ -31,6 +32,7 @@ private:
 	// 공격 범위 박스
 	RectangleShape attackBox;
 	bool isAttack;								// 공격 판정 온오프
+	bool hitAttack;								// 
 	float attackDelay;							// 공격 딜레이
 	// 플레이어 히트박스
 	RectangleShape hitBox;
@@ -53,7 +55,7 @@ private:
 	std::string effectString;					// 공격 이펙트 방향 저장
 	std::string attackString;					// 공격 애니메이션 방향 저장
 
-	int knock = 0;
+	float collisionTime;
 public:
 	Player();
 	virtual void Init() override;
@@ -77,10 +79,11 @@ public:
 	//void SetVal(float dt);
 
 	const RectangleShape GetAttackBox();
+	const RectangleShape GetHitBox();
 	/** test **/
 	//Vector2f GetPosition();
-	void KnockBackSide();
-	void KnockBackUp();
-
+	void SetHP(float dt);
+	bool GetIsAttackBox();
+	void SetIsAttackBox(bool is);
 };
 

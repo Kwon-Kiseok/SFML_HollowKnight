@@ -22,12 +22,19 @@ void InputManager::Init() noexcept
 {
 	mapAxis.clear();
 
-	AxisInfo info;
+	HorizontalInit();
+	VerticalInit();
+}
+
+void InputManager::HorizontalInit()
+{
 	// Horizontal
+	AxisInfo info;
+
 	info.axis = Axis::Horizontal;
-	info.sensi = 1.f;
-	info.limit = 0.05f;
-	info.value = 0.f;
+	info.sensi = 2.f;
+	info.limit = 0.f;
+	info.value = 0.05f;
 	info.positiveKeys.clear();
 	info.positiveKeys.push_back(Keyboard::Right);
 	info.positiveKeys.push_back(Keyboard::D);
@@ -36,12 +43,17 @@ void InputManager::Init() noexcept
 	info.negativeKeys.push_back(Keyboard::Left);
 	info.negativeKeys.push_back(Keyboard::A);
 	mapAxis[info.axis] = info;
+}
 
+void InputManager::VerticalInit()
+{
 	// Vertical
+	AxisInfo info;
+
 	info.axis = Axis::Vertical;
-	info.sensi = 1.f;
-	info.limit = 0.05f;
-	info.value = 0.f;
+	info.sensi = 2.f;
+	info.limit = 0.f;
+	info.value = 0.05f;
 	info.positiveKeys.clear();
 	info.positiveKeys.push_back(Keyboard::Down);
 	info.positiveKeys.push_back(Keyboard::S);

@@ -5,6 +5,7 @@
 #include "../Managers/SceneManager.hpp"
 #include "../Managers/SoundManager.hpp"
 #include "../Managers/UIManager.hpp"
+#include "../Managers/PlayerDataManager.hpp"
 #include <sstream>
 
 void InventoryScene::Init()
@@ -78,7 +79,7 @@ void InventoryScene::Update(float dt)
 	}
 
 	stringstream ssCoin;
-	ssCoin << player.GetCoin();
+	ssCoin << PlayerDataManager::GetInstance().GetPlayerCoin();
 	textCoin.setString(ssCoin.str());
 	textCoin.setPosition(430, 910);
 	textCoin.setCharacterSize(40);

@@ -9,9 +9,9 @@ Town_Map::Town_Map(Player* player)
 	crawlid = new Crawlid(1);
 	crawlid2 = new Crawlid(1);
 	// monster.init();
-	crawlid->SetPosition(Vector2f(100.f, 800.f));
+	crawlid->SetPosition(Vector2f(100.f, 850.f));
 	crawlid->Init();
-	crawlid2->SetPosition(Vector2f(600.f, 800.f));
+	crawlid2->SetPosition(Vector2f(600.f, 850.f));
 	crawlid2->Init();
 	//characters.push_back(monster);
 	characters.push_back(crawlid);

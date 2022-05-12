@@ -89,3 +89,32 @@ float Utility::GetAngle(const Vector2f& from, const Vector2f& to)
 	float degree = radian * 180.f / 3.141592f;
 	return degree;
 }
+
+Pivots Utility::CollisionDir(FloatRect start, FloatRect comp)
+{
+	if (comp.left < start.left + start.width
+		&& comp.left + comp.width > start.left + start.width)
+	{
+		return Pivots::LC;
+	}
+
+	//오른쪽
+	else if (comp.left + comp.width > start.left && comp.left < start.left)
+	{
+		return Pivots::RC;
+	}
+
+	//위
+	else if (comp.top < start.top + start.height && comp.top + comp.height > start.top + start.height)
+	{
+		return Pivots::CT;
+	}
+
+	//아래
+	else
+	{
+		return Pivots::CB;
+	}
+
+	return Pivots();
+}
