@@ -325,18 +325,23 @@ void UIManager::Update_Pause(float dt)
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Escape))
 	{
 		isPauseMenu = !isPauseMenu;
+		pauseUI.GetAnim().Play("Top_fleur");
 	}
 
-	if(isPauseMenu)
+	if (isPauseMenu)
+	{
 		pauseUI.Update(dt);
+	}
 }
 
 void UIManager::Render_Pause(sf::RenderWindow& window)
 {
 	window.draw(spriteBack);
 
-	if(isPauseMenu)
+	if (isPauseMenu)
+	{
 		pauseUI.Render(window);
+	}
 }
 
 void UIManager::Release_Pause()

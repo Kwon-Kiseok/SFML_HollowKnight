@@ -4,3 +4,8 @@ AnimationFrame::AnimationFrame(const Texture& tex, const IntRect& coord, const V
 	: texture(tex), texCoord(coord), origin(ori)
 {
 }
+
+AnimationFrame::AnimationFrame(const Texture& tex)
+	: texture(tex)
+{
+}
