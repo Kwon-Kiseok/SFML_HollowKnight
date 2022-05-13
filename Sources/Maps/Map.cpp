@@ -32,6 +32,7 @@ void Map::Update(float dt)
 	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
 	{
 		(*it)->Update(dt);
+		
 	}
 
 	for (auto it = characters.begin(); it != characters.end(); ++it)
@@ -133,11 +134,23 @@ void Map::CheckCollisions(float dt)
 			if ((*it)->CompareTag(TAG::COIN))
 			{
 				player->AddCoin(1);
+				
 				// 삭제
 				it = gameObjects.erase(it);
 				break;
 			}
-		}		
+		}
+
+		if((*it)->CompareTag(TAG::COIN))
+		{
+			for (std::vector<Collider*>::iterator col_it = colliders.begin(); col_it != colliders.end(); ++col_it)
+			{
+				if (*col_it == nullptr) continue;
+
+				// 코인이랑 땅이랑 부딪힌 경우
+				(*it)->Collision(*col_it);
+			}
+		}
 	}
 
 	for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
