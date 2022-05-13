@@ -15,6 +15,7 @@ Player::Player()
 	coin = 0;
 	move = 0.f;
 	jumpTime = JUMP_MAX;
+	jumpTime = 0.f;
 	collisionTime = 1.f;
 	knockbackTime = 0.3f;
 }
@@ -119,34 +120,35 @@ void Player::Update(float dt)
 	/**********************************
 	* 공격 방향 설정
 	**********************************/
-	if (!isAttack)
 	{
-		if (v == -1.f)
+		if (!isAttack)
 		{
-			attackBox.setSize(Vector2f(140, 120));
-			attackBox.setOrigin(Vector2f(70, 180));
-			attackBox.setPosition(position);
-			attackString = "UpSlash";
-			effectString = "UpSlash";
-		}
-		else if (v == 1.f && !canJump)
-		{
-			attackBox.setSize(Vector2f(140, 140));
-			attackBox.setOrigin(Vector2f(70, 50));
-			attackBox.setPosition(position);
-			attackString = "DownSlash";
-			effectString = "DownSlash";
-		}
-		else
-		{
-			attackBox.setSize(Vector2f(140, 90));
-			attackBox.setOrigin(Vector2f(0, 100));
-			attackBox.setPosition(position);
-			attackString = "Slash";
-			effectString = "Slash";
+			if (v == -1.f)
+			{
+				attackBox.setSize(Vector2f(140, 120));
+				attackBox.setOrigin(Vector2f(70, 180));
+				attackBox.setPosition(position);
+				attackString = "UpSlash";
+				effectString = "UpSlash";
+			}
+			else if (v == 1.f && !canJump)
+			{
+				attackBox.setSize(Vector2f(140, 140));
+				attackBox.setOrigin(Vector2f(70, 50));
+				attackBox.setPosition(position);
+				attackString = "DownSlash";
+				effectString = "DownSlash";
+			}
+			else
+			{
+				attackBox.setSize(Vector2f(140, 90));
+				attackBox.setOrigin(Vector2f(0, 100));
+				attackBox.setPosition(position);
+				attackString = "Slash";
+				effectString = "Slash";
+			}
 		}
 	}
-
 	/******************  knockback test  ****************/
 	{
 		if (isKnockback)
@@ -171,7 +173,6 @@ void Player::Update(float dt)
 		}
 	}
 	/******************  knockback test  ****************/
-
 	/**********************************
 	* 좌우 방향 이동
 	**********************************/
@@ -235,8 +236,20 @@ void Player::Update(float dt)
 			SoundManager::GetInstance().PlaySound(L"jump");
 			animation.Play("Jump");
 			animation.PlayQueue("Jumping");
-			gravity = -1000.f;
+			gravity = -500.f;
 			canJump = false;
+		}
+		if (InputManager::GetInstance().GetKeyUp(Keyboard::Z))
+		{
+			jumpTime = 0.5f;
+		}
+		if (InputManager::GetInstance().GetKey(Keyboard::Z))
+		{
+			jumpTime += dt;
+			if (jumpTime < 0.5f)
+			{
+				gravity -= GRAVITY * dt;
+			}
 		}
 		delta.y = gravity * dt;
 	}
@@ -244,14 +257,19 @@ void Player::Update(float dt)
 	* 대쉬
 	**********************************/
 	{
-		if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash && canDash)
+		dashDelay -= dt;
+		if (dashDelay < 0.f)
 		{
-			SoundManager::GetInstance().PlaySound(L"dash");
-			gravity = 0.f;
-			animation.Play("Dash");
-			isDash = true;
-			dashTemp = position;
-			canDash = false;
+			if (InputManager::GetInstance().GetKeyDown(Keyboard::C) && !isDash && canDash)
+			{
+				SoundManager::GetInstance().PlaySound(L"dash");
+				gravity = 0.f;
+				animation.Play("Dash");
+				isDash = true;
+				dashTemp = position;
+				canDash = false;
+				dashDelay = 0.6f;
+			}
 		}
 		if (isDash)
 		{
@@ -272,8 +290,6 @@ void Player::Update(float dt)
 				gravity = 0.f;
 			}
 		}
-
-
 	}
 	/**********************************
 	* 공격
@@ -383,10 +399,6 @@ bool Player::UpdateCollision()
 	{
 		isDash = false;
 		isKnockback = true;
-		if (hitAttack)
-		{
-			//hitAttack = false;
-		}
 	}
 	return false;
 }
@@ -407,12 +419,20 @@ void Player::OnGround(FloatRect map)
 			switch (pivot)
 			{
 			case Pivots::LC:
+				if (isDash && hitBox.getGlobalBounds().top + hitBox.getGlobalBounds().height - 5.f < map.top)
+				{
+					break;
+				}
 				position.x += (map.left + map.width) - (hitBox.getGlobalBounds().left);
 				InputManager::GetInstance().HorizontalInit();
 				isDash = false;
 				break;
 
 			case Pivots::RC:
+				if (isDash && hitBox.getGlobalBounds().top + hitBox.getGlobalBounds().height - 5.f < map.top)
+				{
+					break;
+				}
 				position.x -= (hitBox.getGlobalBounds().left + hitBox.getGlobalBounds().width) - (map.left);
 				InputManager::GetInstance().HorizontalInit();
 				isDash = false;
@@ -427,6 +447,7 @@ void Player::OnGround(FloatRect map)
 			case Pivots::CB:
 				position.y -= (hitBox.getGlobalBounds().top + hitBox.getGlobalBounds().height) - (map.top);
 				gravity = 0.f;
+				jumpTime = 0.f;
 				isFalling = false;
 				canJump = true;
 				canDash = true;
