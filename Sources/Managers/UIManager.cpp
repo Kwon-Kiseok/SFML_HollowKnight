@@ -30,62 +30,51 @@ void UIManager::Render(sf::RenderWindow& window)
 void UIManager::Release()
 {
 	Release_Pause();
+	Release_TitleScene();
 }
 
 void UIManager::Init_TitleScene()
 {
-	//std::cout << "TitleScene Load" << std::endl;
+	float resolution_x = ViewManager::GetInstance().GetResolution().x;
+	float resolution_y = ViewManager::GetInstance().GetResolution().y;
+
 	textureBackGround = TextureManager::GetInstance().GetTexture("Resources/Sprite/Voidheart_menu_BG.png");
 	spriteBackGround.setTexture(textureBackGround);
-	spriteBackGround.setOrigin(textureBackGround.getSize().x, textureBackGround.getSize().y);
-	spriteBackGround.setPosition(ViewManager::GetInstance().GetResolution().x * 1.f, ViewManager::GetInstance().GetResolution().y * 1.25f);
+	spriteBackGround.setOrigin(textureBackGround.getSize().x/2, textureBackGround.getSize().y/2);
+	spriteBackGround.setPosition(resolution_x/2, resolution_y /2);
 
 	textureTitle = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/title.png");
 	spriteTitle.setTexture(textureTitle);
-	spriteTitle.setOrigin(textureTitle.getSize().x, textureTitle.getSize().y);
-	spriteTitle.setPosition(ViewManager::GetInstance().GetResolution().x * 0.8f, ViewManager::GetInstance().GetResolution().y * 0.5f);
+	spriteTitle.setOrigin(textureTitle.getSize().x/2, textureTitle.getSize().y/2);
+	spriteTitle.setPosition(resolution_x /2, resolution_y /2 - 200.f);
 
 	textureCursor = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/main_menu_pointer.png");
 	spriteCursor.setTexture(textureCursor);
 	spriteCursor.scale(-1.f, 1.f);
 
-	spriteCursor.setPosition(1920 * 0.5f, Cursor_selectY);
+	spriteCursor.setPosition(resolution_x/2 - 100.f, Cursor_selectY);
 
 	fontCALIST.loadFromFile("Resources/Fonts/CALIST.ttf");
 
-	textPlay.setFont(fontCALIST);
-	textPlay.setString("Game Start");
-	textPlay.setCharacterSize(80);
-	textPlay.setFillColor(Color::White);
-	textPlay.setPosition(1920 * 0.5f, 600.f);
-
-	textEditor.setFont(fontCALIST);
-	textEditor.setString("Editor Mode");
-	textEditor.setCharacterSize(80);
-	textEditor.setFillColor(Color::White);
-	textEditor.setPosition(1920 * 0.5f, 750.f);
-
-	textExit.setFont(fontCALIST);
-	textExit.setString("Exit");
-	textExit.setCharacterSize(80);
-	textExit.setFillColor(Color::White);
-	textExit.setPosition(1920 * 0.5f, 900.f);
+	titleButtons[L"gameStart"] = new button("Game Start", Vector2f(resolution_x / 2, resolution_y / 2 + 100.f), Vector2f(200.f, 40.f));
+	titleButtons[L"editorMode"] = new button("Editor Mode", Vector2f(resolution_x / 2, resolution_y / 2 + 200.f), Vector2f(200.f, 40.f));
+	titleButtons[L"exit"] = new button("Exit", Vector2f(resolution_x / 2, resolution_y / 2 + 300.f), Vector2f(200.f, 40.f));
 
 	SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/Title.wav");
 }
 
 void UIManager::Update_TitleScene(float dt)
 {
-	spriteCursor.setPosition(1920 * 0.5f, Cursor_selectY);
+	spriteCursor.setPosition(ViewManager::GetInstance().GetResolution().x / 2 - 100.f, Cursor_selectY);
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
 	{
 		SoundManager::GetInstance().PlaySound(L"changeMenu");
 
-		Cursor_selectY -= 150;
-		if (Cursor_selectY < 600.f)
+		Cursor_selectY -= 100;
+		if (Cursor_selectY < ViewManager::GetInstance().GetResolution().y/2 + 100.f)
 		{
-			Cursor_selectY = 900.f;
+			Cursor_selectY = ViewManager::GetInstance().GetResolution().y / 2 + 300.f;
 		}
 	}
 
@@ -93,10 +82,10 @@ void UIManager::Update_TitleScene(float dt)
 	{
 		SoundManager::GetInstance().PlaySound(L"changeMenu");
 
-		Cursor_selectY += 150;
-		if (Cursor_selectY > 900.f)
+		Cursor_selectY += 100;
+		if (Cursor_selectY > ViewManager::GetInstance().GetResolution().y / 2 + 300.f)
 		{
-			Cursor_selectY = 600.f;
+			Cursor_selectY = ViewManager::GetInstance().GetResolution().y / 2 + 100.f;
 		}
 	}
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Enter))
@@ -117,33 +106,28 @@ void UIManager::Update_TitleScene(float dt)
 		SoundManager::GetInstance().PlaySound(L"select");
 	}
 
-	if (textPlay.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
+	for (auto& button : titleButtons)
 	{
-		Cursor_selectY = 600.f;
-
-		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
-		{
-			SceneManager::GetInstance().Load(L"Play");
-			SoundManager::GetInstance().StopMusic();
-		}
+		button.second->update(dt);
 	}
-	if (textEditor.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
-	{
-		Cursor_selectY = 750.f;
 
-		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
-		{
-			SceneManager::GetInstance().Load(L"Editor");
-		}
+	if (titleButtons[L"gameStart"]->IsButtonClicked())
+	{
+		SceneManager::GetInstance().Load(L"Play");
+		SoundManager::GetInstance().StopMusic();
+		titleButtons[L"gameStart"]->ResetIsClicked();
 	}
-	if (textExit.getGlobalBounds().contains(InputManager::GetInstance().GetMouseWorldPosition()))
+	if (titleButtons[L"editorMode"]->IsButtonClicked())
 	{
-		Cursor_selectY = 900.f;
-
-		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
-		{
-			Game::GetInstance().SetIsGameOver(true);
-		}
+		SceneManager::GetInstance().Load(L"Editor");
+		SoundManager::GetInstance().StopMusic();
+		titleButtons[L"editorMode"]->ResetIsClicked();
+	}
+	if (titleButtons[L"exit"]->IsButtonClicked())
+	{
+		SoundManager::GetInstance().StopMusic();
+		Game::GetInstance().SetIsGameOver(true);
+		titleButtons[L"exit"]->ResetIsClicked();
 	}
 }
 
@@ -151,10 +135,20 @@ void UIManager::Render_TitleScene(sf::RenderWindow& window)
 {
 	window.draw(spriteBackGround);
 	window.draw(spriteTitle);
-	window.draw(textPlay);
-	window.draw(textEditor);
-	window.draw(textExit);
+	for (auto& button : titleButtons)
+	{
+		button.second->draw(window);
+	}
 	window.draw(spriteCursor);
+}
+
+void UIManager::Release_TitleScene()
+{
+	for (auto& button : titleButtons)
+	{
+		delete button.second;
+	}
+	titleButtons.clear();
 }
 
 /////////////////////////////////////////////////////////////////////////

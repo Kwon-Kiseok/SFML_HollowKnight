@@ -1,5 +1,6 @@
 #include "button.hpp"
 #include "../Managers/InputManager.hpp"
+#include "../Managers/SoundManager.hpp"
 #include "../Animation/rapidcsv.hpp"
 #include <iostream>
 
@@ -20,11 +21,11 @@ button::button(string text, Vector2f pos, Vector2f size)
 
 	font.loadFromFile("Resources/Fonts/CALIST.TTF");
 	this->text.setString(text);
-	this->text.setPosition(buttonShape.getPosition());
-	this->text.setOrigin(buttonShape.getOrigin());
+	this->text.setCharacterSize(30.f);
+	this->text.setStyle(Text::Bold);
 	this->text.setFillColor(Color::White);
 	this->text.setFont(font);
-	this->text.setCharacterSize(20.f);
+	this->text.setPosition((pos.x - this->text.getLocalBounds().width / 2), (pos.y - this->text.getLocalBounds().height));
 
 	spriteButton.setPosition(pos);
 	animContoller.SetTarget(&spriteButton);
@@ -82,8 +83,11 @@ void button::update(float dt)
 	case Button_state::clicked:
 		break;
 	case Button_state::hovered:
-		if(!animContoller.IsPlaying())
+		if (!animContoller.IsPlaying())
+		{
 			animContoller.PlayQueue("Btn_flash");
+			SoundManager::GetInstance().PlaySound(L"changeMenu");
+		}
 		break;
 	case Button_state::normal:
 		animContoller.Stop();

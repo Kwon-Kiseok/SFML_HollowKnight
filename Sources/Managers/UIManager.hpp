@@ -1,15 +1,16 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <unordered_map>
 #include "SceneManager.hpp"
 #include "../include/Singleton.hpp"
 #include "../Scene/InventoryScene.hpp"
-#include <vector>
 #include "../Items/Coin.hpp"
 #include "../Player/Player.hpp"
+#include "../Utils/button.hpp"
 #include "../UI/PauseUI.hpp"
 
 using namespace sf;
-
 
 class UIManager : public Singleton<UIManager>
 {
@@ -26,9 +27,8 @@ private:
 	Sprite spriteCursor;
 
 	Font fontCALIST;
-	Text textPlay;
-	Text textEditor;
-	Text textExit;
+
+	std::unordered_map<wstring, button*> titleButtons;
 ////////////////////////////////////////////////
 
 	Texture* textureLifes;
@@ -70,6 +70,7 @@ public:
 	void Init_TitleScene();
 	void Update_TitleScene(float dt);
 	void Render_TitleScene(sf::RenderWindow& window);
+	void Release_TitleScene();
 // /////////////////////////////////////////////////////////////
 
 	void Init_PlayScene();
