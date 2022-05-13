@@ -31,6 +31,7 @@ void Vengefly::Init()
 {
 	SetName("vengefly");
 	SetTag(TAG::MONSTER);
+	SetName("Vengefly");
 	moveSpeed = 100.f;
 	//sprite.setOrigin(60, 60);
 	// Animator √ ±‚»≠
@@ -50,7 +51,7 @@ void Vengefly::Init()
 	detectShape.setOutlineColor(Color::Blue);
 	detectShape.setOutlineThickness(2);
 
-	rapidcsv::Document clips("data_tables/animations/crawlid/crawlid_animation_clips.csv");
+	rapidcsv::Document clips("data_tables/animations/vengefly/vengefly_animation_clips.csv");
 
 	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
 	std::vector<int> colFps = clips.GetColumn<int>("FPS");
@@ -78,7 +79,7 @@ void Vengefly::Init()
 		int totalFrames = colTexure.size();
 		for (int j = 0; j < totalFrames; ++j)
 		{
-			if (texMap.find(colTexure[i]) == texMap.end())
+			if (texMap.find(colTexure[j]) == texMap.end())
 			{
 				auto& ref = texMap[colTexure[j]];
 				ref.loadFromFile(colTexure[j]);
