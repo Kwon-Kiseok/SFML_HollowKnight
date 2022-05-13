@@ -20,9 +20,10 @@ class MapManager : public Singleton<MapManager>
 {
 private:
 	Map* map;
-	std::map<MAP_TYPE, Map*> maps;
 	Player* player;
+	std::map<MAP_TYPE, Map*> maps;
 	std::map<MAP_TYPE, sf::Vector2f> startPos;
+	bool isDebugMode = false;
 
 public:
 	MapManager() noexcept = default;
@@ -38,5 +39,7 @@ public:
 
 	Map* GetCurrentMap();
 	void SetStartPos(MAP_TYPE type, sf::Vector2f pos);
+
+	bool GetIsDebugMode();
 };
 

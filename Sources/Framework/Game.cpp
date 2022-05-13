@@ -35,7 +35,7 @@ void Game::Update()
                 window->close();
             InputManager::GetInstance().ProcessInput(event);
         }
-        if (InputManager::GetInstance().GetKeyDown(sf::Keyboard::Escape))
+        if (isGameOver)
         {
             window->close();
             return;
@@ -61,4 +61,14 @@ void Game::Release()
     ViewManager::GetInstance().ClearView();
     SceneManager::GetInstance().Release();
     SoundManager::GetInstance().Release();
+}
+
+bool Game::GetIsGameOver()
+{
+    return isGameOver;
+}
+
+void Game::SetIsGameOver(bool is)
+{
+    isGameOver = is;
 }

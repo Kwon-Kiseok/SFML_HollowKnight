@@ -1,4 +1,5 @@
 #include "MapManager.hpp"
+#include "UIManager.hpp"
 #include "../Maps/Town_Map.hpp"
 #include "../Maps/KingsPass_Map.hpp"
 #include "../Maps/CrossRoad_Map.hpp"
@@ -45,6 +46,13 @@ void MapManager::LoadMap(MAP_TYPE type)
 
 void MapManager::Update(float dt)
 {
+	if (UIManager::GetInstance().GetIsPause())
+		return;
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::Equal))
+	{
+		isDebugMode = !isDebugMode;
+	}
+
 	map->Update(dt);
 	map->CheckCollisions(dt);
 }
@@ -73,4 +81,9 @@ Map* MapManager::GetCurrentMap()
 void MapManager::SetStartPos(MAP_TYPE type, sf::Vector2f pos)
 {
 	startPos[type] = pos;
+}
+
+bool MapManager::GetIsDebugMode()
+{
+	return isDebugMode;
 }

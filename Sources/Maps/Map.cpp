@@ -64,7 +64,8 @@ void Map::Update(float dt)
 void Map::Render(sf::RenderWindow& window)
 {
 
-	for (int i = 10; i >= 0; --i)
+
+	for (int i = MAX_LAYER; i >= MIN_LAYER; --i)
 	{
 		for (auto it = stableObjects.begin(); it != stableObjects.end(); ++it)
 		{
@@ -73,16 +74,21 @@ void Map::Render(sf::RenderWindow& window)
 				(*it)->Render(window);
 			}
 
-			window.draw((*it)->GetRectangleShape());
+			if (MapManager::GetInstance().GetIsDebugMode())
+			{
+				window.draw((*it)->GetRectangleShape());
+			}
+		}
+		for (auto it = characters.begin(); it != characters.end(); ++it)
+		{
+			if ((*it)->GetLayer() == i)
+			{
+				(*it)->Render(window);
+			}
 		}
 	}
 
 	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
-	{
-		(*it)->Render(window);
-	}
-
-	for (auto it = characters.begin(); it != characters.end(); ++it)
 	{
 		(*it)->Render(window);
 	}
@@ -92,9 +98,12 @@ void Map::Render(sf::RenderWindow& window)
 		(*it)->Render(window);
 	}
 
-	for (auto it = colliders.begin(); it != colliders.end(); ++it)
+	if (MapManager::GetInstance().GetIsDebugMode())
 	{
-		(*it)->Render(window);
+		for (auto it = colliders.begin(); it != colliders.end(); ++it)
+		{
+			(*it)->Render(window);
+		}
 	}
 
 }

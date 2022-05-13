@@ -28,6 +28,7 @@ void Player::Init()
 	SetTag(TAG::PLAYER);
 	SetName("Hero");
 	sprite.setPosition(position);
+	SetLayer(5);
 	// Animator 초기화
 	animation.SetTarget(&sprite);
 
@@ -198,24 +199,26 @@ void Player::Update(float dt)
 			}
 		}
 
-
-		if (move == 0 && h != 0)
+		if (canJump)
 		{
-			animation.Play("StartMove");
-			animation.PlayQueue("Move");
-			string = "Move";
-			//
-			SoundManager::GetInstance().PlaySound(L"walk");
+			if (move == 0 && h != 0)
+			{
+				animation.Play("StartMove");
+				animation.PlayQueue("Move");
+				string = "Move";
+				//
+				SoundManager::GetInstance().PlaySound(L"walk");
+			}
+			if (move != 0 && h == 0)
+			{
+				animation.Play("RunToIdle");
+				animation.PlayQueue("Idle");
+				string = "Idle";
+				SetDirection(Direction::NONE);
+				SoundManager::GetInstance().GetSoundbyID(L"walk").stop();
+			}
+			move = h;
 		}
-		if (move != 0 && h == 0)
-		{
-			animation.Play("RunToIdle");
-			animation.PlayQueue("Idle");
-			string = "Idle";
-			SetDirection(Direction::NONE);
-			SoundManager::GetInstance().GetSoundbyID(L"walk").stop();
-		}
-		move = h;
 	}
 	/**********************************
 	* 중력 및 점프
@@ -342,13 +345,17 @@ void Player::Update(float dt)
 
 void Player::Render(RenderWindow& window)
 {
-	if (isAttack)
-	{
-		window.draw(attackBox);
-	}
 	window.draw(sprite);
-	window.draw(hitBox);
-	window.draw(hitBoxSide);
+
+	if (MapManager::GetInstance().GetIsDebugMode())
+	{
+		if (isAttack)
+		{
+			window.draw(attackBox);
+		}
+		window.draw(hitBox);
+		window.draw(hitBoxSide);
+	}
 	effect.Draw(window);		// Slash
 }
 

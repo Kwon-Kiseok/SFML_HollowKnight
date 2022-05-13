@@ -55,6 +55,7 @@
     <ClCompile Include="Sources\Objects\Moveable\Monster\Vengefly.cpp" />
     <ClCompile Include="Sources\Objects\Collider.cpp" />
     <ClCompile Include="Sources\Maps\BossRoom_Map.cpp" />
+    <ClCompile Include="Sources\UI\PauseUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
@@ -86,6 +87,7 @@
     <ClInclude Include="Sources\Objects\Moveable\Monster\Vengefly.hpp" />
     <ClInclude Include="Sources\Objects\Collider.hpp" />
     <ClInclude Include="Sources\Maps\BossRoom_Map.hpp" />
+    <ClInclude Include="Sources\UI\PauseUI.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />

@@ -32,8 +32,7 @@ void Vengefly::Init()
 	SetName("vengefly");
 	SetTag(TAG::MONSTER);
 	moveSpeed = 100.f;
-	//sprite.setOrigin(60, 60);
-	// Animator √ ±‚»≠
+	SetLayer(5);
 	animation.SetTarget(&sprite);
 
 	rectangleShape.setSize(Vector2f(110, 55));
@@ -165,12 +164,11 @@ void Vengefly::Update(float dt, Vector2f playerPos)
 void Vengefly::Render(RenderWindow& window)
 {
 	window.draw(sprite);
-	window.draw(rectangleShape);
-	window.draw(detectShape);
 
-	for (int i = 0; i < 3; i++)
+	if (MapManager::GetInstance().GetIsDebugMode())
 	{
-		window.draw(spriteDroppedCoin[i]);
+		window.draw(rectangleShape);
+		window.draw(detectShape);
 	}
 }
 
