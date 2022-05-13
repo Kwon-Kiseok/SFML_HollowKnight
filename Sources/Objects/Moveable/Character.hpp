@@ -9,6 +9,7 @@ class Character : public GameObject
 {
 protected:
 	int health;					// 캐릭터의 체력
+	int shield;					// 쉴드
 	
 	Vector2f colDir;			// 캐릭터의 충돌 방향
 	Direction currentDir;		// 캐릭터의 현재 방향
@@ -17,6 +18,7 @@ protected:
 	float jumpSpeed;			// 점프속도	
 	float deltaTime;			// dt
 	
+	bool isShield;				// 쉴드 상태 확인
 	bool isAlive;				// 생존 확인
 	bool isJumping;				// 현재 점프 중인지
 	bool isFalling;				// 현재 떨어지는 중인지
@@ -51,6 +53,7 @@ public:
 	void SetX(float x);
 	void SetY(float y);
 	void SetHealth(int health);
+	virtual void SetShield(int shield);						// 쉴드 반환
 	void SetDirection(Direction dir);
 	void SetCollisionState(bool isCol);
 
@@ -67,11 +70,13 @@ public:
 	virtual void Update(float dt, Vector2f pos);
 	virtual void Render(RenderWindow& window);
 	virtual void Release();
-
-	virtual void OnGround(FloatRect map);
-	virtual bool GetIsAlivve();
+	
+	virtual void OnGround(FloatRect map);					// 맵과 충돌처리	
+	virtual bool GetIsAlivve();								// 살아있는지 판단
+	virtual bool GetIsIsShield();							// 쉴드 판단
 	// 플레이어 추격
 	virtual RectangleShape GetDetectShape();
+	virtual RectangleShape GetRectangleShape();
 	virtual void SetIsDetect(bool is);
 };
 

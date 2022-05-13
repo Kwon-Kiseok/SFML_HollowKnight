@@ -139,12 +139,12 @@ void Map::CheckCollisions(float dt)
 						if ((*collider_it)->CompareTag(TAG::COLLIDER))
 						{
 							std::cout << player->GetName() << "Collision Coin" << std::endl;
-						//	(*it)->Player::UpdateCollision((*collider_it)->GetShape().getGlobalBounds());
+							//	(*it)->Player::UpdateCollision((*collider_it)->GetShape().getGlobalBounds());
 						}
 					}
 				}
 			}
-		}		
+		}
 	}
 
 	for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
@@ -164,13 +164,10 @@ void Map::CheckCollisions(float dt)
 	{
 		if (*it == nullptr) continue;
 
-		if (player->CheckCollision(*it))
+		// 플레이어와 몬스터가 충돌했을 경우
+		if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetRectangleShape().getGlobalBounds().intersects(player->GetHitBox().getGlobalBounds()))
 		{
-			player->Collision(*it);
-			//player->GetHitBox().getGlobalBounds().intersects((*it)->GetSprite().getGlobalBounds());
-
-			// 플레이어와 몬스터가 충돌했을 경우
-			if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetIsAlivve())
+			if ((*it)->GetIsAlivve())
 			{
 				player->SetHP(dt);
 			}
@@ -185,6 +182,7 @@ void Map::CheckCollisions(float dt)
 			player->UpdateCollision();
 			player->SetIsAttackBox(false);
 			(*it)->SetHealth(-1);
+			(*it)->SetShield(-1);
 		}
 
 		if ((*it)->CompareTag(TAG::MONSTER))
@@ -241,7 +239,7 @@ void Map::CheckCollisions(float dt)
 				// 위키를 눌러서 다음 맵 이동
 				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
 					(*it)->SetInteractable(true);
-				if((*it)->IsInteractable())
+				if ((*it)->IsInteractable())
 					(*it)->Interaction(*player);
 				return;
 			}
@@ -406,7 +404,7 @@ void Map::AddObject(MapData& data)
 void Map::LoadCollision(MapData& data)
 {
 	this->collider = new Collider(Vector2f(data.size_x, data.size_y), Vector2f(data.x, data.y));
-	if(nullptr != collider)
+	if (nullptr != collider)
 		colliders.push_back(collider);
 }
 

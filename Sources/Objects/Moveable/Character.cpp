@@ -12,7 +12,7 @@ Character::Character()
 	gravity = 980.f;
 	health = 0;
 	
-
+	isShield = false;
 	isAlive = true;
 	isColliding = false;
 	isFalling = false;
@@ -28,6 +28,7 @@ Character::Character()
 
 	isDetect = false;
 	lodingTime = 2.f;
+	shield = 0;
 }
 
 Character::~Character()
@@ -71,7 +72,14 @@ void Character::SetY(float y)
 
 void Character::SetHealth(int health)
 {
-	this->health += health;
+	if (!isShield)
+	{
+		this->health += health;
+	}
+}
+
+void Character::SetShield(int shield)
+{
 }
 
 void Character::SetDirection(Direction dir)
@@ -96,7 +104,7 @@ bool Character::Collision(GameObject* otherObj)
 
 bool Character::Collision_AttackBox(RectangleShape& attackBox)
 {
-	return this->sprite.getGlobalBounds().intersects(attackBox.getGlobalBounds());
+	return this->rectangleShape.getGlobalBounds().intersects(attackBox.getGlobalBounds());
 }
 
 void Character::Init()
@@ -128,9 +136,19 @@ bool Character::GetIsAlivve()
 	return isAlive;
 }
 
+bool Character::GetIsIsShield()
+{
+	return isShield;
+}
+
 RectangleShape Character::GetDetectShape()
 {
 	return detectShape;
+}
+
+RectangleShape Character::GetRectangleShape()
+{
+	return rectangleShape;
 }
 
 void Character::SetIsDetect(bool is)

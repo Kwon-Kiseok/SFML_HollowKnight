@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="Sources\Maps\BossRoom_Map.cpp" />
     <ClCompile Include="Sources\Objects\Collider.cpp" />
+    <ClCompile Include="Sources\Objects\Moveable\Monster\FalseKnight.cpp" />
     <ClCompile Include="Sources\Objects\Stable\Central.cpp" />
     <ClCompile Include="Sources\Objects\Stable\BossRoomImages.cpp" />
     <ClCompile Include="Sources\Scene\MapperScene.cpp" />
@@ -205,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Maps\BossRoom_Map.hpp" />
+    <ClInclude Include="Sources\Objects\Moveable\Monster\FalseKnight.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\Vengefly.hpp" />
     <ClInclude Include="Sources\Objects\Collider.hpp" />
     <ClInclude Include="Sources\Objects\Stable\Central.hpp" />

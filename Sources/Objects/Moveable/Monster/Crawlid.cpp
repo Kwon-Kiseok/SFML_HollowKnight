@@ -1,6 +1,5 @@
 #include "Crawlid.hpp"
 #include "../../Sources/Animation/rapidcsv.hpp"
-//#include "../../Sources/Managers/InputManager.hpp"
 #include "../../Sources/Managers/TextureManager.hpp"
 #include "../../Sources/Utils/Utility.hpp"
 
@@ -9,6 +8,7 @@ Crawlid::Crawlid()
 	isAlive = true;
 	health = 2;
 	gravity = GRAVITY;
+	moveSpeed = 100.f;
 	coin = 3;
 }
 
@@ -24,14 +24,14 @@ Crawlid::Crawlid(int xdir)
 	}
 	health = 2;
 	gravity = GRAVITY;
+	moveSpeed = 100.f;
+	coin = 3;
 }
 
 void Crawlid::Init()
 {
 	SetName("crawlid");
 	SetTag(TAG::MONSTER);
-	SetName("Crawlid");
-	moveSpeed = 100.f;
 	//sprite.setOrigin(60, 60);
 	// Animator 초기화
 	animation.SetTarget(&sprite);
@@ -119,7 +119,9 @@ void Crawlid::Update(float dt, Vector2f player)
 	}
 
 	positionTemp = position;
-
+	/****************************
+	* 중력 처리
+	*****************************/
 	if (isFalling)
 	{
 		gravity += GRAVITY * dt;
@@ -139,6 +141,9 @@ void Crawlid::Update(float dt, Vector2f player)
 
 	if (isAlive)
 	{
+		/****************************
+		* 좌우 이동 처리
+		*****************************/
 		position.x += (moveSpeed * dt) * xDir;
 	}
 	// position
