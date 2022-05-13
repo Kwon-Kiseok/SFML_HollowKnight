@@ -1,10 +1,8 @@
 #include "SceneManager.hpp"
 #include "../Scene/TitleScene.hpp"
-#include "../Scene/ManagerTestScene.hpp"
 #include "../Scene/PlayScene.hpp"
 #include "../Scene/EditingScene.hpp"
-#include "../Scene/MapperScene.hpp"
-#include "../Scene/MapTestPlayScene.hpp"
+#include "../Managers/ViewManager.hpp"
 
 
 SceneManager::~SceneManager() noexcept
@@ -21,15 +19,11 @@ SceneManager::~SceneManager() noexcept
 
 void SceneManager::Init()
 {
-	Scenes[L"TestScene"] = new ManagerTestScene();
 	Scenes[L"Title"] = new TitleScene();
 	Scenes[L"Play"] = new PlayScene();
 	Scenes[L"Editor"] = new EditingScene();
 
-	Scenes[L"MapTest"] = new MapTestPlayScene();
-	Scenes[L"Mapper"] = new MapperScene();
-
-	currentScene = Scenes[L"Play"];
+	currentScene = Scenes[L"Title"];
 
 	currentScene->Init();
 }
@@ -51,6 +45,8 @@ void SceneManager::Release()
 
 void SceneManager::Load(const std::wstring& sceneName)
 {
+	ViewManager::GetInstance().ClearView();
+	ViewManager::GetInstance().Init();
 	nextScene = Scenes[sceneName];
 	currentScene->Release();
 	currentScene = nextScene;

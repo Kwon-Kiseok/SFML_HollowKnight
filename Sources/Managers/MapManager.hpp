@@ -13,6 +13,7 @@ enum class MAP_TYPE
 	KingsPass,
 	CrossRoad,
 	BossRoom,
+	Count,
 };
 
 class MapManager : public Singleton<MapManager>
@@ -20,7 +21,9 @@ class MapManager : public Singleton<MapManager>
 private:
 	Map* map;
 	Player* player;
-	sf::Vector2f startPos;
+	std::map<MAP_TYPE, Map*> maps;
+	std::map<MAP_TYPE, sf::Vector2f> startPos;
+	bool isDebugMode = false;
 
 public:
 	MapManager() noexcept = default;
@@ -35,6 +38,8 @@ public:
 	void Release();
 
 	Map* GetCurrentMap();
-	void SetStartPos(sf::Vector2f pos);
+	void SetStartPos(MAP_TYPE type, sf::Vector2f pos);
+
+	bool GetIsDebugMode();
 };
 

@@ -7,6 +7,7 @@ class Game : public Singleton<Game>
 private:
 	sf::RenderWindow* window;
 	sf::Clock clock;
+	bool isGameOver = false;
 public:
 	Game() noexcept = default;
 	~Game() noexcept;
@@ -15,5 +16,8 @@ public:
 	void Update();
 	void Render();
 	void Release();
+
+	bool GetIsGameOver();
+	void SetIsGameOver(bool is);
 };
 

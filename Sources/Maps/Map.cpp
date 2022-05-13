@@ -24,6 +24,13 @@
 
 void Map::Init()
 {
+	for (auto it = characters.begin(); it != characters.end(); ++it)
+	{
+		if ((*it)->CompareTag(TAG::PLAYER))
+		{
+			return;
+		}
+	}
 	characters.push_back(player);
 }
 
@@ -32,6 +39,7 @@ void Map::Update(float dt)
 	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
 	{
 		(*it)->Update(dt);
+		
 	}
 
 	for (auto it = characters.begin(); it != characters.end(); ++it)
@@ -51,12 +59,14 @@ void Map::Update(float dt)
 
 	PlayerDataManager::GetInstance().UpdatePlayerData(*player);
 	ViewManager::GetInstance().TracePlayer(*player, maps_min_size, maps_max_size);
+
 }
 
 void Map::Render(sf::RenderWindow& window)
 {
 
-	for (int i = 10; i >= 0; --i)
+
+	for (int i = MAX_LAYER; i >= MIN_LAYER; --i)
 	{
 		for (auto it = stableObjects.begin(); it != stableObjects.end(); ++it)
 		{
@@ -65,16 +75,21 @@ void Map::Render(sf::RenderWindow& window)
 				(*it)->Render(window);
 			}
 
-			window.draw((*it)->GetRectangleShape());
+			if (MapManager::GetInstance().GetIsDebugMode())
+			{
+				window.draw((*it)->GetRectangleShape());
+			}
+		}
+		for (auto it = characters.begin(); it != characters.end(); ++it)
+		{
+			if ((*it)->GetLayer() == i)
+			{
+				(*it)->Render(window);
+			}
 		}
 	}
 
 	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
-	{
-		(*it)->Render(window);
-	}
-
-	for (auto it = characters.begin(); it != characters.end(); ++it)
 	{
 		(*it)->Render(window);
 	}
@@ -84,9 +99,12 @@ void Map::Render(sf::RenderWindow& window)
 		(*it)->Render(window);
 	}
 
-	for (auto it = colliders.begin(); it != colliders.end(); ++it)
+	if (MapManager::GetInstance().GetIsDebugMode())
 	{
-		(*it)->Render(window);
+		for (auto it = colliders.begin(); it != colliders.end(); ++it)
+		{
+			(*it)->Render(window);
+		}
 	}
 
 }
@@ -124,7 +142,6 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
-			player->Collision(*it);
 
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
@@ -145,7 +162,26 @@ void Map::CheckCollisions(float dt)
 				}
 			}
 		}
+				player->AddCoin(1);
+				
+				// 삭제
+				it = gameObjects.erase(it);
+				break;
+			}
+		}
+
+		if((*it)->CompareTag(TAG::COIN))
+		{
+			for (std::vector<Collider*>::iterator col_it = colliders.begin(); col_it != colliders.end(); ++col_it)
+			{
+				if (*col_it == nullptr) continue;
+
+				// 코인이랑 땅이랑 부딪힌 경우
+				(*it)->Collision(*col_it);
+			}
+		}
 	}
+
 
 	for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
 	{
@@ -183,6 +219,10 @@ void Map::CheckCollisions(float dt)
 			player->SetIsAttackBox(false);
 			(*it)->SetHealth(-1);
 			(*it)->SetShield(-1);
+
+			Coin* coin = new Coin((*it)->GetPosition());
+			//std::cout << coin->GetName() << std::endl;
+			gameObjects.push_back(coin);
 		}
 
 		if ((*it)->CompareTag(TAG::MONSTER))

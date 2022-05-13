@@ -18,8 +18,6 @@ private:
 	const float GRAVITY = 1500.f;				// 중력
 	float gravity;								// 중력가속도 처리
 
-	Texture* textureDroppedCoin;
-	Sprite* spriteDroppedCoin;
 public:
 	Crawlid();
 	Crawlid(int xdir);

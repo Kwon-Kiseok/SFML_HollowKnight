@@ -1,4 +1,5 @@
 #include "MapManager.hpp"
+#include "UIManager.hpp"
 #include "../Maps/Town_Map.hpp"
 #include "../Maps/KingsPass_Map.hpp"
 #include "../Maps/CrossRoad_Map.hpp"
@@ -9,6 +10,9 @@ MapManager::~MapManager() noexcept
 {
 	delete player;
 	player = nullptr;
+
+	map = nullptr;
+	Release();
 }
 
 void MapManager::Init()
@@ -16,37 +20,39 @@ void MapManager::Init()
 	player = new Player();
 	std::cout << "player create" << std::endl;
 	player->Init();
+	
+	maps[MAP_TYPE::Town] = new Town_Map(player);
+	maps[MAP_TYPE::KingsPass] = new KingsPass_Map(player);
+	maps[MAP_TYPE::CrossRoad] = new CrossRoad_Map(player);
+	maps[MAP_TYPE::BossRoom] = new BossRoom_Map(player);
+
+	// 여기서 로드 된 데이터가 있는 상황이면
+	// 플레이어 로드 셋팅해주어야 함
+	startPos[MAP_TYPE::Town] = Vector2f(200.f, 815.f);
 }
 
 void MapManager::LoadMap(MAP_TYPE type)
 {
-	Release();
-
-	switch (type)
-	{
-	case MAP_TYPE::Town:
-		map = new Town_Map(player);
-		break;
-	case MAP_TYPE::KingsPass:
-		map = new KingsPass_Map(player);
-		break;
-	case MAP_TYPE::CrossRoad:
-		map = new CrossRoad_Map(player);
-		break;
-	case MAP_TYPE::BossRoom:
-		map = new BossRoom_Map(player);
-	default:
-		break;
-	}
-	//
-	player->SetCurrentMap(type);
-	player->SetPosition(startPos);
+	if (nullptr != map)
+		map = nullptr;
+	map = maps[type];
 	map->Init();
-	std::cout << static_cast<int>(type) << std::endl;
+	player->SetCurrentMap(type);
+	// 로드하는 중에는 충돌처리나 업데이트를 막아야 함
+	// 타이밍이 너무 이름
+	player->SetPosition(startPos[type]);
+
 }
 
 void MapManager::Update(float dt)
 {
+	if (UIManager::GetInstance().GetIsPause())
+		return;
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::Equal))
+	{
+		isDebugMode = !isDebugMode;
+	}
+
 	map->Update(dt);
 	map->CheckCollisions(dt);
 }
@@ -58,12 +64,13 @@ void MapManager::Render(sf::RenderWindow& window)
 
 void MapManager::Release()
 {
-	if (map != nullptr)
+	for (auto& map : maps)
 	{
-		map->Release();
-		delete map;
-		map = nullptr;
+		map.second->Release();
+
+		delete map.second;
 	}
+	maps.clear();
 }
 
 Map* MapManager::GetCurrentMap()
@@ -71,7 +78,12 @@ Map* MapManager::GetCurrentMap()
 	return map;
 }
 
-void MapManager::SetStartPos(sf::Vector2f pos)
+void MapManager::SetStartPos(MAP_TYPE type, sf::Vector2f pos)
 {
-	startPos = pos;
+	startPos[type] = pos;
+}
+
+bool MapManager::GetIsDebugMode()
+{
+	return isDebugMode;
 }

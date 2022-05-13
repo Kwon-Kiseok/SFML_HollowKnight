@@ -30,7 +30,7 @@ KingsPass_Map::KingsPass_Map(Player* player_)
 	kpToCR = new Portal();
 	kpToCR->SetCurrMap(MAP_TYPE::KingsPass);
 	kpToCR->SetNextMap(MAP_TYPE::CrossRoad, Vector2f(50.f, 300.f));
-	// Æ÷Áö¼Ç
+	kpToCR->SetType(PORTAL_TYPE::AUTO);
 	kpToCR->SetPosition(Vector2f(6757.f, -316.f));
 
 	portals.push_back(kpToCR);

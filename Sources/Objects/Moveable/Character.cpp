@@ -29,6 +29,7 @@ Character::Character()
 	isDetect = false;
 	lodingTime = 2.f;
 	shield = 0;
+	isLoading = true;
 }
 
 Character::~Character()
@@ -153,4 +154,14 @@ RectangleShape Character::GetRectangleShape()
 
 void Character::SetIsDetect(bool is)
 {
+}
+
+bool Character::GetIsLoading()
+{
+	return isLoading;
+}
+
+void Character::SetIsLoading(bool is)
+{
+	isLoading = is;
 }

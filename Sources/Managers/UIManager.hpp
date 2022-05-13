@@ -6,6 +6,7 @@
 #include <vector>
 #include "../Items/Coin.hpp"
 #include "../Player/Player.hpp"
+#include "../UI/PauseUI.hpp"
 
 using namespace sf;
 
@@ -51,11 +52,16 @@ private:
 	Texture textureBack;
 	Sprite spriteBack;
 
-
+	// 맵
 	bool mapVisible = false;
 	InventoryScene inventory;
 
+	// 일시정지
+	PauseUI pauseUI;
+	bool isPauseMenu = false;
+
 public:
+	virtual ~UIManager() override;
 	void Init();
 	void Update(float dt);
 	void Render(sf::RenderWindow& window);
@@ -79,8 +85,15 @@ public:
 	void SetMapVisible(bool map);
 	bool GetMapVisible();
 	
-
 	bool GetMapIsOpen();
 	bool GetInventoryIsOpen();
+	bool GetIsPause();
+	void SetIsPause(bool is);
+
+	// 일시정지 UI
+	void Init_Pause();
+	void Update_Pause(float dt);
+	void Render_Pause(sf::RenderWindow& window);
+	void Release_Pause();
 };
 

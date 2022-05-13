@@ -34,6 +34,8 @@ protected:
 	RectangleShape detectShape;	// 추격 박스
 	bool isDetect;				// 추격 판단
 	float lodingTime;			// 로딩 시간
+	bool isLoading;				// 로딩 중인지
+
 public:
 	bool canMove;			// 움직일 수 있는 상태인지
 	bool canJump;			// 점프할 수 있는 상태인지
@@ -78,5 +80,8 @@ public:
 	virtual RectangleShape GetDetectShape();
 	virtual RectangleShape GetRectangleShape();
 	virtual void SetIsDetect(bool is);
+
+	virtual bool GetIsLoading();
+	virtual void SetIsLoading(bool is);
 };
 
