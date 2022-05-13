@@ -24,6 +24,13 @@
 
 void Map::Init()
 {
+	for (auto it = characters.begin(); it != characters.end(); ++it)
+	{
+		if ((*it)->CompareTag(TAG::PLAYER))
+		{
+			return;
+		}
+	}
 	characters.push_back(player);
 }
 
@@ -51,6 +58,7 @@ void Map::Update(float dt)
 
 	PlayerDataManager::GetInstance().UpdatePlayerData(*player);
 	ViewManager::GetInstance().TracePlayer(*player, maps_min_size, maps_max_size);
+
 }
 
 void Map::Render(sf::RenderWindow& window)
@@ -124,7 +132,6 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
-			player->Collision(*it);
 
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
@@ -146,6 +153,7 @@ void Map::CheckCollisions(float dt)
 			}
 		}		
 	}
+
 
 	for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
 	{
@@ -241,7 +249,7 @@ void Map::CheckCollisions(float dt)
 				// 위키를 눌러서 다음 맵 이동
 				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
 					(*it)->SetInteractable(true);
-				if((*it)->IsInteractable())
+				if ((*it)->IsInteractable())
 					(*it)->Interaction(*player);
 				return;
 			}

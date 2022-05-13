@@ -39,10 +39,17 @@ void Portal::SetNextMap(MAP_TYPE next, Vector2f pos)
 	spawnPos = pos;
 }
 
+void Portal::SetType(PORTAL_TYPE type)
+{
+	portalType = type;
+}
+
 void Portal::Interaction(Player& player)
 {
-	MapManager::GetInstance().SetStartPos(spawnPos);
+	MapManager::GetInstance().SetStartPos(nextMap, spawnPos);
 	MapManager::GetInstance().LoadMap(nextMap);
+	if(portalType == PORTAL_TYPE::MANUAL)
+		interactable = false;
 }
 
 void Portal::Render(RenderWindow& window)

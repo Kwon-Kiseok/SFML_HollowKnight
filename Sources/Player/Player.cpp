@@ -28,7 +28,6 @@ void Player::Init()
 	SetTag(TAG::PLAYER);
 	SetName("Hero");
 	sprite.setPosition(position);
-	//sprite.setOrigin(31, 0);
 	// Animator 초기화
 	animation.SetTarget(&sprite);
 
@@ -317,7 +316,6 @@ void Player::Update(float dt)
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::G))
 	{
 		++coin;
-		//	std::cout << coin << ", " << PlayerDataManager::GetInstance().GetPlayerCoin() << std::endl;
 	}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::L) && (health > 0))	//L: Life����
@@ -461,58 +459,10 @@ void Player::OnGround(FloatRect map)
 	}
 }
 
-//void Player::OnGround(FloatRect map)
-//{
-//	if (hitBox.getGlobalBounds().intersects(map))
-//	{
-//		if (!canJump)
-//		{
-//			animation.Play(string);
-//		}
-//		gravity = 0.f;
-//		position.y = positionTemp.y;
-//		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
-//		{
-//			position.y -= 10.f;
-//		}
-//		canJump = true;
-//		isFalling = false;
-//	}
-//	if (hitBoxSide.getGlobalBounds().intersects(map))
-//	{
-//		isMove = 0;
-//		if (position.x < map.left)
-//		{
-//			if (InputManager::GetInstance().GetKeyDown(Keyboard::Left))
-//			{
-//				position.x -= 2.f;
-//			}
-//		}
-//		else if (position.x > map.width)
-//		{
-//			if (InputManager::GetInstance().GetKeyDown(Keyboard::Right))
-//			{
-//				position.x += 2.f;
-//			}
-//		}
-//
-//		if (isDash)
-//		{
-//			isDash = false;
-//			animation.PlayQueue(string);
-//		}
-//	}
-//}
-
 void Player::SetXpos()
 {
 	position.x = positionTemp.x;
 }
-
-//Vector2f Player::GetPosition()
-//{
-//	return position;
-//}
 
 const RectangleShape Player::GetAttackBox()
 {
