@@ -149,6 +149,19 @@ void Map::CheckCollisions(float dt)
 			}
 			if ((*it)->CompareTag(TAG::COIN))
 			{
+				for (std::vector<Collider*>::iterator collider_it = colliders.begin(); collider_it != colliders.end(); ++collider_it)
+				{
+					if ((*it)->CheckCollision(*collider_it))
+					{
+						if ((*collider_it)->CompareTag(TAG::COLLIDER))
+						{
+							std::cout << player->GetName() << "Collision Coin" << std::endl;
+							//	(*it)->Player::UpdateCollision((*collider_it)->GetShape().getGlobalBounds());
+						}
+					}
+				}
+			}
+		}
 				player->AddCoin(1);
 				
 				// 삭제
@@ -187,13 +200,10 @@ void Map::CheckCollisions(float dt)
 	{
 		if (*it == nullptr) continue;
 
-		if (player->CheckCollision(*it))
+		// 플레이어와 몬스터가 충돌했을 경우
+		if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetRectangleShape().getGlobalBounds().intersects(player->GetHitBox().getGlobalBounds()))
 		{
-			player->Collision(*it);
-			//player->GetHitBox().getGlobalBounds().intersects((*it)->GetSprite().getGlobalBounds());
-
-			// 플레이어와 몬스터가 충돌했을 경우
-			if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetIsAlivve())
+			if ((*it)->GetIsAlivve())
 			{
 				player->SetHP(dt);
 			}
@@ -208,6 +218,7 @@ void Map::CheckCollisions(float dt)
 			player->UpdateCollision();
 			player->SetIsAttackBox(false);
 			(*it)->SetHealth(-1);
+			(*it)->SetShield(-1);
 
 			Coin* coin = new Coin((*it)->GetPosition());
 			//std::cout << coin->GetName() << std::endl;
@@ -433,7 +444,7 @@ void Map::AddObject(MapData& data)
 void Map::LoadCollision(MapData& data)
 {
 	this->collider = new Collider(Vector2f(data.size_x, data.size_y), Vector2f(data.x, data.y));
-	if(nullptr != collider)
+	if (nullptr != collider)
 		colliders.push_back(collider);
 }
 

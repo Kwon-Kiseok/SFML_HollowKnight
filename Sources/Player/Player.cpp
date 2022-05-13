@@ -158,11 +158,11 @@ void Player::Update(float dt)
 				{
 					if (!isWay)
 					{
-						position.x -= 0.2f;
+						position.x -= 0.4f;
 					}
 					if (isWay)
 					{
-						position.x += 0.2f;
+						position.x += 0.4f;
 					}
 				}
 				else
