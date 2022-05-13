@@ -59,11 +59,10 @@ private:
 public:
 	Player();
 	virtual void Init() override;
-
-	void UpdateInput();
 	virtual void Update(float dt) override;
 	virtual void Render(RenderWindow& window) override;
 	virtual void Release() override;
+
 	int GetHP();
 	int GetMP();
 	int GetCoin();

@@ -14,11 +14,11 @@ Vengefly::Vengefly()
 
 Vengefly::Vengefly(int xdir)
 {
-	if (xdir > 0)				// Ã³À½¿¡ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
+	if (xdir > 0)				// ì²˜ìŒì— ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™
 	{
 		xDir = 1;
 	}
-	else if (xdir < 0)			// Ã³À½¿¡ ¿ÞÂÊÀ¸·Î ÀÌµ¿
+	else if (xdir < 0)			// ì²˜ìŒì— ì™¼ìª½ìœ¼ë¡œ ì´ë™
 	{
 		xDir = -1;
 	}
@@ -33,8 +33,7 @@ void Vengefly::Init()
 	SetTag(TAG::MONSTER);
 	SetName("Vengefly");
 	moveSpeed = 100.f;
-	//sprite.setOrigin(60, 60);
-	// Animator ÃÊ±âÈ­
+	SetLayer(5);
 	animation.SetTarget(&sprite);
 
 	rectangleShape.setSize(Vector2f(110, 55));
@@ -149,8 +148,12 @@ void Vengefly::Update(float dt, Vector2f playerPos)
 void Vengefly::Render(RenderWindow& window)
 {
 	window.draw(sprite);
-	window.draw(rectangleShape);
-	window.draw(detectShape);
+
+	if (MapManager::GetInstance().GetIsDebugMode())
+	{
+		window.draw(rectangleShape);
+		window.draw(detectShape);
+	}
 }
 
 void Vengefly::Release()

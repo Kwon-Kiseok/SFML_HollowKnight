@@ -24,6 +24,13 @@
 
 void Map::Init()
 {
+	for (auto it = characters.begin(); it != characters.end(); ++it)
+	{
+		if ((*it)->CompareTag(TAG::PLAYER))
+		{
+			return;
+		}
+	}
 	characters.push_back(player);
 }
 
@@ -52,12 +59,14 @@ void Map::Update(float dt)
 
 	PlayerDataManager::GetInstance().UpdatePlayerData(*player);
 	ViewManager::GetInstance().TracePlayer(*player, maps_min_size, maps_max_size);
+
 }
 
 void Map::Render(sf::RenderWindow& window)
 {
 
-	for (int i = 10; i >= 0; --i)
+
+	for (int i = MAX_LAYER; i >= MIN_LAYER; --i)
 	{
 		for (auto it = stableObjects.begin(); it != stableObjects.end(); ++it)
 		{
@@ -66,16 +75,21 @@ void Map::Render(sf::RenderWindow& window)
 				(*it)->Render(window);
 			}
 
-			window.draw((*it)->GetRectangleShape());
+			if (MapManager::GetInstance().GetIsDebugMode())
+			{
+				window.draw((*it)->GetRectangleShape());
+			}
+		}
+		for (auto it = characters.begin(); it != characters.end(); ++it)
+		{
+			if ((*it)->GetLayer() == i)
+			{
+				(*it)->Render(window);
+			}
 		}
 	}
 
 	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
-	{
-		(*it)->Render(window);
-	}
-
-	for (auto it = characters.begin(); it != characters.end(); ++it)
 	{
 		(*it)->Render(window);
 	}
@@ -85,9 +99,12 @@ void Map::Render(sf::RenderWindow& window)
 		(*it)->Render(window);
 	}
 
-	for (auto it = colliders.begin(); it != colliders.end(); ++it)
+	if (MapManager::GetInstance().GetIsDebugMode())
 	{
-		(*it)->Render(window);
+		for (auto it = colliders.begin(); it != colliders.end(); ++it)
+		{
+			(*it)->Render(window);
+		}
 	}
 
 }
@@ -125,7 +142,6 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
-			player->Collision(*it);
 
 			if ((*it)->CompareTag(TAG::MONSTER))
 			{
@@ -152,6 +168,7 @@ void Map::CheckCollisions(float dt)
 			}
 		}
 	}
+
 
 	for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
 	{
@@ -251,7 +268,7 @@ void Map::CheckCollisions(float dt)
 				// 위키를 눌러서 다음 맵 이동
 				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
 					(*it)->SetInteractable(true);
-				if((*it)->IsInteractable())
+				if ((*it)->IsInteractable())
 					(*it)->Interaction(*player);
 				return;
 			}

@@ -28,7 +28,7 @@ void Player::Init()
 	SetTag(TAG::PLAYER);
 	SetName("Hero");
 	sprite.setPosition(position);
-	//sprite.setOrigin(31, 0);
+	SetLayer(5);
 	// Animator 초기화
 	animation.SetTarget(&sprite);
 
@@ -199,24 +199,26 @@ void Player::Update(float dt)
 			}
 		}
 
-
-		if (move == 0 && h != 0)
+		if (canJump)
 		{
-			animation.Play("StartMove");
-			animation.PlayQueue("Move");
-			string = "Move";
-			//
-			SoundManager::GetInstance().PlaySound(L"walk");
+			if (move == 0 && h != 0)
+			{
+				animation.Play("StartMove");
+				animation.PlayQueue("Move");
+				string = "Move";
+				//
+				SoundManager::GetInstance().PlaySound(L"walk");
+			}
+			if (move != 0 && h == 0)
+			{
+				animation.Play("RunToIdle");
+				animation.PlayQueue("Idle");
+				string = "Idle";
+				SetDirection(Direction::NONE);
+				SoundManager::GetInstance().GetSoundbyID(L"walk").stop();
+			}
+			move = h;
 		}
-		if (move != 0 && h == 0)
-		{
-			animation.Play("RunToIdle");
-			animation.PlayQueue("Idle");
-			string = "Idle";
-			SetDirection(Direction::NONE);
-			SoundManager::GetInstance().GetSoundbyID(L"walk").stop();
-		}
-		move = h;
 	}
 	/**********************************
 	* 중력 및 점프
@@ -314,11 +316,6 @@ void Player::Update(float dt)
 			hitAttack = false;
 		}
 	}
-	//if (InputManager::GetInstance().GetKeyDown(Keyboard::G))
-	//{
-	//	++coin;
-	//	//	std::cout << coin << ", " << PlayerDataManager::GetInstance().GetPlayerCoin() << std::endl;
-	//}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::L) && (health > 0))	//L: Life����
 	{
@@ -344,13 +341,17 @@ void Player::Update(float dt)
 
 void Player::Render(RenderWindow& window)
 {
-	if (isAttack)
-	{
-		window.draw(attackBox);
-	}
 	window.draw(sprite);
-	window.draw(hitBox);
-	window.draw(hitBoxSide);
+
+	if (MapManager::GetInstance().GetIsDebugMode())
+	{
+		if (isAttack)
+		{
+			window.draw(attackBox);
+		}
+		window.draw(hitBox);
+		window.draw(hitBoxSide);
+	}
 	effect.Draw(window);		// Slash
 }
 
@@ -461,58 +462,10 @@ void Player::OnGround(FloatRect map)
 	}
 }
 
-//void Player::OnGround(FloatRect map)
-//{
-//	if (hitBox.getGlobalBounds().intersects(map))
-//	{
-//		if (!canJump)
-//		{
-//			animation.Play(string);
-//		}
-//		gravity = 0.f;
-//		position.y = positionTemp.y;
-//		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z))
-//		{
-//			position.y -= 10.f;
-//		}
-//		canJump = true;
-//		isFalling = false;
-//	}
-//	if (hitBoxSide.getGlobalBounds().intersects(map))
-//	{
-//		isMove = 0;
-//		if (position.x < map.left)
-//		{
-//			if (InputManager::GetInstance().GetKeyDown(Keyboard::Left))
-//			{
-//				position.x -= 2.f;
-//			}
-//		}
-//		else if (position.x > map.width)
-//		{
-//			if (InputManager::GetInstance().GetKeyDown(Keyboard::Right))
-//			{
-//				position.x += 2.f;
-//			}
-//		}
-//
-//		if (isDash)
-//		{
-//			isDash = false;
-//			animation.PlayQueue(string);
-//		}
-//	}
-//}
-
 void Player::SetXpos()
 {
 	position.x = positionTemp.x;
 }
-
-//Vector2f Player::GetPosition()
-//{
-//	return position;
-//}
 
 const RectangleShape Player::GetAttackBox()
 {

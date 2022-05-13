@@ -1,6 +1,6 @@
 #include "button.hpp"
 #include "../Managers/InputManager.hpp"
-
+#include "../Animation/rapidcsv.hpp"
 #include <iostream>
 
 button::button()
@@ -22,9 +22,14 @@ button::button(string text, Vector2f pos, Vector2f size)
 	this->text.setString(text);
 	this->text.setPosition(buttonShape.getPosition());
 	this->text.setOrigin(buttonShape.getOrigin());
-	this->text.setFillColor(Color::Black);
+	this->text.setFillColor(Color::White);
 	this->text.setFont(font);
 	this->text.setCharacterSize(20.f);
+
+	spriteButton.setPosition(pos);
+	animContoller.SetTarget(&spriteButton);
+	SetAnimation();
+	animContoller.SetSpeed(3.f);
 }
 
 button::~button()
@@ -61,6 +66,34 @@ void button::update()
 	}
 }
 
+void button::update(float dt)
+{
+	Vector2i mousePosition = InputManager::GetInstance().GetMousePosition();
+
+	bool mouseInButton = mousePosition.x >= buttonShape.getPosition().x - buttonShape.getGlobalBounds().width / 2
+		&& mousePosition.x <= buttonShape.getPosition().x + buttonShape.getGlobalBounds().width / 2
+		&& mousePosition.y >= buttonShape.getPosition().y - buttonShape.getGlobalBounds().height / 2
+		&& mousePosition.y <= buttonShape.getPosition().y + buttonShape.getGlobalBounds().height / 2;
+
+	Click(mouseInButton);
+
+	switch (state)
+	{
+	case Button_state::clicked:
+		break;
+	case Button_state::hovered:
+		if(!animContoller.IsPlaying())
+			animContoller.PlayQueue("Btn_flash");
+		break;
+	case Button_state::normal:
+		animContoller.Stop();
+		animContoller.ClearPlayQueue();
+		break;
+	}
+
+	animContoller.Update(dt);
+}
+
 void button::Click(bool isHovered)
 {
 	if (isHovered)
@@ -88,7 +121,9 @@ void button::Click(bool isHovered)
 
 void button::draw(RenderWindow& window)
 {
-	window.draw(buttonShape);
+	//window.draw(buttonShape);
+	if(animContoller.IsPlaying())
+		window.draw(spriteButton);
 	window.draw(text);
 }
 
@@ -100,4 +135,46 @@ bool button::IsButtonClicked()
 void button::ResetIsClicked()
 {
 	isClick = false;
+}
+
+void button::SetAnimation()
+{
+	rapidcsv::Document clips("data_tables/animations/ui/button_anim_clips.csv");
+
+	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
+	std::vector<int> colFps = clips.GetColumn<int>("FPS");
+	std::vector<int> colLoop = clips.GetColumn<int>("LOOP TYPE(0:Single, 1:Loop)");
+	std::vector<std::string> colPath = clips.GetColumn<std::string>("CLIP PATH");
+
+	int totalClips = colId.size();
+	for (int i = 0; i < totalClips; ++i)
+	{
+		AnimationClip clip;
+		clip.id = colId[i];
+		clip.fps = colFps[i];
+		clip.loopType = (AnimationLoopTypes)colLoop[i];
+
+		rapidcsv::Document frames(colPath[i]);
+		std::vector<std::string> colTexure = frames.GetColumn<std::string>("TEXTURE PATH");
+		std::vector<int> colL = frames.GetColumn<int>("L");
+		std::vector<int> colT = frames.GetColumn<int>("T");
+		std::vector<int> colW = frames.GetColumn<int>("W");
+		std::vector<int> colH = frames.GetColumn<int>("H");
+
+		std::vector<int> colX = frames.GetColumn<int>("X");
+		std::vector<int> colY = frames.GetColumn<int>("Y");
+
+		int totalFrames = colTexure.size();
+		for (int j = 0; j < totalFrames; ++j)
+		{
+			if (texMap.find(colTexure[j]) == texMap.end())
+			{
+				auto& ref = texMap[colTexure[j]];
+				ref.loadFromFile(colTexure[j]);
+			}
+			clip.frames.push_back(AnimationFrame(texMap[colTexure[j]], IntRect(colL[j], colT[j], colW[j], colH[j]), Vector2f(colX[j], colY[j])));
+		}
+
+		animContoller.AddClip(clip);
+	}
 }

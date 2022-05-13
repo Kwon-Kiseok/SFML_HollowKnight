@@ -1,4 +1,5 @@
 #include "UIManager.hpp"
+#include "../Framework/Game.hpp"
 #include "../Managers/TextureManager.hpp"
 #include "../Managers/ViewManager.hpp"
 #include "../Managers/InputManager.hpp"
@@ -8,6 +9,11 @@
 #include "../Items/Coin.hpp"
 
 #include <sstream>
+
+UIManager::~UIManager()
+{
+	Release();
+}
 
 void UIManager::Init()
 {
@@ -23,6 +29,7 @@ void UIManager::Render(sf::RenderWindow& window)
 
 void UIManager::Release()
 {
+	Release_Pause();
 }
 
 void UIManager::Init_TitleScene()
@@ -105,7 +112,7 @@ void UIManager::Update_TitleScene(float dt)
 		}
 		else if (Cursor_selectY == 900.f)
 		{
-			
+			Game::GetInstance().SetIsGameOver(true);
 		}
 		SoundManager::GetInstance().PlaySound(L"select");
 	}
@@ -135,7 +142,7 @@ void UIManager::Update_TitleScene(float dt)
 
 		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
 		{
-			
+			Game::GetInstance().SetIsGameOver(true);
 		}
 	}
 }
@@ -194,6 +201,7 @@ void UIManager::Init_PlayScene()
 
 	inventory.Init();
 	Init_Map();
+	Init_Pause();
 
 }
 
@@ -205,7 +213,7 @@ void UIManager::Update_PlayScene(float dt)
 
 	inventory.Update(dt);
 	Update_Map(dt);
-
+	Update_Pause(dt);
 }
 
 void UIManager::Render_PlayScene(sf::RenderWindow& window)
@@ -231,6 +239,9 @@ void UIManager::Render_PlayScene(sf::RenderWindow& window)
 
 	if (GetMapVisible() && !inventory.GetVisible())
 		Render_Map(window);
+
+	if (isPauseMenu)
+		Render_Pause(window);
 }
 
 void UIManager::Release_PlayScene()
@@ -292,5 +303,49 @@ bool UIManager::GetMapIsOpen()
 bool UIManager::GetInventoryIsOpen()
 {
 	return inventory.GetVisible();
+}
+
+bool UIManager::GetIsPause()
+{
+	return isPauseMenu;
+}
+
+void UIManager::SetIsPause(bool is)
+{
+	isPauseMenu = is;
+}
+
+void UIManager::Init_Pause()
+{
+	pauseUI.Init();
+}
+
+void UIManager::Update_Pause(float dt)
+{
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::Escape))
+	{
+		isPauseMenu = !isPauseMenu;
+		pauseUI.GetAnim().Play("Top_fleur");
+	}
+
+	if (isPauseMenu)
+	{
+		pauseUI.Update(dt);
+	}
+}
+
+void UIManager::Render_Pause(sf::RenderWindow& window)
+{
+	window.draw(spriteBack);
+
+	if (isPauseMenu)
+	{
+		pauseUI.Render(window);
+	}
+}
+
+void UIManager::Release_Pause()
+{
+	pauseUI.Release();
 }
 

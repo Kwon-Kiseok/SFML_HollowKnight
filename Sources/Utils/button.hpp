@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../Animation/AnimationController.hpp"
 
 using namespace std;
 using namespace sf;
@@ -20,6 +21,9 @@ private:
 	Font font;
 	Button_state state;
 
+	AnimationController animContoller;
+	Sprite spriteButton;
+	std::map<std::string, Texture> texMap;
 	bool isClick;
 public:
 	button();
@@ -28,8 +32,11 @@ public:
 
 	string GetText();
 	void update();
+	void update(float dt);
 	void Click(bool isHovered);
 	void draw(RenderWindow& window);
 	bool IsButtonClicked();
 	void ResetIsClicked();
+
+	void SetAnimation();
 };

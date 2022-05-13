@@ -32,8 +32,7 @@ void Crawlid::Init()
 	SetTag(TAG::MONSTER);
 	SetName("Crawlid");
 	moveSpeed = 100.f;
-	//sprite.setOrigin(60, 60);
-	// Animator 초기화
+	SetLayer(5);
 	animation.SetTarget(&sprite);
 
 	rectangleShape.setSize(Vector2f(110, 55));
@@ -145,9 +144,10 @@ void Crawlid::Update(float dt, Vector2f player)
 void Crawlid::Render(RenderWindow& window)
 {
 	window.draw(sprite);
-	window.draw(rectangleShape);
-	//window.draw(gavityShape);
-	//window.draw(sideShape);
+	if (MapManager::GetInstance().GetIsDebugMode())
+	{
+		window.draw(rectangleShape);
+	}
 }
 
 void Crawlid::Release()
