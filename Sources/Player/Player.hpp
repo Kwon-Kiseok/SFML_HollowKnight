@@ -17,6 +17,7 @@ private:
 	bool isWay;									// true면 왼쪽을 바라보는 상황 (필요함)
 	bool isDash;								// 필요함
 	bool canDash = false;						// 공중에서 대쉬 한번만 할 수 있게
+	float dashDelay = 1.f;
 
 	//int hp;										// 체력
 	int mp;										// 기력?
@@ -41,7 +42,7 @@ private:
 
 	float gravity;								// 중력가속도 처리
 	Vector2f positionTemp;						// 전 프레임 포지션
-	float jumpTime;								// 점프 누를 수 있는 시간 ?? 어뜨케 쓰징
+	float jumpTime;								// 점프 누를 수 있는 시간
 
 	float move;									// 전 프레임의 좌우 이동 방향 값 저장
 
