@@ -38,6 +38,10 @@ protected:
 	Player* player;
 	Stable* object;
 	Collider* collider;
+
+	Vector2f maps_min_size;
+	Vector2f maps_max_size;
+
 public:
 	Map(Player* player_) : player(player_) {}
 	virtual ~Map() {}
@@ -52,5 +56,8 @@ public:
 	virtual void LoadMap(std::string dataFilepath);
 	virtual void AddObject(MapData& data);
 	virtual void LoadCollision(MapData& data);
+
+	Vector2f& GetMapsMinSize();
+	Vector2f& GetMapsMaxSize();
 };
 

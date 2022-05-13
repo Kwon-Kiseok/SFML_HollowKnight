@@ -50,7 +50,7 @@ void Map::Update(float dt)
 	}
 
 	PlayerDataManager::GetInstance().UpdatePlayerData(*player);
-	ViewManager::GetInstance().GetMainView().setCenter(player->GetPosition());
+	ViewManager::GetInstance().TracePlayer(*player, maps_min_size, maps_max_size);
 }
 
 void Map::Render(sf::RenderWindow& window)
@@ -408,5 +408,15 @@ void Map::LoadCollision(MapData& data)
 	this->collider = new Collider(Vector2f(data.size_x, data.size_y), Vector2f(data.x, data.y));
 	if(nullptr != collider)
 		colliders.push_back(collider);
+}
+
+Vector2f& Map::GetMapsMinSize()
+{
+	return maps_min_size;
+}
+
+Vector2f& Map::GetMapsMaxSize()
+{
+	return maps_max_size;
 }
 

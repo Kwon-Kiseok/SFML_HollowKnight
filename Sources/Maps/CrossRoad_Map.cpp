@@ -6,6 +6,9 @@ CrossRoad_Map::CrossRoad_Map(Player* player_)
 {
 	LoadMap("data_tables/maps/CrossRoad_map_data.csv");
 
+	maps_min_size = Vector2f(0.f, 0.f);
+	maps_max_size = Vector2f(5000.f, 2500.f);
+
 	//
 	crToBR = new Portal();
 	crToBR->SetCurrMap(MAP_TYPE::CrossRoad);
