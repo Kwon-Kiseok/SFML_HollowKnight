@@ -314,11 +314,11 @@ void Player::Update(float dt)
 			hitAttack = false;
 		}
 	}
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::G))
-	{
-		++coin;
-		//	std::cout << coin << ", " << PlayerDataManager::GetInstance().GetPlayerCoin() << std::endl;
-	}
+	//if (InputManager::GetInstance().GetKeyDown(Keyboard::G))
+	//{
+	//	++coin;
+	//	//	std::cout << coin << ", " << PlayerDataManager::GetInstance().GetPlayerCoin() << std::endl;
+	//}
 
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::L) && (health > 0))	//L: Life����
 	{
@@ -552,6 +552,7 @@ void Player::SetCurrentMap(MAP_TYPE type)
 {
 	currMap = type;
 }
+
 bool Player::UpdateCollision(const std::list<Coin*> coins)
 {
 	FloatRect bounds = sprite.getGlobalBounds();

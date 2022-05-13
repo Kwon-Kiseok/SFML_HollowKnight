@@ -6,12 +6,15 @@
 Coin::Coin(Vector2f pos)
 {
 	position = pos;
+	Init();
+	Update(5);
 }
 
 void Coin::Init()
 {
 	SetTag(TAG::COIN);
-	texture = TextureManager::GetInstance().GetTexture("Resourcese/Sprite/UI/HUD_coin_shop.png");
+	SetName("coin");
+	texture = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/HUD_coin_v020004_.png");
 	sprite.setTexture(texture);
 	sprite.setOrigin(sprite.getGlobalBounds().width * 0.5f, sprite.getGlobalBounds().height);
 	sprite.setPosition(position);
@@ -19,15 +22,20 @@ void Coin::Init()
 
 void Coin::Update(float dt)
 {
-	//if (isFalling)
-	//{
-	//	fallingSpeed += GRAVITY * dt;
-	//	if (fallingSpeed > 3000.f)
-	//	{
-	//		fallingSpeed = 3000.f;
-	//	}
-	//	PositionCoin.y = fallingSpeed * dt;
-	//}
+	if (isFalling)
+	{
+		fallingSpeed += GRAVITY * dt;
+		if (fallingSpeed > 3000.f)
+		{
+			fallingSpeed = 3000.f;
+		}
+		PositionCoin.y = fallingSpeed * dt;
+	}
+}
+
+void Coin::Render(RenderWindow& window)
+{
+	window.draw(sprite);
 }
 
 void Coin::OnGround()

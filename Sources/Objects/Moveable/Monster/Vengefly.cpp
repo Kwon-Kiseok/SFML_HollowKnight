@@ -91,15 +91,6 @@ void Vengefly::Init()
 	animation.Play("Idle");
 
 	sprite.setScale(-xDir, 1);
-
-	textureDroppedCoin = new Texture[3];
-	spriteDroppedCoin = new Sprite[3];
-	for (int i = 0; i < 3; i++)
-	{
-		textureDroppedCoin[i] = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/HUD_coin_v020004_.png");
-		spriteDroppedCoin[i].setTexture(textureDroppedCoin[i]);
-		spriteDroppedCoin[i].setOrigin(sprite.getGlobalBounds().width * 0.5f, sprite.getGlobalBounds().height + 40.f);
-	}
 }
 
 void Vengefly::Update(float dt, Vector2f playerPos)
@@ -152,14 +143,6 @@ void Vengefly::Update(float dt, Vector2f playerPos)
 	detectShape.setPosition(position);
 	// animation
 	animation.Update(dt);
-
-	if (!isAlive)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			spriteDroppedCoin[i].setPosition(position);
-		}
-	}
 }
 
 void Vengefly::Render(RenderWindow& window)
@@ -167,11 +150,6 @@ void Vengefly::Render(RenderWindow& window)
 	window.draw(sprite);
 	window.draw(rectangleShape);
 	window.draw(detectShape);
-
-	for (int i = 0; i < 3; i++)
-	{
-		window.draw(spriteDroppedCoin[i]);
-	}
 }
 
 void Vengefly::Release()
