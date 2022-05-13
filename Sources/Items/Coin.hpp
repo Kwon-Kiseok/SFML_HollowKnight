@@ -6,7 +6,6 @@
 
 class Coin : public Item
 {
-// 그려주는거랑 중력받는거
 private:
 	bool pickCoin;
 	bool spawned;
@@ -21,12 +20,12 @@ private:
 	bool isCollideCoin;
 	Vector2f PositionCoin;
 
-
 public:
 	Coin() {}
 	Coin(Vector2f pos);
 	void Init();
 	void Update(float dt);
+	void Render(RenderWindow& window);
 	void OnGround();
 
 	int PickUp();
