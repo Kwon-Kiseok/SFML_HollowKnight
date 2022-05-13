@@ -14,11 +14,11 @@ Vengefly::Vengefly()
 
 Vengefly::Vengefly(int xdir)
 {
-	if (xdir > 0)				// Ã³À½¿¡ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
+	if (xdir > 0)				// ì²˜ìŒì— ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™
 	{
 		xDir = 1;
 	}
-	else if (xdir < 0)			// Ã³À½¿¡ ¿ŞÂÊÀ¸·Î ÀÌµ¿
+	else if (xdir < 0)			// ì²˜ìŒì— ì™¼ìª½ìœ¼ë¡œ ì´ë™
 	{
 		xDir = -1;
 	}
@@ -31,6 +31,7 @@ void Vengefly::Init()
 {
 	SetName("vengefly");
 	SetTag(TAG::MONSTER);
+	SetName("Vengefly");
 	moveSpeed = 100.f;
 	SetLayer(5);
 	animation.SetTarget(&sprite);
@@ -49,7 +50,7 @@ void Vengefly::Init()
 	detectShape.setOutlineColor(Color::Blue);
 	detectShape.setOutlineThickness(2);
 
-	rapidcsv::Document clips("data_tables/animations/crawlid/crawlid_animation_clips.csv");
+	rapidcsv::Document clips("data_tables/animations/vengefly/vengefly_animation_clips.csv");
 
 	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
 	std::vector<int> colFps = clips.GetColumn<int>("FPS");
@@ -77,7 +78,7 @@ void Vengefly::Init()
 		int totalFrames = colTexure.size();
 		for (int j = 0; j < totalFrames; ++j)
 		{
-			if (texMap.find(colTexure[i]) == texMap.end())
+			if (texMap.find(colTexure[j]) == texMap.end())
 			{
 				auto& ref = texMap[colTexure[j]];
 				ref.loadFromFile(colTexure[j]);
@@ -90,15 +91,6 @@ void Vengefly::Init()
 	animation.Play("Idle");
 
 	sprite.setScale(-xDir, 1);
-
-	textureDroppedCoin = new Texture[3];
-	spriteDroppedCoin = new Sprite[3];
-	for (int i = 0; i < 3; i++)
-	{
-		textureDroppedCoin[i] = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/HUD_coin_v020004_.png");
-		spriteDroppedCoin[i].setTexture(textureDroppedCoin[i]);
-		spriteDroppedCoin[i].setOrigin(sprite.getGlobalBounds().width * 0.5f, sprite.getGlobalBounds().height + 40.f);
-	}
 }
 
 void Vengefly::Update(float dt, Vector2f playerPos)
@@ -151,14 +143,6 @@ void Vengefly::Update(float dt, Vector2f playerPos)
 	detectShape.setPosition(position);
 	// animation
 	animation.Update(dt);
-
-	if (!isAlive)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			spriteDroppedCoin[i].setPosition(position);
-		}
-	}
 }
 
 void Vengefly::Render(RenderWindow& window)

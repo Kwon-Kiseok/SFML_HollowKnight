@@ -97,16 +97,7 @@ void Crawlid::Init()
 	animation.Play("Idle");
 
 	sprite.setScale(-xDir, 1);
-
-	textureDroppedCoin = new Texture[3];
-	spriteDroppedCoin = new Sprite[3];
-	for (int i = 0; i < 3; i++)
-	{
-		textureDroppedCoin[i] = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/HUD_coin_v020004_.png");
-		spriteDroppedCoin[i].setTexture(textureDroppedCoin[i]);
-		spriteDroppedCoin[i].setOrigin(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height + 40.f);
-
-	}
+	animation.Play("Turn");
 }
 
 void Crawlid::Update(float dt, Vector2f player)
@@ -148,14 +139,6 @@ void Crawlid::Update(float dt, Vector2f player)
 	sideShape.setPosition(position);
 	// animation
 	animation.Update(dt);
-
-	if (!isAlive)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			spriteDroppedCoin[i].setPosition(position);
-		}
-	}
 }
 
 void Crawlid::Render(RenderWindow& window)

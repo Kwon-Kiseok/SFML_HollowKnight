@@ -39,6 +39,7 @@ void Map::Update(float dt)
 	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
 	{
 		(*it)->Update(dt);
+		
 	}
 
 	for (auto it = characters.begin(); it != characters.end(); ++it)
@@ -148,19 +149,24 @@ void Map::CheckCollisions(float dt)
 			}
 			if ((*it)->CompareTag(TAG::COIN))
 			{
-				for (std::vector<Collider*>::iterator collider_it = colliders.begin(); collider_it != colliders.end(); ++collider_it)
-				{
-					if ((*it)->CheckCollision(*collider_it))
-					{
-						if ((*collider_it)->CompareTag(TAG::COLLIDER))
-						{
-							std::cout << player->GetName() << "Collision Coin" << std::endl;
-						//	(*it)->Player::UpdateCollision((*collider_it)->GetShape().getGlobalBounds());
-						}
-					}
-				}
+				player->AddCoin(1);
+				
+				// 삭제
+				it = gameObjects.erase(it);
+				break;
 			}
-		}		
+		}
+
+		if((*it)->CompareTag(TAG::COIN))
+		{
+			for (std::vector<Collider*>::iterator col_it = colliders.begin(); col_it != colliders.end(); ++col_it)
+			{
+				if (*col_it == nullptr) continue;
+
+				// 코인이랑 땅이랑 부딪힌 경우
+				(*it)->Collision(*col_it);
+			}
+		}
 	}
 
 
@@ -202,6 +208,10 @@ void Map::CheckCollisions(float dt)
 			player->UpdateCollision();
 			player->SetIsAttackBox(false);
 			(*it)->SetHealth(-1);
+
+			Coin* coin = new Coin((*it)->GetPosition());
+			//std::cout << coin->GetName() << std::endl;
+			gameObjects.push_back(coin);
 		}
 
 		if ((*it)->CompareTag(TAG::MONSTER))
