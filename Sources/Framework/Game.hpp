@@ -19,5 +19,6 @@ public:
 
 	bool GetIsGameOver();
 	void SetIsGameOver(bool is);
+	sf::RenderWindow& GetWindow();
 };
 

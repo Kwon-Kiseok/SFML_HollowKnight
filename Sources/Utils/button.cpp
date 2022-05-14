@@ -1,6 +1,8 @@
 #include "button.hpp"
 #include "../Managers/InputManager.hpp"
 #include "../Managers/SoundManager.hpp"
+#include "../Managers/TextureManager.hpp"
+#include "../Managers/SceneManager.hpp"
 #include "../Animation/rapidcsv.hpp"
 #include <iostream>
 
@@ -21,16 +23,37 @@ button::button(string text, Vector2f pos, Vector2f size)
 
 	font.loadFromFile("Resources/Fonts/CALIST.TTF");
 	this->text.setString(text);
-	this->text.setCharacterSize(30.f);
-	this->text.setStyle(Text::Bold);
-	this->text.setFillColor(Color::White);
+	this->text.setCharacterSize(20.f);
+	this->text.setFillColor(Color::Black);
 	this->text.setFont(font);
-	this->text.setPosition((pos.x - this->text.getLocalBounds().width / 2), (pos.y - this->text.getLocalBounds().height));
+	this->text.setPosition(Vector2f(position.x - this->text.getLocalBounds().width/2, position.y - this->text.getLocalBounds().height));
 
-	spriteButton.setPosition(pos);
-	animContoller.SetTarget(&spriteButton);
-	SetAnimation();
-	animContoller.SetSpeed(3.f);
+	if (SceneManager::GetInstance().GetScenes().find(L"Editor")->second != SceneManager::GetInstance().GetCurrent())
+	{
+		this->text.setCharacterSize(30.f);
+		this->text.setStyle(Text::Bold);
+		this->text.setFillColor(Color::White);
+		this->text.setPosition((pos.x - this->text.getLocalBounds().width / 2), (pos.y - this->text.getLocalBounds().height));
+
+		textureCursor = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/main_menu_pointer.png");
+		spriteCursor_L.setTexture(textureCursor);
+		spriteCursor_R.setTexture(textureCursor);
+		spriteCursor_L.setScale(-1.f, 1.f);
+
+		float offsetCursor = 20.f;
+		float leftCursor_x = this->text.getPosition().x;
+		float Cursor_y = this->text.getPosition().y - this->text.getLocalBounds().height / 2.f;
+
+		spriteCursor_L.setPosition(leftCursor_x - offsetCursor, Cursor_y);
+		spriteCursor_R.setPosition(leftCursor_x + this->text.getLocalBounds().width + offsetCursor, Cursor_y);
+
+		isSelect = false;
+
+		spriteButton.setPosition(pos);
+		animContoller.SetTarget(&spriteButton);
+		SetAnimation();
+		animContoller.SetSpeed(3.f);
+	}
 }
 
 button::~button()
@@ -81,13 +104,15 @@ void button::update(float dt)
 	switch (state)
 	{
 	case Button_state::clicked:
-		break;
-	case Button_state::hovered:
 		if (!animContoller.IsPlaying())
 		{
 			animContoller.PlayQueue("Btn_flash");
-			SoundManager::GetInstance().PlaySound(L"changeMenu");
+			SoundManager::GetInstance().PlaySound(L"select");
 		}
+		break;
+	case Button_state::hovered:
+		isSelect = true;
+		SoundManager::GetInstance().PlaySound(L"changeMenu");
 		break;
 	case Button_state::normal:
 		animContoller.Stop();
@@ -102,6 +127,7 @@ void button::Click(bool isHovered)
 {
 	if (isHovered)
 	{
+		isSelect = true;
 		if (InputManager::GetInstance().GetMouseButtonDown(Mouse::Left))
 		{
 			state = Button_state::clicked;
@@ -120,14 +146,29 @@ void button::Click(bool isHovered)
 	else
 	{
 		state = Button_state::normal;
+		if (SceneManager::GetInstance().GetScenes().find(L"Editor")->second == SceneManager::GetInstance().GetCurrent())
+		{
+			isSelect = false;
+		}
 	}
 }
 
 void button::draw(RenderWindow& window)
 {
-	//window.draw(buttonShape);
-	if(animContoller.IsPlaying())
-		window.draw(spriteButton);
+	if (SceneManager::GetInstance().GetScenes().find(L"Editor")->second == SceneManager::GetInstance().GetCurrent())
+	{
+		window.draw(buttonShape);
+	}
+	else
+	{
+		if (animContoller.IsPlaying())
+			window.draw(spriteButton);
+		if (isSelect)
+		{
+			window.draw(spriteCursor_L);
+			window.draw(spriteCursor_R);
+		}
+	}
 	window.draw(text);
 }
 
@@ -139,6 +180,21 @@ bool button::IsButtonClicked()
 void button::ResetIsClicked()
 {
 	isClick = false;
+}
+
+bool button::IsButtonSelect()
+{
+	return isSelect;
+}
+
+Button_state& button::GetButtonState()
+{
+	return state;
+}
+
+void button::Select(bool isHovered)
+{
+	isSelect = isHovered;
 }
 
 void button::SetAnimation()

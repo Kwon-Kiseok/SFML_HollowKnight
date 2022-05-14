@@ -12,6 +12,8 @@ class PauseUI
 {
 private:
 	unordered_map<wstring, button*> pauseButtons;
+	wstring currentSelectButtonID;
+
 	AnimationController animContoller;
 	Sprite spritePauseTop;
 	//Texture texture;

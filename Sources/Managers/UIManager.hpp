@@ -15,20 +15,19 @@ using namespace sf;
 class UIManager : public Singleton<UIManager>
 {
 private:
-	float Cursor_selectY = 600.f;
-	
+	Texture textureMouseCursor;
+	Sprite spriteMouseCursor;
+
 	Texture textureBackGround;
 	Sprite spriteBackGround;
 
 	Texture textureTitle;
 	Sprite spriteTitle;
 
-	Texture textureCursor;
-	Sprite spriteCursor;
-
 	Font fontCALIST;
 
 	std::unordered_map<wstring, button*> titleButtons;
+	wstring currentSelectButtonID;
 ////////////////////////////////////////////////
 
 	Texture* textureLifes;

@@ -17,14 +17,18 @@ UIManager::~UIManager()
 
 void UIManager::Init()
 {
+	textureMouseCursor.loadFromFile("Resources/Sprite/UI/Cursor.png");
+	spriteMouseCursor.setTexture(textureMouseCursor);
 }
 
 void UIManager::Update(float dt)
 {
+	spriteMouseCursor.setPosition(static_cast<Vector2f>(InputManager::GetInstance().GetMousePosition()));
 }
 
 void UIManager::Render(sf::RenderWindow& window)
 {
+	window.draw(spriteMouseCursor);
 }
 
 void UIManager::Release()
@@ -48,67 +52,98 @@ void UIManager::Init_TitleScene()
 	spriteTitle.setOrigin(textureTitle.getSize().x/2, textureTitle.getSize().y/2);
 	spriteTitle.setPosition(resolution_x /2, resolution_y /2 - 200.f);
 
-	textureCursor = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/main_menu_pointer.png");
-	spriteCursor.setTexture(textureCursor);
-	spriteCursor.scale(-1.f, 1.f);
-
-	spriteCursor.setPosition(resolution_x/2 - 100.f, Cursor_selectY);
-
 	fontCALIST.loadFromFile("Resources/Fonts/CALIST.ttf");
 
-	titleButtons[L"gameStart"] = new button("Game Start", Vector2f(resolution_x / 2, resolution_y / 2 + 100.f), Vector2f(200.f, 40.f));
-	titleButtons[L"editorMode"] = new button("Editor Mode", Vector2f(resolution_x / 2, resolution_y / 2 + 200.f), Vector2f(200.f, 40.f));
-	titleButtons[L"exit"] = new button("Exit", Vector2f(resolution_x / 2, resolution_y / 2 + 300.f), Vector2f(200.f, 40.f));
+	titleButtons[L"gameStart"] = new button("Game Start", Vector2f(resolution_x / 2.f, resolution_y / 2.f + 100.f), Vector2f(200.f, 40.f));
+	titleButtons[L"editorMode"] = new button("Editor Mode", Vector2f(resolution_x / 2.f, resolution_y / 2.f + 200.f), Vector2f(200.f, 40.f));
+	titleButtons[L"exit"] = new button("Exit", Vector2f(resolution_x / 2.f, resolution_y / 2.f + 300.f), Vector2f(200.f, 40.f));
 
+	titleButtons[L"gameStart"]->Select(true);
+	currentSelectButtonID = L"gameStart";
 	SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/Title.wav");
 }
 
 void UIManager::Update_TitleScene(float dt)
 {
-	spriteCursor.setPosition(ViewManager::GetInstance().GetResolution().x / 2 - 100.f, Cursor_selectY);
-
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
-	{
-		SoundManager::GetInstance().PlaySound(L"changeMenu");
-
-		Cursor_selectY -= 100;
-		if (Cursor_selectY < ViewManager::GetInstance().GetResolution().y/2 + 100.f)
-		{
-			Cursor_selectY = ViewManager::GetInstance().GetResolution().y / 2 + 300.f;
-		}
-	}
-
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Down))
-	{
-		SoundManager::GetInstance().PlaySound(L"changeMenu");
-
-		Cursor_selectY += 100;
-		if (Cursor_selectY > ViewManager::GetInstance().GetResolution().y / 2 + 300.f)
-		{
-			Cursor_selectY = ViewManager::GetInstance().GetResolution().y / 2 + 100.f;
-		}
-	}
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::Enter))
-	{
-		if (Cursor_selectY == 600.f)
-		{
-			SceneManager::GetInstance().Load(L"Play");
- 			SoundManager::GetInstance().StopMusic();
-		}
-		else if (Cursor_selectY == 750.f)
-		{
-			SceneManager::GetInstance().Load(L"Editor");
-		}
-		else if (Cursor_selectY == 900.f)
-		{
-			Game::GetInstance().SetIsGameOver(true);
-		}
-		SoundManager::GetInstance().PlaySound(L"select");
-	}
+	titleButtons[currentSelectButtonID]->Select(true);
 
 	for (auto& button : titleButtons)
 	{
 		button.second->update(dt);
+
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::Up) && (button.second->IsButtonSelect()))
+		{
+			if (currentSelectButtonID == "gameStart")
+			{
+				button.second->Select(false);
+				currentSelectButtonID = L"exit";
+				SoundManager::GetInstance().PlaySound(L"changeMenu");
+			}
+			else if (currentSelectButtonID == "editorMode")
+			{
+				button.second->Select(false);
+				currentSelectButtonID = L"gameStart";
+				SoundManager::GetInstance().PlaySound(L"changeMenu");
+			}
+			else if (currentSelectButtonID == "exit")
+			{
+				button.second->Select(false);
+				currentSelectButtonID = L"editorMode";
+				SoundManager::GetInstance().PlaySound(L"changeMenu");
+			}
+		}
+		else if (InputManager::GetInstance().GetKeyDown(Keyboard::Down) && (button.second->IsButtonSelect()))
+		{
+			if (currentSelectButtonID == "gameStart")
+			{
+				button.second->Select(false);
+				currentSelectButtonID = L"editorMode";
+				SoundManager::GetInstance().PlaySound(L"changeMenu");
+			}
+			else if (currentSelectButtonID == "editorMode")
+			{
+				button.second->Select(false);
+				currentSelectButtonID = L"exit";
+				SoundManager::GetInstance().PlaySound(L"changeMenu");
+			}
+			else if (currentSelectButtonID == "exit")
+			{
+				button.second->Select(false);
+				currentSelectButtonID = L"gameStart";
+				SoundManager::GetInstance().PlaySound(L"changeMenu");
+			}
+		}
+		else if (InputManager::GetInstance().GetKeyDown(Keyboard::Enter) && (button.second->IsButtonSelect()))
+		{
+			if (currentSelectButtonID == "gameStart")
+			{
+				SceneManager::GetInstance().Load(L"Play");
+				SoundManager::GetInstance().StopMusic();
+			}
+			else if (currentSelectButtonID == "editorMode")
+			{
+				SceneManager::GetInstance().Load(L"Editor");
+				SoundManager::GetInstance().StopMusic();
+			}
+			else if (currentSelectButtonID == "exit")
+			{
+				Game::GetInstance().SetIsGameOver(true);
+				SoundManager::GetInstance().StopMusic();
+			}
+		}
+
+		for (auto check : titleButtons)
+		{
+			if (check.second->IsButtonSelect())
+			{
+				if (check.first != currentSelectButtonID)
+				{
+					titleButtons[currentSelectButtonID]->Select(false);
+
+					currentSelectButtonID = check.first;
+				}
+			}
+		}
 	}
 
 	if (titleButtons[L"gameStart"]->IsButtonClicked())
@@ -139,7 +174,6 @@ void UIManager::Render_TitleScene(sf::RenderWindow& window)
 	{
 		button.second->draw(window);
 	}
-	window.draw(spriteCursor);
 }
 
 void UIManager::Release_TitleScene()
