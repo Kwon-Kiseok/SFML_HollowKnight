@@ -16,5 +16,8 @@ public:
 	virtual void Release();
 
 	RectangleShape& GetShape();
+	virtual void SetPosition(Vector2f pos) override;
+	virtual void SetPosition(float x, float y) override;
+	virtual void SetOriginCenter() override;
 };
 

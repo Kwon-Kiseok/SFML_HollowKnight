@@ -57,6 +57,14 @@ void Map::Update(float dt)
 		(*it)->Update(dt);
 	}
 
+	for (auto it = stableObjects.begin(); it != stableObjects.end(); ++it)
+	{
+		if ((*it)->CompareTag(TAG::ELEVATOR))
+		{
+			(*it)->Update(dt);
+		}	
+	}
+
 	PlayerDataManager::GetInstance().UpdatePlayerData(*player);
 	ViewManager::GetInstance().TracePlayer(*player, maps_min_size, maps_max_size);
 
@@ -267,6 +275,18 @@ for (std::vector<Stable*>::iterator it = stableObjects.begin(); it != stableObje
 				(*it)->SetInteractable(true);
 				(*it)->Interaction(*player);
 			}
+		}
+
+		// 엘리베이터
+		if ((*it)->CompareTag(TAG::ELEVATOR))
+		{
+			if (!(*it)->IsInteractable())
+			{
+				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
+					(*it)->SetInteractable(true);
+			}
+			if ((*it)->IsInteractable())
+				(*it)->Interaction(*player);
 		}
 	}
 }

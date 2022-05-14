@@ -197,7 +197,7 @@ void Player::Update(float dt)
 				isWay = !isWay;
 				SetDirection(Direction::RIGHT);
 			}
-		}
+		} 
 
 		if (canJump)
 		{
