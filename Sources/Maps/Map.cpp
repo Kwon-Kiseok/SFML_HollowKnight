@@ -150,32 +150,14 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
-
-			if ((*it)->CompareTag(TAG::MONSTER))
-			{
-				//std::cout << player->GetName() << " Collision Monster" << std::endl;
-			}
 			if ((*it)->CompareTag(TAG::COIN))
 			{
-				for (std::vector<Collider*>::iterator collider_it = colliders.begin(); collider_it != colliders.end(); ++collider_it)
-				{
-					if ((*it)->CheckCollision(*collider_it))
-					{
-						if ((*collider_it)->CompareTag(TAG::COLLIDER))
-						{
-							std::cout << player->GetName() << "Collision Coin" << std::endl;
-							//	(*it)->Player::UpdateCollision((*collider_it)->GetShape().getGlobalBounds());
-						}
-					}
-				}
+				player->AddCoin(1);
+				// 삭제
+				it = gameObjects.erase(it);
+				break;
 			}
 		}
-		player->AddCoin(1);
-
-		// 삭제
-		it = gameObjects.erase(it);
-		break;
-
 		if ((*it)->CompareTag(TAG::COIN))
 		{
 			for (std::vector<Collider*>::iterator col_it = colliders.begin(); col_it != colliders.end(); ++col_it)
@@ -188,129 +170,106 @@ void Map::CheckCollisions(float dt)
 		}
 	}
 
-
-
-
-for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
-{
-	if (*it == nullptr) continue;
-
-	if (player->CheckCollision(*it))
+	for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
 	{
-		if ((*it)->CompareTag(TAG::COLLIDER))
+		if (*it == nullptr) continue;
+	
+		if (player->CheckCollision(*it))
 		{
-			player->OnGround((*it)->GetShape().getGlobalBounds());
+			if ((*it)->CompareTag(TAG::COLLIDER))
+			{
+				player->OnGround((*it)->GetShape().getGlobalBounds());
+			}
 		}
 	}
-}
-
-for (std::vector<Character*>::iterator it = characters.begin(); it != characters.end(); ++it)
-{
-	if (*it == nullptr) continue;
-
-
-	// 플레이어가 몬스터 공격박스와 충돌했을 경우
-	if (player->GetGlobalBounds().intersects((*it)->GetAttackShape().getGlobalBounds()))
+	
+	for (std::vector<Character*>::iterator it = characters.begin(); it != characters.end(); ++it)
 	{
-		player->SetHP(dt);
-	}
-	// 플레이어와 몬스터가 충돌했을 경우
-	if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetRectangleShape().getGlobalBounds().intersects(player->GetHitBox().getGlobalBounds()))
-	{
-		if ((*it)->GetIsAlivve())
+		if (*it == nullptr) continue;
+	
+	
+		// 플레이어가 몬스터 공격박스와 충돌했을 경우
+		if (player->GetGlobalBounds().intersects((*it)->GetAttackShape().getGlobalBounds()))
 		{
 			player->SetHP(dt);
 		}
-	}
-	/******************************************
-	* 몬스터가 플레이어의 공격박스에 부딪혔을 경우
-	******************************************/
-	RectangleShape attackBox = player->GetAttackBox();
-	if (((*it)->Collision_AttackBox(attackBox) && (*it)->CompareTag(TAG::MONSTER)) &&
-		player->GetIsAttackBox() && (*it)->GetIsAlivve())
-	{
-		player->UpdateCollision();
-		player->SetIsAttackBox(false);
-		(*it)->SetHealth(-1);
-		(*it)->SetShield(-1);
-
-		Coin* coin = new Coin((*it)->GetPosition());
-		//std::cout << coin->GetName() << std::endl;
-		gameObjects.push_back(coin);
-	}
-
-	if ((*it)->CompareTag(TAG::MONSTER))
-	{
-		// 몬스터랑 바닥 충돌처리
-		for (std::vector<Collider*>::iterator collider_it = colliders.begin(); collider_it != colliders.end(); ++collider_it)
+		// 플레이어와 몬스터가 충돌했을 경우
+		if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetRectangleShape().getGlobalBounds().intersects(player->GetHitBox().getGlobalBounds()))
 		{
-			if ((*it)->CheckCollision(*collider_it))
+			if ((*it)->GetIsAlivve())
 			{
-				if ((*collider_it)->CompareTag(TAG::COLLIDER))
+				player->SetHP(dt);
+			}
+		}
+		/******************************************
+		* 몬스터가 플레이어의 공격박스에 부딪혔을 경우
+		******************************************/
+		RectangleShape attackBox = player->GetAttackBox();
+		if (((*it)->Collision_AttackBox(attackBox) && (*it)->CompareTag(TAG::MONSTER)) &&
+			player->GetIsAttackBox() && (*it)->GetIsAlivve())
+		{
+			player->UpdateCollision();
+			player->SetIsAttackBox(false);
+			(*it)->SetHealth(-1);
+			(*it)->SetShield(-1);
+	
+			Coin* coin = new Coin((*it)->GetPosition());
+			//std::cout << coin->GetName() << std::endl;
+			gameObjects.push_back(coin);
+		}
+	
+		if ((*it)->CompareTag(TAG::MONSTER))
+		{
+			// 몬스터랑 바닥 충돌처리
+			for (std::vector<Collider*>::iterator collider_it = colliders.begin(); collider_it != colliders.end(); ++collider_it)
+			{
+				if ((*it)->CheckCollision(*collider_it))
 				{
-					// 몬스터랑 바닥 충돌처리
-					(*it)->OnGround((*collider_it)->GetShape().getGlobalBounds());
+					if ((*collider_it)->CompareTag(TAG::COLLIDER))
+					{
+						// 몬스터랑 바닥 충돌처리
+						(*it)->OnGround((*collider_it)->GetShape().getGlobalBounds());
+					}
 				}
 			}
-		}
-		// 플레이어 추격
-		if ((*it)->GetDetectShape().getGlobalBounds().intersects(player->GetGlobalBounds()))
-		{
-			(*it)->SetIsDetect(true);
-		}
-	}
-}
-
-for (std::vector<Stable*>::iterator it = stableObjects.begin(); it != stableObjects.end(); ++it)
-{
-	if (*it == nullptr) continue;
-
-	if (player->CheckCollision(*it))
-	{
-		// 벤치와 부딪혔을 때
-		if ((*it)->CompareTag(TAG::BENCH))
-		{
-			if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
+			// 플레이어 추격
+			if ((*it)->GetDetectShape().getGlobalBounds().intersects(player->GetGlobalBounds()))
 			{
-				(*it)->SetInteractable(true);
-				(*it)->Interaction(*player);
+				(*it)->SetIsDetect(true);
 			}
 		}
-
-		// 엘리베이터
-		if ((*it)->CompareTag(TAG::ELEVATOR))
+	}
+	
+	for (std::vector<Stable*>::iterator it = stableObjects.begin(); it != stableObjects.end(); ++it)
+	{
+		if (*it == nullptr) continue;
+	
+		if (player->CheckCollision(*it))
 		{
-			if (!(*it)->IsInteractable())
+			if(InputManager::GetInstance().GetKeyDown(Keyboard::Up))
+				player->Interaction_Stable(*it);
+		}
+	}
+	
+	for (std::vector<Portal*>::iterator it = portals.begin(); it != portals.end(); ++it)
+	{
+		if ((*it) == nullptr) continue;
+	
+		if (player->CheckCollision((*it)))
+		{
+			// 플레이어가 포탈과 겹쳤을 때
+			if ((*it)->GetInteractionType() == Interaction_Type::PORTAL)
 			{
+				// 위키를 눌러서 다음 맵 이동
 				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
+				{
 					(*it)->SetInteractable(true);
+					return;
+				}
+				player->Interaction_Portal((*it));
 			}
-			if ((*it)->IsInteractable())
-				(*it)->Interaction(*player);
 		}
 	}
-}
-
-for (std::vector<Portal*>::iterator it = portals.begin(); it != portals.end(); ++it)
-{
-	if ((*it) == nullptr) continue;
-
-	if (player->CheckCollision((*it)))
-	{
-		player->Collision(*it);
-
-		// 플레이어가 포탈과 겹쳤을 때
-		if ((*it)->GetInteractionType() == Interaction_Type::PORTAL)
-		{
-			// 위키를 눌러서 다음 맵 이동
-			if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
-				(*it)->SetInteractable(true);
-			if ((*it)->IsInteractable())
-				(*it)->Interaction(*player);
-			return;
-		}
-	}
-}
 }
 
 void Map::LoadMap(std::string dataFilepath)

@@ -45,14 +45,18 @@ private:
 	Text textCoin;
 // /////////////////////////////////////////////
 
+
+	// ∏ 
+	bool mapVisible = false;
 	Texture textureTown;
 	Sprite spriteTown;
+	Texture texturePlayerMarker;
+	Sprite spritePlayerMarker;
 
 	Texture textureBack;
 	Sprite spriteBack;
 
-	// ∏ 
-	bool mapVisible = false;
+
 	InventoryScene inventory;
 
 	// ¿œΩ√¡§¡ˆ
