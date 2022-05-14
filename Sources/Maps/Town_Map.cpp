@@ -9,16 +9,6 @@ Town_Map::Town_Map(Player* player)
 	maps_min_size = Vector2f(0.f, 0.f);
 	maps_max_size = Vector2f(3000.f, 1000.f);
 
-	/*******************************
-	* 보스 테스트
-	********************************/
-	boss = new FalseKnight();
-	// monster.init();
-	boss->SetPosition(Vector2f(2265.f, 815.f));
-	boss->Init();
-	characters.push_back(boss);
-	//characters.push_back(monster);
-
 	// portal set
 	townToKP = new Portal();
 	townToKP->SetCurrMap(MAP_TYPE::Town);

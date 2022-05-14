@@ -250,7 +250,7 @@ void Player::Update(float dt)
 			jumpTime += dt;
 			if (jumpTime < 0.5f)
 			{
-				gravity -= GRAVITY * dt;
+				gravity -= GRAVITY * dt * 1.2f;
 			}
 		}
 		delta.y = gravity * dt;
@@ -285,7 +285,7 @@ void Player::Update(float dt)
 				position.x += SPEED * dt * 5.f;
 				position.y = dashTemp.y;
 			}
-			if (position.x < dashTemp.x - 300.f || position.x > dashTemp.x + 300.f)
+			if (position.x < dashTemp.x - 400.f || position.x > dashTemp.x + 400.f)
 			{
 				isDash = false;
 				animation.PlayQueue(string);

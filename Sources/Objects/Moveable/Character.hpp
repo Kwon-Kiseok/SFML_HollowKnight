@@ -32,6 +32,7 @@ protected:
 	int yDir;// y축에 대한 방향
 
 	RectangleShape detectShape;	// 추격 박스
+	RectangleShape attackBox;	// 공격 박스
 	bool isDetect;				// 추격 판단
 	float lodingTime;			// 로딩 시간
 	bool isLoading;				// 로딩 중인지
@@ -77,8 +78,9 @@ public:
 	virtual bool GetIsAlivve();								// 살아있는지 판단
 	virtual bool GetIsIsShield();							// 쉴드 판단
 	// 플레이어 추격
-	virtual RectangleShape GetDetectShape();
-	virtual RectangleShape GetRectangleShape();
+	virtual RectangleShape GetDetectShape();				// 탐지 박스
+	virtual RectangleShape GetAttackShape();				// 공격 박스
+	virtual RectangleShape GetRectangleShape();				// 
 	virtual void SetIsDetect(bool is);
 
 	virtual bool GetIsLoading();

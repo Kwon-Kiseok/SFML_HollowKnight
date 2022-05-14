@@ -8,18 +8,22 @@ FalseKnight::FalseKnight()
 {
 	moveSpeed = 100.f;
 	health = 3;
-	shield = 1;
+	shield = SHIELD;
 	isShield = true;
-	downTime = 2.f;
+	downTime = DOWNTIME;
+
+	attackDelay = -1.f;
 }
 
 FalseKnight::FalseKnight(int xdir)
 {
 	moveSpeed = 100.f;
 	health = 3;
-	shield = 1;
+	shield = SHIELD;
 	isShield = true;
-	downTime = 2.f;
+	downTime = DOWNTIME;
+
+	attackDelay = -1.f;
 }
 
 void FalseKnight::Init()
@@ -28,57 +32,101 @@ void FalseKnight::Init()
 
 	SetName("boss");
 	SetTag(TAG::MONSTER);
-	texture.loadFromFile("Resources/Sprite/Monster/boss/idle.png");
-	sprite.setTexture(texture);
-	sprite.setPosition(position);
-	sprite.setOrigin(Vector2f(350, 600));
+	SetLayer(5);
+	animation.SetTarget(&sprite);
+	/***************************
+	* 히트 박스
+	****************************/
+	{
+		rectangleShape.setSize(Vector2f(500, 300));
+		rectangleShape.setOrigin(Vector2f(250, 300));
+		rectangleShape.setPosition(position);
+		rectangleShape.setFillColor(Color::Transparent);
+		rectangleShape.setOutlineColor(Color::Red);
+		rectangleShape.setOutlineThickness(2);
+	}
+	/***************************
+	* 공격 박스
+	****************************/
+	{
+		attackBox.setSize(Vector2f(100, 100));
+		attackBox.setOrigin(Vector2f(270, 270));
+		attackBox.setPosition(position);
+		attackBox.setFillColor(Color::Transparent);
+		attackBox.setOutlineColor(Color::Yellow);
+		attackBox.setOutlineThickness(2);
+	}
+	/***************************
+	* 감지 박스
+	****************************/
+	{
+		detectShape.setSize(Vector2f(600, 300));
+		detectShape.setOrigin(Vector2f(300, 300));
+		detectShape.setPosition(position);
+		detectShape.setFillColor(Color::Transparent);
+		detectShape.setOutlineColor(Color::Blue);
+		detectShape.setOutlineThickness(2);
+	}
+	/***************************
+	* Wave Sprite
+	****************************/
+	{
+		texture.loadFromFile("Resources/Sprite/Monster/boss/wave.png");
+		waveSprite.setTexture(texture);
+	}
 
-	rectangleShape.setSize(Vector2f(300, 300));
-	rectangleShape.setOrigin(Vector2f(150, 300));
-	rectangleShape.setPosition(position);
-	rectangleShape.setFillColor(Color::Transparent);
-	rectangleShape.setOutlineColor(Color::Red);
-	rectangleShape.setOutlineThickness(2);
+	rapidcsv::Document clips("data_tables/animations/falseknight/falseknight_animation_clips.csv");
 
-	attackBox.setSize(Vector2f(100, 100));
-	attackBox.setOrigin(Vector2f(270, 170));
-	attackBox.setPosition(position);
-	attackBox.setFillColor(Color::Transparent);
-	attackBox.setOutlineColor(Color::Yellow);
-	attackBox.setOutlineThickness(2);
+	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
+	std::vector<int> colFps = clips.GetColumn<int>("FPS");
+	std::vector<int> colLoop = clips.GetColumn<int>("LOOP TYPE(0:Single, 1:Loop)");
+	std::vector<std::string> colPath = clips.GetColumn<std::string>("CLIP PATH");
 
-	detectShape.setSize(Vector2f(600, 300));
-	detectShape.setOrigin(Vector2f(300, 300));
-	detectShape.setPosition(position);
-	detectShape.setFillColor(Color::Transparent);
-	detectShape.setOutlineColor(Color::Blue);
-	detectShape.setOutlineThickness(2);
+	int totalClips = colId.size();
+	for (int i = 0; i < totalClips; ++i)
+	{
+		AnimationClip clip;
+		clip.id = colId[i];
+		clip.fps = colFps[i];
+		clip.loopType = (AnimationLoopTypes)colLoop[i];
+
+		rapidcsv::Document frames(colPath[i]);
+		std::vector<std::string> colTexure = frames.GetColumn<std::string>("TEXTURE PATH");
+		std::vector<int> colL = frames.GetColumn<int>("L");
+		std::vector<int> colT = frames.GetColumn<int>("T");
+		std::vector<int> colW = frames.GetColumn<int>("W");
+		std::vector<int> colH = frames.GetColumn<int>("H");
+
+		std::vector<int> colX = frames.GetColumn<int>("X");
+		std::vector<int> colY = frames.GetColumn<int>("Y");
+
+		int totalFrames = colTexure.size();
+		for (int j = 0; j < totalFrames; ++j)
+		{
+			if (texMap.find(colTexure[j]) == texMap.end())
+			{
+				auto& ref = texMap[colTexure[j]];
+				ref.loadFromFile(colTexure[j]);
+			}
+			clip.frames.push_back(AnimationFrame(texMap[colTexure[j]], IntRect(colL[j], colT[j], colW[j], colH[j]), Vector2f(colX[j], colY[j])));
+		}
+		animation.AddClip(clip);
+	}
+
+	animation.Play("Idle");
 }
 
 void FalseKnight::Update(float dt, Vector2f player)
 {
-	/********************************
-	* 공격 패턴
-	*********************************/
-	if (isDetect && isShield && isAlive)
+	if (lodingTime > 0.f)
 	{
-		gravity -= 50.f;
-		/*int random = (rand() % 3) + 1;
-		std::cout << random << std::endl;
-		switch (random)
-		{
-		case 1:
-			gravity -= 500.f;
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		default:
-			break;
-		}*/
-		isDetect = !isDetect;
+		lodingTime -= dt;
+		gravity = 0.f;
 	}
+
+	
+	Attack(dt);
+
 	/****************************
 	* 중력 처리
 	*****************************/
@@ -95,68 +143,84 @@ void FalseKnight::Update(float dt, Vector2f player)
 	/********************************
 	* 플레이어 추격 및 이동
 	*********************************/
-	if (!isDetect)
 	{
-		if (isAlive && isShield)
+		if (!isDetect)
 		{
-			if (position.x < player.x)
+			if (isAlive && isShield)
 			{
-				xDir = 1;
-				sprite.setScale(1, 1);
-				attackBox.setScale(1, 1);
+				if (position.x < player.x)
+				{
+					xDir = 1;
+					sprite.setScale(1, 1);
+					attackBox.setScale(1, 1);
+					rectangleShape.setScale(1, 1);
+					waveSprite.setScale(1, 1);
+				}
+				if (position.x > player.x)
+				{
+					xDir = -1;
+					sprite.setScale(-1, 1);
+					attackBox.setScale(-1, 1);
+					rectangleShape.setScale(-1, 1);
+					waveSprite.setScale(-1, 1);
+				}
+				position.x += (moveSpeed * dt) * xDir;
 			}
-			if (position.x > player.x)
-			{
-				xDir = -1;
-				sprite.setScale(-1, 1);
-				attackBox.setScale(-1, 1);
-			}
-			position.x += (moveSpeed * dt) * xDir;
 		}
 	}
-	
-
-
 	/****************************
 	* 쉴드 처리
 	*****************************/
-	if (!isShield)
+	if (isAlive)
 	{
-		downTime -= dt;
-	}
-	if (downTime < 0.f)
-	{
-		shield = 1;
-		downTime = 2.f;
-		isShield = true;
-		texture.loadFromFile("Resources/Sprite/Monster/boss/idle.png");
-		sprite.setTexture(texture);
-		rectangleShape.setSize(Vector2f(300, 300));
-		rectangleShape.setOrigin(Vector2f(150, 300));
-	}
-	if (shield == 0)
-	{
-		isShield = false;
-		texture.loadFromFile("Resources/Sprite/Monster/boss/down.png");
-		sprite.setTexture(texture);
-		rectangleShape.setSize(Vector2f(75, 75));
-		if (xDir > 0)
+		if (!isShield)
 		{
-			rectangleShape.setOrigin(Vector2f(-115, 75));
+			downTime -= dt;
 		}
-		else
+		if (downTime < 0.f)
 		{
-			rectangleShape.setOrigin(Vector2f(190, 75));
+			shield = SHIELD;
+			downTime = DOWNTIME;
+			isShield = true;
+			animation.Play("Idle");
+			rectangleShape.setSize(Vector2f(500, 300));
+			rectangleShape.setOrigin(Vector2f(250, 300));
+			attackDelay = ATTACK_DELAY * 0.5f;
+		}
+		/******************
+		* 스턴 판정
+		*******************/
+		if (shield == 0)
+		{
+			isOne = true;
+			shield = -1;
+		}
+		if (isOne)
+		{
+			isShield = false;
+			animation.Play("Stun");
+			rectangleShape.setSize(Vector2f(100, 100));
+			rectangleShape.setOrigin(Vector2f(170, 100));
+			if (xDir > 0)
+			{
+				rectangleShape.setScale(-1, 1);
+			}
+			else
+			{
+				rectangleShape.setScale(1, 1);
+			}
+			isOne = false;
 		}
 	}
 	/****************************
 	* 체력 처리
 	*****************************/
-	if (health == 0)
 	{
-		isAlive = false;
-		texture.loadFromFile("Resources/Sprite/Monster/boss/die.png");
-		sprite.setTexture(texture);
+		if (health == 0)
+		{
+			animation.Stop();
+			isAlive = false;
+		}
 	}
 
 
@@ -164,16 +228,25 @@ void FalseKnight::Update(float dt, Vector2f player)
 
 	sprite.setPosition(position);
 	rectangleShape.setPosition(position);
-	attackBox.setPosition(position);
-	detectShape.setPosition(position);	
+	attackBox.setPosition(attackBoxPos);
+	detectShape.setPosition(position);
+
+	animation.Update(dt);
 }
 
 void FalseKnight::Render(RenderWindow& window)
 {
 	window.draw(sprite);
 	window.draw(rectangleShape);
-	window.draw(attackBox);
 	window.draw(detectShape);
+	if (isAttack)
+	{
+		if (attackPattern == 3 && attackDelay < 3.f)
+		{
+			window.draw(waveSprite);
+		}
+	}
+	window.draw(attackBox);
 }
 
 void FalseKnight::Release()
@@ -182,13 +255,6 @@ void FalseKnight::Release()
 
 void FalseKnight::OnGround(FloatRect map)
 {
-	if (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width > map.left + map.width ||
-		sprite.getGlobalBounds().left < map.left)
-	{
-		xDir = -xDir;
-		sprite.scale(-1, 1);
-	}
-
 	if (rectangleShape.getGlobalBounds().intersects(map))
 	{
 		if (rectangleShape.getGlobalBounds().intersects(map))
@@ -198,20 +264,17 @@ void FalseKnight::OnGround(FloatRect map)
 			switch (pivot)
 			{
 			case Pivots::LC:
-				sprite.setScale(-1, 1);
-				xDir = 1;
+				position.x += (map.left + map.width) - (rectangleShape.getGlobalBounds().left);
+				InputManager::GetInstance().HorizontalInit();
 				break;
-
 			case Pivots::RC:
-				sprite.setScale(1, 1);
-				xDir = -1;
+				position.x -= (rectangleShape.getGlobalBounds().left + rectangleShape.getGlobalBounds().width) - (map.left);
+				InputManager::GetInstance().HorizontalInit();
 				break;
-
 			case Pivots::CT:
 				gravity = 0.f;
 				position.y += (map.top + map.height) - (rectangleShape.getGlobalBounds().top);
 				InputManager::GetInstance().HorizontalInit();
-				//InputManager::VerticalInit();
 				break;
 
 			case Pivots::CB:
@@ -248,4 +311,111 @@ RectangleShape FalseKnight::GetDetectShape()
 void FalseKnight::SetIsDetect(bool is)
 {
 	isDetect = is;
+}
+
+//RectangleShape FalseKnight::GetAttackShape()
+//{
+//	return attackBox;
+//}
+/****************************************************************
+* 공격 패턴
+*****************************************************************/
+void FalseKnight::Attack(float dt)
+{	
+	attackDelay -= dt;
+	if (isAttack)
+	{
+		position.x += (moveSpeed * dt) * xDir;
+		if (attackDelay < 3.f)
+		{
+			//attackPattern = 3;
+			if (attackPattern == 1)
+			{
+				attackBox.setSize(Vector2f(100, 400));
+				attackBox.setOrigin(Vector2f(-200, 400));
+			}
+			if (attackPattern == 2)
+			{
+				attackDelay -= dt;
+				attackBox.setSize(Vector2f(100, 400));
+				attackBox.setOrigin(Vector2f(-200, 400));
+			}
+			if (attackPattern == 3)
+			{
+				attackBox.setSize(Vector2f(300, 300));
+				attackBox.setOrigin(Vector2f(-200, 300));
+				attackBoxPos.x += 1000.f * dt * attackDir;
+				moveSpeed = 0.f;
+
+				waveSprite.setOrigin(Vector2f(-200, 300));
+				waveSprite.setPosition(attackBoxPos);
+			}
+
+			if (attackDelay <= 2.f)
+			{
+				isAttack = false;
+				attackBox.setSize(Vector2f(100, 100));
+				attackBox.setOrigin(Vector2f(270, 270));
+				moveSpeed = 100.f;
+				attackBoxPos = position;
+				isDetect = !isDetect;
+
+				attackPattern = 0;
+			}
+		}
+	}
+	if (attackPattern != 3)
+	{
+		attackBoxPos = position;
+	}
+	int wave = (rand() % 10000) + 1;
+	if (wave == 1)
+	{
+		isDetect = true;
+	}
+	if (isDetect && isShield && isAlive)
+	{
+		int random = (rand() % 3) + 1;
+		if (wave == 1)
+		{
+			random = 3;
+		}
+		if (attackDelay < 0.f)
+		{
+			attackDelay = ATTACK_DELAY;
+			isAttack = true;
+			attackDir = xDir;
+			switch (random)
+			{
+			case 1:	// 점프 공격
+				animation.Play("Jump");
+				animation.PlayQueue("JumpAttack");
+				animation.PlayQueue("Idle");
+				gravity -= 1200.f;
+
+				attackPattern = 1;
+				break;
+			case 2: // 기본 공격
+				animation.Play("Attack");
+				animation.PlayQueue("Idle");
+
+				attackBox.setSize(Vector2f(500, 300));
+				attackBox.setOrigin(Vector2f(250, 600));
+
+				attackPattern = 2;
+				break;
+			case 3:	// 충격파
+				animation.Play("Attack");
+				animation.PlayQueue("Idle");
+
+				attackBox.setSize(Vector2f(500, 300));
+				attackBox.setOrigin(Vector2f(250, 600));
+
+				moveSpeed = 0.f;
+				attackPattern = 3;
+				break;
+			}
+		}
+		isDetect = !isDetect;
+	}
 }

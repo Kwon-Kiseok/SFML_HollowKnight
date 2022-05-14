@@ -9,6 +9,15 @@ BossRoom_Map::BossRoom_Map(Player* player_)
 	maps_min_size = Vector2f(-250.f, -600.f);
 	maps_max_size = Vector2f(4000.f, 1000.f);
 
+	/*******************************
+	* 보스 테스트
+	********************************/
+	boss = new FalseKnight();
+	// monster.init();
+	boss->SetPosition(Vector2f(1077.f, 515.f));
+	boss->Init();
+	characters.push_back(boss);
+	//characters.push_back(monster);
 	//
 	brToTown = new Portal();
 	brToTown->SetCurrMap(MAP_TYPE::BossRoom);

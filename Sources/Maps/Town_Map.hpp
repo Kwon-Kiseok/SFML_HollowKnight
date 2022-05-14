@@ -1,7 +1,6 @@
 #pragma once
 #include "Map.hpp"
 #include <vector>
-#include "../../Sources/Objects/Moveable/Monster/FalseKnight.hpp"
 
 using namespace sf;
 
@@ -14,7 +13,6 @@ private:
 	Portal* townToKP;
 	Portal* townToCrossRoad;
 
-	FalseKnight* boss;
 public:
 	Town_Map(Player* player_);
 	virtual ~Town_Map() {}
