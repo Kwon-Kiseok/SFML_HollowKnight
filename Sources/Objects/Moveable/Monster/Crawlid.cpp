@@ -32,8 +32,6 @@ void Crawlid::Init()
 {
 	SetName("crawlid");
 	SetTag(TAG::MONSTER);
-	SetName("Crawlid");
-	moveSpeed = 100.f;
 	SetLayer(5);
 	animation.SetTarget(&sprite);
 

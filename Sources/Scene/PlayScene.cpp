@@ -15,7 +15,7 @@ PlayScene::PlayScene()
 void PlayScene::Init()
 {
 	MapManager::GetInstance().Init();
-	MapManager::GetInstance().LoadMap(MAP_TYPE::KingsPass);
+	MapManager::GetInstance().LoadMap(MAP_TYPE::BossRoom);
 	UIManager::GetInstance().Init_PlayScene();
 }
 

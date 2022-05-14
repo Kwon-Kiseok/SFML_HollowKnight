@@ -147,6 +147,11 @@ RectangleShape Character::GetDetectShape()
 	return detectShape;
 }
 
+RectangleShape Character::GetAttackShape()
+{
+	return attackBox;
+}
+
 RectangleShape Character::GetRectangleShape()
 {
 	return rectangleShape;

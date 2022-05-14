@@ -200,6 +200,12 @@ for (std::vector<Character*>::iterator it = characters.begin(); it != characters
 {
 	if (*it == nullptr) continue;
 
+
+	// 플레이어가 몬스터 공격박스와 충돌했을 경우
+	if (player->GetGlobalBounds().intersects((*it)->GetAttackShape().getGlobalBounds()))
+	{
+		player->SetHP(dt);
+	}
 	// 플레이어와 몬스터가 충돌했을 경우
 	if ((*it)->CompareTag(TAG::MONSTER) && (*it)->GetRectangleShape().getGlobalBounds().intersects(player->GetHitBox().getGlobalBounds()))
 	{
