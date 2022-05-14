@@ -4,6 +4,7 @@
 #include "../Managers/SoundManager.hpp"
 #include "../Managers/TextureManager.hpp"
 #include "../Managers/ViewManager.hpp"
+#include "../Managers/UIManager.hpp"
 
 
 Game::~Game() noexcept
@@ -17,9 +18,12 @@ void Game::Init()
     ViewManager::GetInstance().Init();
     window = new RenderWindow(sf::VideoMode(ViewManager::GetInstance().GetResolution().x
         ,ViewManager::GetInstance().GetResolution().y), "Hollow Knight", Style::Fullscreen);
+    window->setMouseCursorVisible(false);
+
     SceneManager::GetInstance().Init();
     InputManager::GetInstance().Init();
     SoundManager::GetInstance().Init();
+    UIManager::GetInstance().Init();
 }
 
 void Game::Update()
@@ -43,6 +47,7 @@ void Game::Update()
 
         InputManager::GetInstance().Update(dt.asSeconds(), *window, ViewManager::GetInstance().GetMainView());
         SceneManager::GetInstance().Update(dt.asSeconds());
+        UIManager::GetInstance().Update(dt.asSeconds());
         Render();
 
     }
@@ -53,6 +58,9 @@ void Game::Render()
     window->clear();
     window->setView(ViewManager::GetInstance().GetMainView());
     SceneManager::GetInstance().Render(*window);
+
+    window->setView(ViewManager::GetInstance().GetUiView());
+    UIManager::GetInstance().Render(*window);
     window->display();
 }
 
@@ -71,4 +79,9 @@ bool Game::GetIsGameOver()
 void Game::SetIsGameOver(bool is)
 {
     isGameOver = is;
+}
+
+sf::RenderWindow& Game::GetWindow()
+{
+    return *window;
 }

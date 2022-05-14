@@ -2,6 +2,7 @@
 #include "../Managers/ViewManager.hpp"
 #include "../Managers/UIManager.hpp"
 #include "../Managers/SceneManager.hpp"
+#include "../Managers/InputManager.hpp"
 #include "../Animation/rapidcsv.hpp"
 
 PauseUI::PauseUI()
@@ -21,6 +22,9 @@ void PauseUI::Init()
 	pauseButtons[L"resume"] = new button("resume", Vector2f(resolution_x/2, resolution_y/2-100.f), Vector2f(120.f, 40.f));
 	pauseButtons[L"returnToMenu"] = new button("return to menue", Vector2f(resolution_x / 2, resolution_y / 2-50.f), Vector2f(120.f, 40.f));
 
+	pauseButtons[L"resume"]->Select(true);
+	currentSelectButtonID = L"resume";
+
 	spritePauseTop.setPosition(Vector2f(resolution_x / 2, resolution_y / 2 - 200.f));
 	animContoller.SetTarget(&spritePauseTop);
 	SetAnimation();
@@ -29,10 +33,55 @@ void PauseUI::Init()
 
 void PauseUI::Update(float dt)
 {
-
+	pauseButtons[currentSelectButtonID]->Select(true);
 	for (auto& button : pauseButtons)
 	{
 		button.second->update(dt);
+
+		if ((InputManager::GetInstance().GetKeyDown(Keyboard::Up) || InputManager::GetInstance().GetKeyDown(Keyboard::Down))
+			&& (button.second->IsButtonSelect()))
+		{
+			if (currentSelectButtonID == "resume")
+			{
+				button.second->Select(false);
+				currentSelectButtonID = L"returnToMenu";
+				SoundManager::GetInstance().PlaySound(L"changeMenu");
+			}
+			else if (currentSelectButtonID == "returnToMenu")
+			{
+				button.second->Select(false);
+				currentSelectButtonID = L"resume";
+				SoundManager::GetInstance().PlaySound(L"changeMenu");
+			}
+		}
+		else if (InputManager::GetInstance().GetKeyDown(Keyboard::Enter) && (button.second->IsButtonSelect()))
+		{
+			if (currentSelectButtonID == "resume")
+			{
+				UIManager::GetInstance().SetIsPause(false);
+				pauseButtons[L"resume"]->ResetIsClicked();
+			}
+			else if (currentSelectButtonID == "returnToMenu")
+			{
+				//메뉴로 돌아가기
+				SceneManager::GetInstance().Load(L"Title");
+				UIManager::GetInstance().SetIsPause(false);
+				pauseButtons[L"returnToMenu"]->ResetIsClicked();
+			}
+		}
+
+		for (auto check : pauseButtons)
+		{
+			if (check.second->IsButtonSelect())
+			{
+				if (check.first != currentSelectButtonID)
+				{
+					pauseButtons[currentSelectButtonID]->Select(false);
+
+					currentSelectButtonID = check.first;
+				}
+			}
+		}
 	}
 
 	if (pauseButtons[L"resume"]->IsButtonClicked())

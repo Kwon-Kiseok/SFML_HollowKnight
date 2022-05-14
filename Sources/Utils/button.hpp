@@ -21,6 +21,11 @@ private:
 	Font font;
 	Button_state state;
 
+	Texture textureCursor;
+	Sprite spriteCursor_L;
+	Sprite spriteCursor_R;
+	bool isSelect;
+
 	AnimationController animContoller;
 	Sprite spriteButton;
 	std::map<std::string, Texture> texMap;
@@ -33,10 +38,14 @@ public:
 	string GetText();
 	void update();
 	void update(float dt);
-	void Click(bool isHovered);
 	void draw(RenderWindow& window);
+
+	void Select(bool isHovered);
+	void Click(bool isHovered);
 	bool IsButtonClicked();
 	void ResetIsClicked();
+	bool IsButtonSelect();
+	Button_state& GetButtonState();
 
 	void SetAnimation();
 };
