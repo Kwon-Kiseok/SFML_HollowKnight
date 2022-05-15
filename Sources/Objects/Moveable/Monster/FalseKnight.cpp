@@ -189,6 +189,7 @@ void FalseKnight::Update(float dt, Vector2f player)
 		}
 		if (isOne)
 		{
+			SoundManager::GetInstance().PlaySound(L"damage_armour_final");
 			isShield = false;
 			animation.Play("Stun");
 			rectangleShape.setSize(Vector2f(100, 100));
@@ -210,8 +211,10 @@ void FalseKnight::Update(float dt, Vector2f player)
 	{
 		if (health == 0)
 		{
+			SoundManager::GetInstance().PlaySound(L"FKnight_death");
 			animation.Play("Die");
 			isAlive = false;
+			health = -1;
 		}
 	}
 
@@ -294,7 +297,8 @@ void FalseKnight::SetShield(int _shield)
 {
 	//
 	if(isShield)
-		SoundManager::GetInstance().PlaySound(L"parry");
+		SoundManager::GetInstance().PlaySound(L"damage_armour");
+		//SoundManager::GetInstance().PlaySound(L"parry");
 	shield += _shield;
 }
 
@@ -312,7 +316,7 @@ void FalseKnight::SetHealth(int health)
 {
 	if (!isShield)
 	{
-		SoundManager::GetInstance().PlaySound(L"enemy_damage");
+		SoundManager::GetInstance().PlaySound(L"Fknight_hit");
 		this->health += health;
 	}
 }
@@ -321,14 +325,13 @@ void FalseKnight::SetHealth(int health)
 * 공격 패턴
 *****************************************************************/
 void FalseKnight::Attack(float dt)
-{	
+{
 	attackDelay -= dt;
 	if (isAttack)
 	{
 		position.x += (moveSpeed * dt) * xDir;
 		if (attackDelay < 3.f)
 		{
-			//attackPattern = 3;
 			if (attackPattern == 1)
 			{
 				attackBox.setSize(Vector2f(100, 400));
@@ -350,7 +353,24 @@ void FalseKnight::Attack(float dt)
 				waveSprite.setOrigin(Vector2f(-200, 300));
 				waveSprite.setPosition(attackBoxPos);
 			}
-
+			if (sound)
+			{
+				switch (attackPattern)
+				{
+				case 1:
+					SoundManager::GetInstance().PlaySound(L"knight_land2");
+					break;
+				case 2:
+					SoundManager::GetInstance().PlaySound(L"knight_land");
+					break;
+				case 3:
+					SoundManager::GetInstance().PlaySound(L"knight_strike");
+					break;
+				default:
+					break;
+				}
+				sound = false;
+			}
 			if (attackDelay <= 2.f)
 			{
 				isAttack = false;
@@ -382,6 +402,7 @@ void FalseKnight::Attack(float dt)
 		}
 		if (attackDelay < 0.f)
 		{
+			sound = true;
 			attackDelay = ATTACK_DELAY;
 			isAttack = true;
 			attackDir = xDir;
@@ -392,8 +413,9 @@ void FalseKnight::Attack(float dt)
 				animation.PlayQueue("JumpAttack");
 				animation.PlayQueue("Idle");
 				gravity -= 1200.f;
-
+				
 				attackPattern = 1;
+				SoundManager::GetInstance().PlaySound(L"knight_jump");
 				break;
 			case 2: // 기본 공격
 				animation.Play("Attack");
