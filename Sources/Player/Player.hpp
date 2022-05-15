@@ -1,6 +1,7 @@
 #pragma once
 #include "../Animation/AnimationController.hpp"
 #include "../Animation/SlashEffect.hpp"
+#include "../Animation/DashEffect.hpp"
 #include "../Objects/Moveable/Character.hpp"
 #include "../Managers/MapManager.hpp"
 #include <map>
@@ -40,7 +41,7 @@ private:
 	// 플레이어 히트박스
 	RectangleShape hitBox;
 	// 좌우 벽 충돌처리
-	RectangleShape hitBoxSide;
+	//RectangleShape hitBoxSide;
 
 	float gravity;								// 중력가속도 처리
 	Vector2f positionTemp;						// 전 프레임 포지션
@@ -54,9 +55,10 @@ private:
 	float knockbackTime;
 	float knockbackX;							// 피격 당했을시 날아갈 힘
 
-	SlashEffect effect;							// 이펙트
+	SlashEffect effect;							// Slash이펙트
 	std::string effectString;					// 공격 이펙트 방향 저장
 	std::string attackString;					// 공격 애니메이션 방향 저장
+	DashEffect dashDffect;						// 대쉬 이펙트
 
 	float collisionTime;						// 맞는 딜레이
 

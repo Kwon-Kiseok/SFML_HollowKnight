@@ -57,6 +57,7 @@
     <ClCompile Include="Sources\Maps\BossRoom_Map.cpp" />
     <ClCompile Include="Sources\Objects\Moveable\Monster\FalseKnight.cpp" />
     <ClCompile Include="Sources\UI\PauseUI.cpp" />
+    <ClCompile Include="Sources\Animation\DashEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="Sources\Maps\BossRoom_Map.hpp" />
     <ClInclude Include="Sources\Objects\Moveable\Monster\FalseKnight.hpp" />
     <ClInclude Include="Sources\UI\PauseUI.hpp" />
+    <ClInclude Include="Sources\Animation\DashEffect.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />

@@ -49,12 +49,12 @@ void Player::Init()
 	hitBox.setOutlineColor(Color::Red);
 	hitBox.setOutlineThickness(2);
 	// 좌우 벽 충돌 처리
-	hitBoxSide.setSize(Vector2f(50, 70));
+	/*hitBoxSide.setSize(Vector2f(50, 70));
 	hitBoxSide.setOrigin(Vector2f(25, 85));
 	hitBoxSide.setPosition(position);
 	hitBoxSide.setFillColor(Color::Transparent);
 	hitBoxSide.setOutlineColor(Color::Blue);
-	hitBoxSide.setOutlineThickness(2);
+	hitBoxSide.setOutlineThickness(2);*/
 
 
 	/**************************************************************************/
@@ -102,6 +102,7 @@ void Player::Init()
 	string = "Idle";
 
 	effect.Init();
+	dashDffect.Init();
 }
 
 void Player::Update(float dt)
@@ -224,6 +225,7 @@ void Player::Update(float dt)
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				effect.SwapScale();
+				dashDffect.SwapScale();
 				isWay = !isWay;
 				SetDirection(Direction::LEFT);
 			}
@@ -232,6 +234,7 @@ void Player::Update(float dt)
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				effect.SwapScale();
+				dashDffect.SwapScale();
 				isWay = !isWay;
 				SetDirection(Direction::RIGHT);
 			}
@@ -313,6 +316,7 @@ void Player::Update(float dt)
 				dashTemp = position;
 				canDash = false;
 				dashDelay = 0.6f;
+				dashDffect.SetDraw("Dash");
 			}
 		}
 		if (isDash)
@@ -378,11 +382,12 @@ void Player::Update(float dt)
 	sprite.setPosition(position);
 	attackBox.setPosition(position);
 	hitBox.setPosition(position);
-	hitBoxSide.setPosition(position);
+	//hitBoxSide.setPosition(position);
 
 	animation.Update(dt);
 
 	effect.Update(position, dt);
+	dashDffect.Update(position, dt);
 }
 
 void Player::Render(RenderWindow& window)
@@ -396,9 +401,13 @@ void Player::Render(RenderWindow& window)
 			window.draw(attackBox);
 		}
 		window.draw(hitBox);
-		window.draw(hitBoxSide);
+		//window.draw(hitBoxSide);
 	}
 	effect.Draw(window);		// Slash
+	if (isDash)
+	{
+		dashDffect.Draw(window);
+	}
 }
 
 void Player::Release()
@@ -452,16 +461,17 @@ void Player::UpdateCollision(int type)
 
 void Player::OnHitted(Vector2f pos)
 {
+	isDash = false;
 	if (collisionTime < 0.f)
 	{
 		gravity = -500.f;
 		if (position.x > pos.x)
 		{
-			knockbackX = 1.f;
+			knockbackX = 1.5f;
 		}
 		else if (position.x < pos.x)
 		{
-			knockbackX = -1.f;
+			knockbackX = -1.5f;
 		}
 		animation.Play("Stun");
 	}

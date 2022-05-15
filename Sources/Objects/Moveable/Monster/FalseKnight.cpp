@@ -115,14 +115,7 @@ void FalseKnight::Init()
 }
 
 void FalseKnight::Update(float dt, Vector2f player)
-{
-	//if (lodingTime > 0.f)
-	//{
-	//	lodingTime -= dt;
-	//	gravity = 0.f;
-	//}
-
-	
+{	
 	Attack(dt);
 
 	/****************************

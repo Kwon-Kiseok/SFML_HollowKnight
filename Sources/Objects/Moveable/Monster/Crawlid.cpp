@@ -205,25 +205,6 @@ void Crawlid::OnGround(FloatRect map)
 	}
 }
 
-//void Crawlid::OnGround(FloatRect map)
-//{
-//	if (sideShape.getGlobalBounds().intersects(map))
-//	{
-//		xDir = -xDir;
-//		sprite.scale(-1, 1);
-//	}
-//	if (gavityShape.getGlobalBounds().intersects(map))
-//	{
-//		gravity = 0.f;
-//		isFalling = false;
-//	}
-//	else
-//	{
-//		xDir = -xDir;
-//		sprite.scale(-1, 1);
-//	}
-//}
-
 bool Crawlid::UpdateCollision()
 {
 	return false;
