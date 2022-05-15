@@ -5,7 +5,7 @@ Town_Map::Town_Map(Player* player)
 	: Map(player)
 {
 	LoadMap("data_tables/maps/Town_map_data.csv");
-    
+	
 	maps_min_size = Vector2f(0.f, 0.f);
 	maps_max_size = Vector2f(3000.f, 1000.f);
 

@@ -673,6 +673,7 @@ void Player::Interaction_Stable(Stable* otherObj)
 	// 플레이어-벤치 상호작용
 	if (otherObj->CompareTag(TAG::BENCH))
 	{
+		SoundManager::GetInstance().PlaySound(L"bench");
 		animation.Play("Sit");
 		(otherObj)->SetInteractable(true);
 		(otherObj)->Interaction(*this);

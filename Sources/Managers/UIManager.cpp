@@ -72,6 +72,7 @@ void UIManager::Update_TitleScene(float dt)
 	{
 		SceneManager::GetInstance().Load(L"Play");
 		SoundManager::GetInstance().StopMusic();
+		SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/Dirtmouth 1.wav");
 		titleButtons[L"gameStart"]->ResetIsClicked();
 		isLoading = false;
 	}

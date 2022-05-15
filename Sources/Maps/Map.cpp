@@ -153,7 +153,7 @@ void Map::CheckCollisions(float dt)
 			if ((*it)->CompareTag(TAG::COIN))
 			{
 				player->AddCoin(1);
-				// 삭제
+				SoundManager::GetInstance().PlaySound(L"coin");
 				it = gameObjects.erase(it);
 				break;
 			}
@@ -205,6 +205,7 @@ void Map::CheckCollisions(float dt)
 		{
 			if ((*it)->GetIsAlivve() && (*it)->GetIsIsShield())
 			{
+				SoundManager::GetInstance().PlaySound(L"damage");
 				player->OnHitted((*it)->GetPosition());
 				player->SetHP();
 			}
@@ -216,6 +217,7 @@ void Map::CheckCollisions(float dt)
 		{
 			if ((*it)->GetIsAlivve() && (*it)->GetIsIsShield())
 			{
+				SoundManager::GetInstance().PlaySound(L"damage");
 				player->OnHitted((*it)->GetPosition());
 				player->SetHP();
 			}
@@ -231,7 +233,6 @@ void Map::CheckCollisions(float dt)
 			player->SetIsAttackBox(false);
 			(*it)->SetHealth(-1);
 			(*it)->SetShield(-1);
-
 			Coin* coin = new Coin((*it)->GetPosition());	// ??? 이때 코인 증가???
 			gameObjects.push_back(coin);
 		}
@@ -268,6 +269,7 @@ void Map::CheckCollisions(float dt)
 		if ((*it)->GetSprite().getGlobalBounds().intersects(player->GetAttackBox().getGlobalBounds()) &&
 			((*it)->CompareTag(TAG::TRAP) && player->GetIsAttackBox()))
 		{
+			SoundManager::GetInstance().PlaySound(L"parry");
 			player->UpdateCollision(2);
 			player->SetIsAttackBox(false);
 		}

@@ -4,6 +4,7 @@
 #include "../Maps/KingsPass_Map.hpp"
 #include "../Maps/CrossRoad_Map.hpp"
 #include "../Maps/BossRoom_Map.hpp"
+#include "SoundManager.hpp"
 #include <iostream>
 
 MapManager::~MapManager() noexcept
@@ -35,13 +36,29 @@ void MapManager::LoadMap(MAP_TYPE type)
 {
 	if (nullptr != map)
 		map = nullptr;
+
+	SoundManager::GetInstance().StopMusic();
 	map = maps[type];
 	map->Init();
 	player->SetCurrentMap(type);
 	// 로드하는 중에는 충돌처리나 업데이트를 막아야 함
 	// 타이밍이 너무 이름
 	player->SetPosition(startPos[type]);
-
+	switch (type)
+	{
+	case MAP_TYPE::Town:
+		SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/Dirtmouth 1.wav");
+		break;
+	case MAP_TYPE::KingsPass:
+		SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/RESTING GROUNDS S51-14.wav");
+		break;
+	case MAP_TYPE::CrossRoad:
+		SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/S19 Crossroads Bass.wav");
+		break;
+	case MAP_TYPE::BossRoom:
+		SoundManager::GetInstance().PlayMusic("Resources/AudioClip/BGM/S61-216 Hollow Knight.wav");
+		break;
+	}
 }
 
 void MapManager::Update(float dt)

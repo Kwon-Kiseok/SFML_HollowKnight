@@ -6,7 +6,6 @@ BossRoom_Map::BossRoom_Map(Player* player_)
 	: Map(player_)
 {
 	LoadMap("data_tables/maps/BossRoom_map_data.csv");
-
 	maps_min_size = Vector2f(-250.f, -600.f);
 	maps_max_size = Vector2f(4000.f, 1000.f);
 

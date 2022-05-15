@@ -5,7 +5,6 @@ KingsPass_Map::KingsPass_Map(Player* player_)
 	: Map(player_)
 {
 	LoadMap("data_tables/maps/KingsPass_map_data.csv");
-
 	maps_min_size = Vector2f(0.f, -1500.f);
 	maps_max_size = Vector2f(6800.f, 1500.f);
 
