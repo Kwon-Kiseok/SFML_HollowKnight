@@ -107,5 +107,7 @@ public:
 
 	AnimationController& GetPlayerAnimController();
 	float SlowDT(float dt);
+
+	void Respawn();
 };
 

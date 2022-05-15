@@ -38,6 +38,7 @@ void Bench::Interaction(Player& player)
 
 		// 정보 저장
 		PlayerDataManager::GetInstance().SavePlayerData(player);
+		PlayerDataManager::GetInstance().SaveBenchPoint(GetPosition());
 		interactable = false;
 	}
 }
