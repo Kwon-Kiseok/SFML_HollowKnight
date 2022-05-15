@@ -84,48 +84,46 @@ void UIManager::Update_TitleScene(float dt)
 
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::Up) && (button.second->IsButtonSelect()))
 		{
+			SoundManager::GetInstance().PlaySound(L"changeMenu");
 			if (currentSelectButtonID == "gameStart")
 			{
 				button.second->Select(false);
 				currentSelectButtonID = L"exit";
-				SoundManager::GetInstance().PlaySound(L"changeMenu");
 			}
 			else if (currentSelectButtonID == "editorMode")
 			{
 				button.second->Select(false);
 				currentSelectButtonID = L"gameStart";
-				SoundManager::GetInstance().PlaySound(L"changeMenu");
 			}
 			else if (currentSelectButtonID == "exit")
 			{
 				button.second->Select(false);
 				currentSelectButtonID = L"editorMode";
-				SoundManager::GetInstance().PlaySound(L"changeMenu");
 			}
 		}
 		else if (InputManager::GetInstance().GetKeyDown(Keyboard::Down) && (button.second->IsButtonSelect()))
 		{
+			SoundManager::GetInstance().PlaySound(L"changeMenu");
 			if (currentSelectButtonID == "gameStart")
 			{
 				button.second->Select(false);
 				currentSelectButtonID = L"editorMode";
-				SoundManager::GetInstance().PlaySound(L"changeMenu");
 			}
 			else if (currentSelectButtonID == "editorMode")
 			{
 				button.second->Select(false);
 				currentSelectButtonID = L"exit";
-				SoundManager::GetInstance().PlaySound(L"changeMenu");
 			}
 			else if (currentSelectButtonID == "exit")
 			{
 				button.second->Select(false);
 				currentSelectButtonID = L"gameStart";
-				SoundManager::GetInstance().PlaySound(L"changeMenu");
 			}
 		}
 		else if (InputManager::GetInstance().GetKeyDown(Keyboard::Enter) && (button.second->IsButtonSelect()))
 		{
+			SoundManager::GetInstance().PlaySound(L"select");
+
 			if (currentSelectButtonID == "gameStart")
 			{
 				Game::GetInstance().LoadingScereenLoad();

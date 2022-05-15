@@ -376,6 +376,7 @@ void Player::Update(float dt)
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::A))
 	{
 		isFocus = true;
+		SoundManager::GetInstance().PlaySound(L"charging");
 		animation.Play("Focus");
 	}
 	if (InputManager::GetInstance().GetKey(Keyboard::A) && isFocus)	//P: Life��
@@ -383,6 +384,10 @@ void Player::Update(float dt)
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) ||
 			InputManager::GetInstance().GetKeyDown(Keyboard::Left))
 		{
+			if (SoundManager::GetInstance().GetSoundbyID(L"charging").getStatus() == Music::Status::Playing)
+			{
+				SoundManager::GetInstance().GetSoundbyID(L"charging").stop();
+			}
 			isFocus = false;
 			animation.Play(string);
 			healDeltaTime = 0;
@@ -391,6 +396,11 @@ void Player::Update(float dt)
 		healDeltaTime += dt;
 		if (healDeltaTime >= 2.f)
 		{
+			if (SoundManager::GetInstance().GetSoundbyID(L"charging").getStatus() == Music::Status::Playing)
+			{
+				SoundManager::GetInstance().GetSoundbyID(L"charging").stop();
+			}
+			SoundManager::GetInstance().PlaySound(L"heal");
 			hitEffect.SetDraw("Hit");
 			if (health < 5)
 			{
@@ -402,6 +412,10 @@ void Player::Update(float dt)
 	}
 	if (InputManager::GetInstance().GetKeyUp(Keyboard::A))
 	{
+		if (SoundManager::GetInstance().GetSoundbyID(L"charging").getStatus() == Music::Status::Playing)
+		{
+			SoundManager::GetInstance().GetSoundbyID(L"charging").stop();
+		}
 		isFocus = false;
 		animation.Play(string);
 		healDeltaTime = 0;
@@ -720,9 +734,7 @@ void Player::Respawn(float dt)
 	{
 		return;
 	}
-
 	isAlive = true;
-	deathTime = 0.f;
 	collisionTime = 0.f;
 	MapManager::GetInstance().LoadMap(PlayerDataManager::GetInstance().GetSavePointMap());
 	SetPosition(PlayerDataManager::GetInstance().GetBenchPoint());

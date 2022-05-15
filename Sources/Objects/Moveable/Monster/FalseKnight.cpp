@@ -226,8 +226,12 @@ void FalseKnight::Update(float dt, Vector2f player)
 void FalseKnight::Render(RenderWindow& window)
 {
 	window.draw(sprite);
-	window.draw(rectangleShape);
-	window.draw(detectShape);
+	if (MapManager::GetInstance().GetIsDebugMode())
+	{
+		window.draw(rectangleShape);
+		window.draw(detectShape);
+		window.draw(attackBox);
+	}
 	if (isAttack)
 	{
 		if (attackPattern == 3 && attackDelay < 3.f)
@@ -235,7 +239,6 @@ void FalseKnight::Render(RenderWindow& window)
 			window.draw(waveSprite);
 		}
 	}
-	window.draw(attackBox);
 }
 
 void FalseKnight::Release()
@@ -290,7 +293,8 @@ bool FalseKnight::OnHitted(Time timeHit)
 void FalseKnight::SetShield(int _shield)
 {
 	//
-	SoundManager::GetInstance().PlaySound(L"parry");
+	if(isShield)
+		SoundManager::GetInstance().PlaySound(L"parry");
 	shield += _shield;
 }
 
