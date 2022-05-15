@@ -97,7 +97,6 @@ void Crawlid::Init()
 	animation.Play("Idle");
 
 	sprite.setScale(-xDir, 1);
-	animation.Play("Turn");
 }
 
 void Crawlid::Update(float dt, Vector2f player)

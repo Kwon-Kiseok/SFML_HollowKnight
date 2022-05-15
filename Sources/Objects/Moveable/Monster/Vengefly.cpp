@@ -100,10 +100,17 @@ void Vengefly::Update(float dt, Vector2f playerPos)
 		isAlive = false;
 		animation.Play("Die");
 	}
+
 	if (isAlive)
 	{
 		if (isDetect)
 		{
+			if (once)
+			{
+				animation.Play("Detect");
+				animation.PlayQueue("Chase");
+				once = false;
+			}
 			Vector2f positionTemp = position;
 
 			float x = playerPos.x - position.x;
@@ -111,7 +118,6 @@ void Vengefly::Update(float dt, Vector2f playerPos)
 			Vector2f dir(x, y);
 
 			dir = Utility::Normalize(dir);
-
 
 			position += dir * moveSpeed * dt;	// v = dt			
 		}

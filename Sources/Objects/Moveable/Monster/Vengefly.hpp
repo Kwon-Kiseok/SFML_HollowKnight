@@ -13,7 +13,7 @@ private:
 	std::map<std::string, Texture> texMap;
 
 	const float GRAVITY = 1500.f;				// ม฿ทย
-
+	bool once = true;
 public:
 	Vengefly();
 	Vengefly(int xdir);
