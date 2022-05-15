@@ -71,6 +71,8 @@ private:
 	float healDeltaTime;
 	int slowTick;
 
+	float ddt;
+	float deathTime = 0.f;
 public:
 	Player();
 	virtual void Init() override;
