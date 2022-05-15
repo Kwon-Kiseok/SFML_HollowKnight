@@ -2,6 +2,7 @@
 #include "../../Sources/Animation/rapidcsv.hpp"
 #include "../../Sources/Managers/TextureManager.hpp"
 #include "../../Sources/Utils/Utility.hpp"
+#include "../../../Managers/SoundManager.hpp"
 #include <cstdlib>
 
 FalseKnight::FalseKnight()
@@ -288,6 +289,8 @@ bool FalseKnight::OnHitted(Time timeHit)
 
 void FalseKnight::SetShield(int _shield)
 {
+	//
+	SoundManager::GetInstance().PlaySound(L"parry");
 	shield += _shield;
 }
 
@@ -305,6 +308,7 @@ void FalseKnight::SetHealth(int health)
 {
 	if (!isShield)
 	{
+		SoundManager::GetInstance().PlaySound(L"enemy_damage");
 		this->health += health;
 	}
 }

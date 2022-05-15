@@ -1,5 +1,6 @@
 #include "Character.hpp"
 #include "../../Utils/Utility.hpp"
+#include "../../Managers/SoundManager.hpp"
 
 Character::Character()
 {
@@ -73,6 +74,7 @@ void Character::SetY(float y)
 
 void Character::SetHealth(int health)
 {
+	SoundManager::GetInstance().PlaySound(L"enemy_damage");
 	this->health += health;
 }
 

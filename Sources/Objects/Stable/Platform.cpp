@@ -1,5 +1,6 @@
 #include "Platform.hpp"
 #include "../Collider.hpp"
+#include "../../Managers/SoundManager.hpp"
 
 #include <iostream>
 
@@ -107,9 +108,11 @@ void Platform::Elevate(float dt)
 	position.y += displacement;
 	SetPosition(position);
 	collider->SetPosition(position);
+	SoundManager::GetInstance().PlaySound(L"Lift_Moving");
 
 	if (direction == 1 && (position.y >= endPos.y + displacement || position.y >= endPos.y - displacement))
 	{
+		SoundManager::GetInstance().PlaySound(L"Lift_Arrive");
 		direction *= -1;
 		elevatorTrigger = false;
 		SetInteractable(false);
@@ -120,6 +123,7 @@ void Platform::Elevate(float dt)
 	}
 	else if(direction == -1 && (position.y <= endPos.y + displacement || position.y <= endPos.y - displacement))
 	{
+		SoundManager::GetInstance().PlaySound(L"Lift_Arrive");
 		direction *= -1;
 		elevatorTrigger = false;
 		std::cout << "Arrive endPos" << std::endl;
@@ -143,6 +147,7 @@ void Platform::Interaction(Player& player)
 	case PLATFORM_TYPE::FIXED:
 		break;
 	case PLATFORM_TYPE::ELEVEATOR:
+		SoundManager::GetInstance().PlaySound(L"Lift_Active");
 		elevatorTrigger = true;
 		break;
 	case PLATFORM_TYPE::SIDEMOVE:
