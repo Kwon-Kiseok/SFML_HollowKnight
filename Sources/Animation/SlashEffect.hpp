@@ -3,7 +3,7 @@
 
 using namespace sf;
 
-class EffectManager
+class SlashEffect
 {
 private:
 	Sprite effectSprite;

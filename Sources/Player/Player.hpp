@@ -1,6 +1,6 @@
 #pragma once
 #include "../Animation/AnimationController.hpp"
-#include "../Animation/EffectManager.hpp"
+#include "../Animation/SlashEffect.hpp"
 #include "../Objects/Moveable/Character.hpp"
 #include "../Managers/MapManager.hpp"
 #include <map>
@@ -54,7 +54,7 @@ private:
 	float knockbackTime;
 	float knockbackX;							// 피격 당했을시 날아갈 힘
 
-	EffectManager effect;						// 이펙트
+	SlashEffect effect;							// 이펙트
 	std::string effectString;					// 공격 이펙트 방향 저장
 	std::string attackString;					// 공격 애니메이션 방향 저장
 

@@ -1,9 +1,9 @@
-#include "EffectManager.hpp"
+#include "SlashEffect.hpp"
 #include "rapidcsv.hpp"
 /************************************************
 * 
 *************************************************/
-void EffectManager::Init()
+void SlashEffect::Init()
 {
 	position.x = 512.f;
 	position.y = 512.f;
@@ -53,24 +53,24 @@ void EffectManager::Init()
 	//animation.Play("Slash");
 }
 
-void EffectManager::Update(Vector2f playerPosition, float dt)
+void SlashEffect::Update(Vector2f playerPosition, float dt)
 {
 	//position = playerPosition;
 	effectSprite.setPosition(playerPosition);
 	animation.Update(dt);
 }
 
-void EffectManager::Draw(RenderWindow& window)
+void SlashEffect::Draw(RenderWindow& window)
 {
 	window.draw(effectSprite);
 }
 
-void EffectManager::SetDraw(std::string string)
+void SlashEffect::SetDraw(std::string string)
 {
 	animation.Play(string);
 }
 
-void EffectManager::SwapScale()
+void SlashEffect::SwapScale()
 {
 	effectSprite.scale(-1, 1);
 }
