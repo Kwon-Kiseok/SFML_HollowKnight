@@ -104,6 +104,7 @@ void Player::Init()
 
 	effect.Init();
 	dashDffect.Init();
+	hitEffect.Init();
 }
 
 void Player::Update(float dt)
@@ -227,6 +228,7 @@ void Player::Update(float dt)
 				attackBox.scale(-1, 1);
 				effect.SwapScale();
 				dashDffect.SwapScale();
+				hitEffect.SwapScale();
 				isWay = !isWay;
 				SetDirection(Direction::LEFT);
 			}
@@ -236,10 +238,11 @@ void Player::Update(float dt)
 				attackBox.scale(-1, 1);
 				effect.SwapScale();
 				dashDffect.SwapScale();
+				hitEffect.SwapScale();
 				isWay = !isWay;
 				SetDirection(Direction::RIGHT);
 			}
-		} 
+		}
 
 		if (canJump)
 		{
@@ -383,12 +386,11 @@ void Player::Update(float dt)
 	sprite.setPosition(position);
 	attackBox.setPosition(position);
 	hitBox.setPosition(position);
-	//hitBoxSide.setPosition(position);
-
 	animation.Update(dt);
 
 	effect.Update(position, dt);
 	dashDffect.Update(position, dt);
+	hitEffect.Update(position, dt);
 }
 
 void Player::Render(RenderWindow& window)
@@ -409,6 +411,7 @@ void Player::Render(RenderWindow& window)
 	{
 		dashDffect.Draw(window);
 	}
+	hitEffect.Draw(window);
 }
 
 void Player::Release()
@@ -457,6 +460,18 @@ void Player::UpdateCollision(int type)
 		isDash = false;
 		isKnockback = true;
 		collisionType = type;
+		if (AttackDir == 0)			//정면
+		{
+			hitEffect.SetDraw("Attack");
+		}
+		else if (AttackDir == 1)	// 아래로 친거
+		{
+			hitEffect.SetDraw("AttackDown");
+		}
+		else if (AttackDir == -1)	// 위로 친거
+		{
+			hitEffect.SetDraw("AttackUp");
+		}
 	}
 }
 
@@ -475,6 +490,7 @@ void Player::OnHitted(Vector2f pos)
 			knockbackX = -1.5f;
 		}
 		animation.Play("Stun");
+		hitEffect.SetDraw("Hit");
 	}
 }
 
@@ -595,6 +611,8 @@ void Player::Interaction_Stable(Stable* otherObj)
 	// 플레이어-벤치 상호작용
 	if (otherObj->CompareTag(TAG::BENCH))
 	{
+		gravity = 0.f;
+		animation.Play("Sit");
 		(otherObj)->SetInteractable(true);
 		(otherObj)->Interaction(*this);
 	}
