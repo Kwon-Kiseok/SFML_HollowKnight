@@ -7,9 +7,8 @@
 FalseKnight::FalseKnight()
 {
 	moveSpeed = 100.f;
-	health = 3;
+	health = 10;
 	shield = SHIELD;
-	isShield = true;
 	downTime = DOWNTIME;
 
 	attackDelay = -1.f;
@@ -18,9 +17,8 @@ FalseKnight::FalseKnight()
 FalseKnight::FalseKnight(int xdir)
 {
 	moveSpeed = 100.f;
-	health = 3;
+	health = 10;
 	shield = SHIELD;
-	isShield = true;
 	downTime = DOWNTIME;
 
 	attackDelay = -1.f;
@@ -60,8 +58,8 @@ void FalseKnight::Init()
 	* 감지 박스
 	****************************/
 	{
-		detectShape.setSize(Vector2f(600, 300));
-		detectShape.setOrigin(Vector2f(300, 300));
+		detectShape.setSize(Vector2f(700, 300));
+		detectShape.setOrigin(Vector2f(350, 300));
 		detectShape.setPosition(position);
 		detectShape.setFillColor(Color::Transparent);
 		detectShape.setOutlineColor(Color::Blue);
@@ -117,14 +115,7 @@ void FalseKnight::Init()
 }
 
 void FalseKnight::Update(float dt, Vector2f player)
-{
-	if (lodingTime > 0.f)
-	{
-		lodingTime -= dt;
-		gravity = 0.f;
-	}
-
-	
+{	
 	Attack(dt);
 
 	/****************************
@@ -156,7 +147,7 @@ void FalseKnight::Update(float dt, Vector2f player)
 					rectangleShape.setScale(1, 1);
 					waveSprite.setScale(1, 1);
 				}
-				if (position.x > player.x)
+				else if (position.x > player.x)
 				{
 					xDir = -1;
 					sprite.setScale(-1, 1);
@@ -218,13 +209,10 @@ void FalseKnight::Update(float dt, Vector2f player)
 	{
 		if (health == 0)
 		{
-			animation.Stop();
+			animation.Play("Die");
 			isAlive = false;
 		}
 	}
-
-
-
 
 	sprite.setPosition(position);
 	rectangleShape.setPosition(position);
@@ -313,10 +301,14 @@ void FalseKnight::SetIsDetect(bool is)
 	isDetect = is;
 }
 
-//RectangleShape FalseKnight::GetAttackShape()
-//{
-//	return attackBox;
-//}
+void FalseKnight::SetHealth(int health)
+{
+	if (!isShield)
+	{
+		this->health += health;
+	}
+}
+
 /****************************************************************
 * 공격 패턴
 *****************************************************************/

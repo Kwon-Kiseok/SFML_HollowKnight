@@ -3,7 +3,7 @@
 
 using namespace sf;
 
-class EffectManager
+class DashEffect
 {
 private:
 	Sprite effectSprite;

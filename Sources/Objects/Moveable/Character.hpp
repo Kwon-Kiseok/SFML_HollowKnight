@@ -55,7 +55,7 @@ public:
 	// SetFunction
 	void SetX(float x);
 	void SetY(float y);
-	void SetHealth(int health);
+	virtual void SetHealth(int health);
 	virtual void SetShield(int shield);						// ½¯µå ¹ÝÈ¯
 	void SetDirection(Direction dir);
 	void SetCollisionState(bool isCol);

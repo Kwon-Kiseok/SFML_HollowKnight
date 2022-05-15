@@ -1,9 +1,9 @@
-#include "EffectManager.hpp"
+#include "DashEffect.hpp"
 #include "rapidcsv.hpp"
 /************************************************
 * 
 *************************************************/
-void EffectManager::Init()
+void DashEffect::Init()
 {
 	position.x = 512.f;
 	position.y = 512.f;
@@ -50,27 +50,27 @@ void EffectManager::Init()
 		animation.AddClip(clip);
 	}
 
-	//animation.Play("Slash");
+	animation.Play("Dash");
+	effectSprite.scale(-1, 1);
 }
 
-void EffectManager::Update(Vector2f playerPosition, float dt)
+void DashEffect::Update(Vector2f playerPosition, float dt)
 {
-	//position = playerPosition;
 	effectSprite.setPosition(playerPosition);
 	animation.Update(dt);
 }
 
-void EffectManager::Draw(RenderWindow& window)
+void DashEffect::Draw(RenderWindow& window)
 {
 	window.draw(effectSprite);
 }
 
-void EffectManager::SetDraw(std::string string)
+void DashEffect::SetDraw(std::string string)
 {
 	animation.Play(string);
 }
 
-void EffectManager::SwapScale()
+void DashEffect::SwapScale()
 {
 	effectSprite.scale(-1, 1);
 }

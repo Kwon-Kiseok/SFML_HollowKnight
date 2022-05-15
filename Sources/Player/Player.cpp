@@ -18,6 +18,8 @@ Player::Player()
 	jumpTime = 0.f;
 	collisionTime = 1.f;
 	knockbackTime = 0.3f;
+
+	knockbackX = 0.f;
 }
 
 void Player::Init()
@@ -47,12 +49,12 @@ void Player::Init()
 	hitBox.setOutlineColor(Color::Red);
 	hitBox.setOutlineThickness(2);
 	// 좌우 벽 충돌 처리
-	hitBoxSide.setSize(Vector2f(50, 70));
+	/*hitBoxSide.setSize(Vector2f(50, 70));
 	hitBoxSide.setOrigin(Vector2f(25, 85));
 	hitBoxSide.setPosition(position);
 	hitBoxSide.setFillColor(Color::Transparent);
 	hitBoxSide.setOutlineColor(Color::Blue);
-	hitBoxSide.setOutlineThickness(2);
+	hitBoxSide.setOutlineThickness(2);*/
 
 
 	/**************************************************************************/
@@ -100,6 +102,7 @@ void Player::Init()
 	string = "Idle";
 
 	effect.Init();
+	dashDffect.Init();
 }
 
 void Player::Update(float dt)
@@ -110,9 +113,27 @@ void Player::Update(float dt)
 		gravity = 0.f;
 	}
 
+	positionTemp = position;
 	collisionTime -= dt; // 맞는거 딜레이를 위해서 필요함	
 
-	positionTemp = position;
+	if (knockbackX < 0.f)
+	{
+		knockbackX += dt;
+		if (knockbackX > 0.f)
+		{
+			knockbackX = 0.f;
+		}
+	}
+	else if (knockbackX > 0.f)
+	{
+		knockbackX -= dt;
+		if (knockbackX < 0.f)
+		{
+			knockbackX = 0.f;
+		}
+	}
+
+
 	Vector2f delta;
 	float h = InputManager::GetInstance().GetAxisRaw(Axis::Horizontal);	// -1 0 1
 	float v = InputManager::GetInstance().GetAxisRaw(Axis::Vertical);	// -1 0 1
@@ -130,6 +151,7 @@ void Player::Update(float dt)
 				attackBox.setPosition(position);
 				attackString = "UpSlash";
 				effectString = "UpSlash";
+				AttackDir = -1;
 			}
 			else if (v == 1.f && !canJump)
 			{
@@ -138,6 +160,7 @@ void Player::Update(float dt)
 				attackBox.setPosition(position);
 				attackString = "DownSlash";
 				effectString = "DownSlash";
+				AttackDir = 1;
 			}
 			else
 			{
@@ -146,6 +169,7 @@ void Player::Update(float dt)
 				attackBox.setPosition(position);
 				attackString = "Slash";
 				effectString = "Slash";
+				AttackDir = 0;
 			}
 		}
 	}
@@ -153,23 +177,38 @@ void Player::Update(float dt)
 	{
 		if (isKnockback)
 		{
-			knockbackTime -= dt;
-				if (knockbackTime > 0.f)
+			if (AttackDir == 0)
+			{
+				if (collisionType == 0 || collisionType == 1)
 				{
-					if (!isWay)
+					knockbackTime -= dt;
+					if (knockbackTime > 0.f)
 					{
-						position.x -= 0.4f;
+						if (!isWay)
+						{
+							position.x -= 0.4f;
+						}
+						if (isWay)
+						{
+							position.x += 0.4f;
+						}
 					}
-					if (isWay)
+					else
 					{
-						position.x += 0.4f;
+						isKnockback = false;
+						knockbackTime = 0.3f;
 					}
 				}
-				else
+			}
+			else if (AttackDir == 1)
+			{
+				if (collisionType == 0 || collisionType == 2)
 				{
+					gravity = -700.f;
+					AttackDir = -1;
 					isKnockback = false;
-					knockbackTime = 0.3f;
 				}
+			}
 		}
 	}
 	/******************  knockback test  ****************/
@@ -186,6 +225,7 @@ void Player::Update(float dt)
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				effect.SwapScale();
+				dashDffect.SwapScale();
 				isWay = !isWay;
 				SetDirection(Direction::LEFT);
 			}
@@ -194,6 +234,7 @@ void Player::Update(float dt)
 				sprite.scale(-1, 1);
 				attackBox.scale(-1, 1);
 				effect.SwapScale();
+				dashDffect.SwapScale();
 				isWay = !isWay;
 				SetDirection(Direction::RIGHT);
 			}
@@ -252,6 +293,10 @@ void Player::Update(float dt)
 			{
 				gravity -= GRAVITY * dt * 1.2f;
 			}
+			else
+			{
+
+			}
 		}
 		delta.y = gravity * dt;
 	}
@@ -271,6 +316,7 @@ void Player::Update(float dt)
 				dashTemp = position;
 				canDash = false;
 				dashDelay = 0.6f;
+				dashDffect.SetDraw("Dash");
 			}
 		}
 		if (isDash)
@@ -303,10 +349,10 @@ void Player::Update(float dt)
 			animation.PlayQueue(string);	// 이전 이미지로
 			isAttack = true;
 			hitAttack = true;
-			effect.SetDraw("Slash");
 
 			SoundManager::GetInstance().PlaySound(L"sword");
 			effect.SetDraw(effectString);
+
 		}
 		attackDelay -= dt;
 		if (attackDelay < 0.f)
@@ -327,16 +373,21 @@ void Player::Update(float dt)
 		health++;
 	}
 
+	if (knockbackX != 0.f)
+	{
+		delta.x += knockbackX;
+	}
 	position += delta;
 
 	sprite.setPosition(position);
 	attackBox.setPosition(position);
 	hitBox.setPosition(position);
-	hitBoxSide.setPosition(position);
+	//hitBoxSide.setPosition(position);
 
 	animation.Update(dt);
 
 	effect.Update(position, dt);
+	dashDffect.Update(position, dt);
 }
 
 void Player::Render(RenderWindow& window)
@@ -350,9 +401,13 @@ void Player::Render(RenderWindow& window)
 			window.draw(attackBox);
 		}
 		window.draw(hitBox);
-		window.draw(hitBoxSide);
+		//window.draw(hitBoxSide);
 	}
 	effect.Draw(window);		// Slash
+	if (isDash)
+	{
+		dashDffect.Draw(window);
+	}
 }
 
 void Player::Release()
@@ -394,19 +449,32 @@ void Player::AddCoin(int value)
 	coin += value;
 }
 
-bool Player::UpdateCollision()
+void Player::UpdateCollision(int type)
 {
 	if (isAttack)
 	{
 		isDash = false;
 		isKnockback = true;
+		collisionType = type;
 	}
-	return false;
 }
 
-bool Player::OnHitted(Time timeHit)
+void Player::OnHitted(Vector2f pos)
 {
-	return false;
+	isDash = false;
+	if (collisionTime < 0.f)
+	{
+		gravity = -500.f;
+		if (position.x > pos.x)
+		{
+			knockbackX = 1.5f;
+		}
+		else if (position.x < pos.x)
+		{
+			knockbackX = -1.5f;
+		}
+		animation.Play("Stun");
+	}
 }
 
 void Player::OnGround(FloatRect map)
@@ -472,7 +540,7 @@ const RectangleShape Player::GetAttackBox()
 	return attackBox;
 }
 
-void Player::SetHP(float dt)
+void Player::SetHP()
 {
 	if (collisionTime < 0.f)
 	{

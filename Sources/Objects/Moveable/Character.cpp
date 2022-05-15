@@ -11,8 +11,8 @@ Character::Character()
 	deltaTime = 0.f;
 	gravity = 980.f;
 	health = 0;
-	
-	isShield = false;
+
+	isShield = true;
 	isAlive = true;
 	isColliding = false;
 	isFalling = false;
@@ -73,10 +73,7 @@ void Character::SetY(float y)
 
 void Character::SetHealth(int health)
 {
-	if (!isShield)
-	{
-		this->health += health;
-	}
+	this->health += health;
 }
 
 void Character::SetShield(int shield)
