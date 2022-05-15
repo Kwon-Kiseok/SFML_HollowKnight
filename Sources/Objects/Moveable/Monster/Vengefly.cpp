@@ -100,10 +100,17 @@ void Vengefly::Update(float dt, Vector2f playerPos)
 		isAlive = false;
 		animation.Play("Die");
 	}
+
 	if (isAlive)
 	{
 		if (isDetect)
 		{
+			if (once)
+			{
+				animation.Play("Detect");
+				animation.PlayQueue("Chase");
+				once = false;
+			}
 			Vector2f positionTemp = position;
 
 			float x = playerPos.x - position.x;
@@ -111,7 +118,6 @@ void Vengefly::Update(float dt, Vector2f playerPos)
 			Vector2f dir(x, y);
 
 			dir = Utility::Normalize(dir);
-
 
 			position += dir * moveSpeed * dt;	// v = dt			
 		}
@@ -173,20 +179,17 @@ void Vengefly::OnGround(FloatRect map)
 			case Pivots::LC:
 				position.x += (map.left + map.width) - (rectangleShape.getGlobalBounds().left);
 				InputManager::GetInstance().HorizontalInit();
-				//InputManager::HorizontalInit();
 				break;
 
 			case Pivots::RC:
 				position.x -= (rectangleShape.getGlobalBounds().left + rectangleShape.getGlobalBounds().width) - (map.left);
 				InputManager::GetInstance().HorizontalInit();
-				//InputManager::HorizontalInit();0
 				break;
 
 			case Pivots::CT:
 				gravity = 0.f;
 				position.y += (map.top + map.height) - (rectangleShape.getGlobalBounds().top);
 				InputManager::GetInstance().HorizontalInit();
-				//InputManager::VerticalInit();
 				break;
 
 			case Pivots::CB:
@@ -201,25 +204,6 @@ void Vengefly::OnGround(FloatRect map)
 		}
 	}
 }
-
-//void Crawlid::OnGround(FloatRect map)
-//{
-//	if (sideShape.getGlobalBounds().intersects(map))
-//	{
-//		xDir = -xDir;
-//		sprite.scale(-1, 1);
-//	}
-//	if (gavityShape.getGlobalBounds().intersects(map))
-//	{
-//		gravity = 0.f;
-//		isFalling = false;
-//	}
-//	else
-//	{
-//		xDir = -xDir;
-//		sprite.scale(-1, 1);
-//	}
-//}
 
 bool Vengefly::UpdateCollision()
 {

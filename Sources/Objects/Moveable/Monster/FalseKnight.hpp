@@ -6,8 +6,8 @@
 class FalseKnight : public Monster
 {
 private:
-	const int SHIELD = 2;			// 최대 쉴드
-	const float DOWNTIME = 2.f;		// 스턴상태의 시간
+	const int SHIELD = 4;			// 최대 쉴드
+	const float DOWNTIME = 4.f;		// 스턴상태의 시간
 	const float GRAVITY = 1500.f;	// 중력
 	const float ATTACK_DELAY = 4.f;	// 공격 딜레이 시간
 
@@ -42,9 +42,7 @@ public:
 	virtual void SetShield(int shield);						// 쉴드 반환
 	virtual RectangleShape GetDetectShape() override;		// 탐지 범위
 	virtual void SetIsDetect(bool is) override;				// 공격 여부
-	//virtual RectangleShape GetAttackShape() override;		// 공격 박스 범위
-
+	virtual void SetHealth(int health) override;
 
 	void Attack(float dt);
 };
-
