@@ -45,19 +45,25 @@ private:
 	Text textCoin;
 // /////////////////////////////////////////////
 
+
+	// ∏ 
+	bool mapVisible = false;
 	Texture textureTown;
 	Sprite spriteTown;
+	Texture texturePlayerMarker;
+	Sprite spritePlayerMarker;
 
 	Texture textureBack;
 	Sprite spriteBack;
 
-	// ∏ 
-	bool mapVisible = false;
+
 	InventoryScene inventory;
 
 	// ¿œΩ√¡§¡ˆ
 	PauseUI pauseUI;
 	bool isPauseMenu = false;
+
+	bool isLoading = false;
 
 public:
 	virtual ~UIManager() override;

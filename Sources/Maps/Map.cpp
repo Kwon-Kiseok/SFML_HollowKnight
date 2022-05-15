@@ -57,6 +57,14 @@ void Map::Update(float dt)
 		(*it)->Update(dt);
 	}
 
+	for (auto it = stableObjects.begin(); it != stableObjects.end(); ++it)
+	{
+		if ((*it)->CompareTag(TAG::ELEVATOR))
+		{
+			(*it)->Update(dt);
+		}	
+	}
+
 	PlayerDataManager::GetInstance().UpdatePlayerData(*player);
 	ViewManager::GetInstance().TracePlayer(*player, maps_min_size, maps_max_size);
 
@@ -142,32 +150,14 @@ void Map::CheckCollisions(float dt)
 
 		if (player->CheckCollision(*it))
 		{
-
-			if ((*it)->CompareTag(TAG::MONSTER))
-			{
-				//std::cout << player->GetName() << " Collision Monster" << std::endl;
-			}
 			if ((*it)->CompareTag(TAG::COIN))
 			{
-				for (std::vector<Collider*>::iterator collider_it = colliders.begin(); collider_it != colliders.end(); ++collider_it)
-				{
-					if ((*it)->CheckCollision(*collider_it))
-					{
-						if ((*collider_it)->CompareTag(TAG::COLLIDER))
-						{
-							std::cout << player->GetName() << "Collision Coin" << std::endl;
-							//	(*it)->Player::UpdateCollision((*collider_it)->GetShape().getGlobalBounds());
-						}
-					}
-				}
+				player->AddCoin(1);
+				// 삭제
+				it = gameObjects.erase(it);
+				break;
 			}
 		}
-		player->AddCoin(1);
-
-		// 삭제
-		it = gameObjects.erase(it);
-		break;
-
 		if ((*it)->CompareTag(TAG::COIN))
 		{
 			for (std::vector<Collider*>::iterator col_it = colliders.begin(); col_it != colliders.end(); ++col_it)
@@ -180,9 +170,6 @@ void Map::CheckCollisions(float dt)
 		}
 	}
 
-
-
-
 	for (std::vector<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
 	{
 		if (*it == nullptr) continue;
@@ -194,7 +181,7 @@ void Map::CheckCollisions(float dt)
 				player->OnGround((*it)->GetShape().getGlobalBounds());
 			}
 		}
-		/**********************************************************
+    /**********************************************************
 		* 벽에 공격한 경우
 		**********************************************************/
 		if (player->GetAttackBox().getGlobalBounds().intersects((*it)->GetShape().getGlobalBounds()))
@@ -207,7 +194,7 @@ void Map::CheckCollisions(float dt)
 			}
 		}
 	}
-
+	
 	for (std::vector<Character*>::iterator it = characters.begin(); it != characters.end(); ++it)
 	{
 		if (*it == nullptr) continue;
@@ -286,15 +273,8 @@ void Map::CheckCollisions(float dt)
 		}
 		if (player->CheckCollision(*it))
 		{
-			// 벤치와 부딪혔을 때
-			if ((*it)->CompareTag(TAG::BENCH))
-			{
-				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
-				{
-					(*it)->SetInteractable(true);
-					(*it)->Interaction(*player);
-				}
-			}
+			if(InputManager::GetInstance().GetKeyDown(Keyboard::Up))
+				player->Interaction_Stable(*it);
 			/**********************************************************
 			* 함정
 			**********************************************************/
@@ -309,20 +289,19 @@ void Map::CheckCollisions(float dt)
 	for (std::vector<Portal*>::iterator it = portals.begin(); it != portals.end(); ++it)
 	{
 		if ((*it) == nullptr) continue;
-
+	
 		if (player->CheckCollision((*it)))
 		{
-			player->Collision(*it);
-
 			// 플레이어가 포탈과 겹쳤을 때
 			if ((*it)->GetInteractionType() == Interaction_Type::PORTAL)
 			{
 				// 위키를 눌러서 다음 맵 이동
 				if (InputManager::GetInstance().GetKeyDown(Keyboard::Up))
+				{
 					(*it)->SetInteractable(true);
-				if ((*it)->IsInteractable())
-					(*it)->Interaction(*player);
-				return;
+					return;
+				}
+				player->Interaction_Portal((*it));
 			}
 		}
 	}

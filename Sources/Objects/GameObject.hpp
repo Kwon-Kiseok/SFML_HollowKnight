@@ -16,6 +16,7 @@ enum class TAG
 	TRAP,
 	BREAKABLE,
 	COIN,
+	ELEVATOR,
 };
 
 class GameObject
@@ -39,9 +40,9 @@ public:
 	// Set Function
 	void SetTexture(std::string path);
 	void SetSprite();
-	void SetPosition(Vector2f pos);
-	void SetPosition(float x, float y);
-	void SetOriginCenter();
+	virtual void SetPosition(Vector2f pos);
+	virtual void SetPosition(float x, float y);
+	virtual void SetOriginCenter();
 	void SetVisible();
 	void SetHidden();
 	void SetLayer(int layer);

@@ -4,7 +4,8 @@
 #include "../Managers/PlayerDataManager.hpp"
 #include "../Managers/SoundManager.hpp"
 #include "../Utils/Utility.hpp"
-
+#include "../Objects/Stable/Stable.hpp"
+#include "../Objects/Stable/Portal.hpp"
 
 Player::Player()
 	: isWay(true), isDash(false), isAttack(false), hitAttack(false), attackDelay(ATTACK_DELAY), gravity(GRAVITY)
@@ -97,7 +98,7 @@ void Player::Init()
 
 		animation.AddClip(clip);
 	}
-
+	animation.SetSpeed(1.5f);
 	animation.Play("Idle");
 	string = "Idle";
 
@@ -238,7 +239,7 @@ void Player::Update(float dt)
 				isWay = !isWay;
 				SetDirection(Direction::RIGHT);
 			}
-		}
+		} 
 
 		if (canJump)
 		{
@@ -587,4 +588,32 @@ bool Player::UpdateCollision(const std::list<Coin*> coins)
 		isCollided = true;
 	}
 	return false;
+}
+
+void Player::Interaction_Stable(Stable* otherObj)
+{
+	// 플레이어-벤치 상호작용
+	if (otherObj->CompareTag(TAG::BENCH))
+	{
+		(otherObj)->SetInteractable(true);
+		(otherObj)->Interaction(*this);
+	}
+	// 플레이어-엘레베이터 상호작용
+	else if (otherObj->CompareTag(TAG::ELEVATOR))
+	{
+		if (!(otherObj)->IsInteractable())
+		{
+			(otherObj)->SetInteractable(true);
+		}
+		else if ((otherObj)->IsInteractable())
+			(otherObj)->Interaction(*this);
+	}
+	else
+		return;
+}
+
+void Player::Interaction_Portal(Portal* portal)
+{
+	if ((portal)->IsInteractable())
+		(portal)->Interaction(*this);
 }

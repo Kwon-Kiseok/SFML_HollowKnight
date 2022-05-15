@@ -20,7 +20,6 @@ struct AnimationFrame
 	Vector2f origin;
 
 	AnimationFrame(const Texture& tex, const IntRect& coord, const Vector2f& ori);
-	AnimationFrame(const Texture& tex);
 };
 
 struct AnimationClip

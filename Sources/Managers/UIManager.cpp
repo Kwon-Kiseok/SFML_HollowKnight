@@ -67,6 +67,16 @@ void UIManager::Update_TitleScene(float dt)
 {
 	titleButtons[currentSelectButtonID]->Select(true);
 
+	// 로딩 중인 경우에 이동
+	if (isLoading)
+	{
+		SceneManager::GetInstance().Load(L"Play");
+		SoundManager::GetInstance().StopMusic();
+		titleButtons[L"gameStart"]->ResetIsClicked();
+		isLoading = false;
+	}
+
+
 	for (auto& button : titleButtons)
 	{
 		button.second->update(dt);
@@ -117,8 +127,9 @@ void UIManager::Update_TitleScene(float dt)
 		{
 			if (currentSelectButtonID == "gameStart")
 			{
-				SceneManager::GetInstance().Load(L"Play");
-				SoundManager::GetInstance().StopMusic();
+				Game::GetInstance().LoadingScereenLoad();
+				isLoading = true;
+				return;
 			}
 			else if (currentSelectButtonID == "editorMode")
 			{
@@ -148,9 +159,12 @@ void UIManager::Update_TitleScene(float dt)
 
 	if (titleButtons[L"gameStart"]->IsButtonClicked())
 	{
-		SceneManager::GetInstance().Load(L"Play");
-		SoundManager::GetInstance().StopMusic();
-		titleButtons[L"gameStart"]->ResetIsClicked();
+		if (!isLoading)
+		{
+			Game::GetInstance().LoadingScereenLoad();
+			isLoading = true;
+			return;
+		}
 	}
 	if (titleButtons[L"editorMode"]->IsButtonClicked())
 	{
@@ -297,6 +311,9 @@ void UIManager::Init_Map()
 	textureBack = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/map/back.png");
 	spriteBack.setTexture(textureBack);
 	spriteBack.setPosition(0, 0);
+
+	texturePlayerMarker = TextureManager::GetInstance().GetTexture("Resources/Sprite/UI/Map_Knight_Pin_Compass_idle0000.png");
+	spritePlayerMarker.setTexture(texturePlayerMarker);
 }
 
 void UIManager::Update_Map(float dt)
@@ -304,6 +321,19 @@ void UIManager::Update_Map(float dt)
 	if (InputManager::GetInstance().GetKeyDown(Keyboard::Tab))
 	{
 		mapVisible = !mapVisible;
+
+	}
+	if(PlayerDataManager::GetInstance().GetPlayerCurrentMap() == MAP_TYPE::Town)
+	{
+		spritePlayerMarker.setPosition(Vector2f(420.f + 660.f, 50.f + 440.f));
+	}
+	else if (PlayerDataManager::GetInstance().GetPlayerCurrentMap() == MAP_TYPE::KingsPass)
+	{
+		spritePlayerMarker.setPosition(Vector2f(50.f + 660.f, 100.f + 440.f));
+	}
+	else
+	{
+		spritePlayerMarker.setPosition(Vector2f(550.f + 660.f, 130.f + 440.f));
 	}
 }
 
@@ -311,6 +341,7 @@ void UIManager::Render_Map(sf::RenderWindow& window)
 {
 	window.draw(spriteBack);
 	window.draw(spriteTown);
+	window.draw(spritePlayerMarker);
 }
 
 void UIManager::SetMapVisible(bool open)

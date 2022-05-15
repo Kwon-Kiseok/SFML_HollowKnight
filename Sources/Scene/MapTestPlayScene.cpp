@@ -1,6 +1,7 @@
 #include "MapTestPlayScene.hpp"
 #include "../Managers/MapManager.hpp"
 #include "../Managers/InputManager.hpp"
+#include "../Framework/Game.hpp"
 
 MapTestPlayScene::MapTestPlayScene()
 {

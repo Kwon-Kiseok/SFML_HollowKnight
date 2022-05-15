@@ -7,6 +7,8 @@
 #include <map>
 #include "../Items/Coin.hpp"
 
+class Stable;
+class Portal;
 class Player : public Character
 {
 private:
@@ -94,5 +96,8 @@ public:
 	MAP_TYPE GetCurrentMap();
 	void SetCurrentMap(MAP_TYPE type);
 	bool UpdateCollision(const std::list<Coin*> coins);
+
+	void Interaction_Stable(Stable* otherObj);
+	void Interaction_Portal(Portal* portal);
 };
 

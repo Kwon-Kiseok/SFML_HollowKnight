@@ -2,7 +2,7 @@
 #include "../GameObject.hpp"
 #include "../../Player/Player.hpp"
 
-enum class Interaction_Type { NONE, DAMAGED, BROKEN, PORTAL, CHECKPOINT, BENCH, };
+enum class Interaction_Type { NONE, DAMAGED, BROKEN, PORTAL, CHECKPOINT, BENCH, ELEVATOR, };
 
 class Stable : public GameObject
 {

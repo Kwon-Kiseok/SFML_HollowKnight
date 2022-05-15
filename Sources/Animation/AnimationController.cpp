@@ -1,5 +1,7 @@
 #include "AnimationController.hpp"
 
+#include <iostream>
+
 AnimationController::AnimationController()
 	: clips(), currentClip(nullptr), isPlaying(false), currentFrame(-1), totalFrame(0), frameDurtion(0.f), accumTime(0.f), sprite(nullptr), speed(1.f)
 {
