@@ -63,6 +63,8 @@ private:
 	PauseUI pauseUI;
 	bool isPauseMenu = false;
 
+	bool isLoading = false;
+
 public:
 	virtual ~UIManager() override;
 	void Init();

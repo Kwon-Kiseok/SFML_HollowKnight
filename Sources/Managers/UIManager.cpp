@@ -67,6 +67,16 @@ void UIManager::Update_TitleScene(float dt)
 {
 	titleButtons[currentSelectButtonID]->Select(true);
 
+	// 로딩 중인 경우에 이동
+	if (isLoading)
+	{
+		SceneManager::GetInstance().Load(L"Play");
+		SoundManager::GetInstance().StopMusic();
+		titleButtons[L"gameStart"]->ResetIsClicked();
+		isLoading = false;
+	}
+
+
 	for (auto& button : titleButtons)
 	{
 		button.second->update(dt);
@@ -117,8 +127,9 @@ void UIManager::Update_TitleScene(float dt)
 		{
 			if (currentSelectButtonID == "gameStart")
 			{
-				SceneManager::GetInstance().Load(L"Play");
-				SoundManager::GetInstance().StopMusic();
+				Game::GetInstance().LoadingScereenLoad();
+				isLoading = true;
+				return;
 			}
 			else if (currentSelectButtonID == "editorMode")
 			{
@@ -148,9 +159,12 @@ void UIManager::Update_TitleScene(float dt)
 
 	if (titleButtons[L"gameStart"]->IsButtonClicked())
 	{
-		SceneManager::GetInstance().Load(L"Play");
-		SoundManager::GetInstance().StopMusic();
-		titleButtons[L"gameStart"]->ResetIsClicked();
+		if (!isLoading)
+		{
+			Game::GetInstance().LoadingScereenLoad();
+			isLoading = true;
+			return;
+		}
 	}
 	if (titleButtons[L"editorMode"]->IsButtonClicked())
 	{
