@@ -2,6 +2,7 @@
 #include "../Animation/AnimationController.hpp"
 #include "../Animation/SlashEffect.hpp"
 #include "../Animation/DashEffect.hpp"
+#include "../Animation/HitEffect.hpp"
 #include "../Objects/Moveable/Character.hpp"
 #include "../Managers/MapManager.hpp"
 #include <map>
@@ -61,6 +62,7 @@ private:
 	std::string effectString;					// 공격 이펙트 방향 저장
 	std::string attackString;					// 공격 애니메이션 방향 저장
 	DashEffect dashDffect;						// 대쉬 이펙트
+	HitEffect hitEffect;						// 대쉬 이펙트
 
 	float collisionTime;						// 맞는 딜레이
 
