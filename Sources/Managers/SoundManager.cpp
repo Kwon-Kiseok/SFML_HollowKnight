@@ -19,7 +19,8 @@ void SoundManager::Init()
 	AddSound("Resources/AudioClip/Hero/hero_land_hard.wav", L"land");
 	AddSound("Resources/AudioClip/Hero/hero_damage.wav", L"damage");
 
-
+	AddSound("Resources/AudioClip/focus_health_charging.wav", L"charging");
+	AddSound("Resources/AudioClip/focus_health_heal.wav", L"heal");
 	AddSound("Resources/AudioClip/sword_3.wav", L"sword");
 	AddSound("Resources/AudioClip/enemy_damage.wav", L"enemy_damage");
 
