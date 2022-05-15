@@ -3,6 +3,7 @@
 #include "../Animation/SlashEffect.hpp"
 #include "../Animation/DashEffect.hpp"
 #include "../Animation/HitEffect.hpp"
+#include "../Animation/FocusEffect.hpp"
 #include "../Objects/Moveable/Character.hpp"
 #include "../Managers/MapManager.hpp"
 #include <map>
@@ -23,8 +24,7 @@ private:
 	bool canDash = false;						// 공중에서 대쉬 한번만 할 수 있게
 	float dashDelay = 1.f;
 
-	//int hp;										// 체력
-	int mp;										// 기력?
+	int mp;										// 기력
 	int coin;									// 재화
 	MAP_TYPE currMap;							// 현재 맵
 
@@ -63,6 +63,8 @@ private:
 	std::string attackString;					// 공격 애니메이션 방향 저장
 	DashEffect dashDffect;						// 대쉬 이펙트
 	HitEffect hitEffect;						// 대쉬 이펙트
+	FocusEffect focusEffect;					// 포커스 이펙트
+	bool isFocus = false;
 
 	float collisionTime;						// 맞는 딜레이
 

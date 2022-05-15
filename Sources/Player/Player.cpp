@@ -106,6 +106,7 @@ void Player::Init()
 	effect.Init();
 	dashDffect.Init();
 	hitEffect.Init();
+	focusEffect.Init();
 }
 
 void Player::Update(float dt)
@@ -348,8 +349,7 @@ void Player::Update(float dt)
 	}
 	/**********************************
 	* 공격
-	**********************************/
-	
+	**********************************/	
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::X) && !isAttack)
 		{
@@ -370,23 +370,46 @@ void Player::Update(float dt)
 			hitAttack = false;
 		}
 	}
-
-	// 체력 회복
-	if (InputManager::GetInstance().GetKey(Keyboard::A) && (health < 5))	//P: Life��
-	{
-		healDeltaTime += dt;
-
-		if (healDeltaTime >= 2.f)
-		{
-			health++;
-			healDeltaTime = 0;
-			return;
-		}
-	}
+	/**********************************
+	* 체력 회복
+	**********************************/
 
 	if (knockbackX != 0.f)
 	{
 		delta.x += knockbackX;
+	}
+
+	if (InputManager::GetInstance().GetKeyDown(Keyboard::A))
+	{
+		isFocus = true;
+		animation.Play("Focus");
+	}
+	if (InputManager::GetInstance().GetKey(Keyboard::A) && isFocus)	//P: Life��
+	{
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) || 
+			InputManager::GetInstance().GetKeyDown(Keyboard::Left))
+		{
+			isFocus = false;
+			animation.Play(string);
+		}
+		delta.x = 0.f;
+		healDeltaTime += dt;
+
+		if (healDeltaTime >= 2.f)
+		{
+			hitEffect.SetDraw("Hit");
+			if (health < 5)
+			{
+				health++;
+			}
+			healDeltaTime = 0;
+			return;
+		}
+	}
+	if (InputManager::GetInstance().GetKeyUp(Keyboard::A))
+	{
+		animation.Play(string);
+		isFocus = false;
 	}
 	position += delta;
 
@@ -398,26 +421,37 @@ void Player::Update(float dt)
 	effect.Update(position, dt);
 	dashDffect.Update(position, dt);
 	hitEffect.Update(position, dt);
+	focusEffect.Update(position, dt);
 }
 
 void Player::Render(RenderWindow& window)
 {
+	// 기 모으기
+	if (isFocus)
+	{
+		focusEffect.Draw(window);
+	}
+	// 플레이어
 	window.draw(sprite);
 
 	if (MapManager::GetInstance().GetIsDebugMode())
 	{
 		if (isAttack)
 		{
+			// 공격 박스
 			window.draw(attackBox);
 		}
+		// 히트 박스
 		window.draw(hitBox);
-		//window.draw(hitBoxSide);
 	}
-	effect.Draw(window);		// Slash
+	// Slash 이펙트
+	effect.Draw(window);
 	if (isDash)
 	{
+		// Dash 이펙트
 		dashDffect.Draw(window);
 	}
+	// 공격 시 이펙트
 	hitEffect.Draw(window);
 }
 

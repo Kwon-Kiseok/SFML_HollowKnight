@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Animation\DashEffect.cpp" />
+    <ClCompile Include="Sources\Animation\FocusEffect.cpp" />
     <ClCompile Include="Sources\Animation\HitEffect.cpp" />
     <ClCompile Include="Sources\UI\PauseUI.cpp" />
     <ClCompile Include="Sources\Maps\BossRoom_Map.cpp" />
@@ -209,6 +210,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Animation\DashEffect.hpp" />
+    <ClInclude Include="Sources\Animation\FocusEffect.hpp" />
     <ClInclude Include="Sources\Animation\HitEffect.hpp" />
     <ClInclude Include="Sources\UI\PauseUI.hpp" />
     <ClInclude Include="Sources\Maps\BossRoom_Map.hpp" />

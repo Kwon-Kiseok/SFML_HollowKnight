@@ -59,6 +59,7 @@
     <ClCompile Include="Sources\UI\PauseUI.cpp" />
     <ClCompile Include="Sources\Animation\DashEffect.cpp" />
     <ClCompile Include="Sources\Animation\HitEffect.cpp" />
+    <ClCompile Include="Sources\Animation\FocusEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.h" />
@@ -94,6 +95,7 @@
     <ClInclude Include="Sources\UI\PauseUI.hpp" />
     <ClInclude Include="Sources\Animation\DashEffect.hpp" />
     <ClInclude Include="Sources\Animation\HitEffect.hpp" />
+    <ClInclude Include="Sources\Animation\FocusEffect.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Scene\PlayScene.hpp" />
