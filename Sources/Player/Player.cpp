@@ -444,7 +444,7 @@ void Player::Update(float dt)
 	if (health <= 0)
 	{
 		//animation.Play("Death");
-		Respawn();
+		Respawn(dt);
 	}
 }
 
@@ -727,8 +727,13 @@ float Player::SlowDT(float dt)
 	return dt;
 }
 
-void Player::Respawn()
+void Player::Respawn(float dt)
 {
+	deathTime += dt;
+	if(deathTime < 2.5f)
+	{
+		return;
+	}
 	isAlive = true;
 	collisionTime = 0.f;
 	MapManager::GetInstance().LoadMap(PlayerDataManager::GetInstance().GetSavePointMap());
