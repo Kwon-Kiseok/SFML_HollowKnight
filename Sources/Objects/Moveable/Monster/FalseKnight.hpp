@@ -25,6 +25,7 @@ private:
 	float attackDelay;				// 공격의 딜레이 시간 계산
 
 	bool isOne = false;				// 스턴 이미지 한번만
+	bool sound = false;
 public:
 	FalseKnight();
 	FalseKnight(int xdir);

@@ -31,6 +31,15 @@ void SoundManager::Init()
 	AddSound("Resources/AudioClip/lift_arrive.wav", L"Lift_Arrive");
 	AddSound("Resources/AudioClip/lift_moving_loop.wav", L"Lift_Moving");
 
+	// false knight
+	AddSound("Resources/AudioClip/FalseKnight/false_knight_strike_ground.wav", L"knight_strike");
+	AddSound("Resources/AudioClip/FalseKnight/false_knight_land.wav", L"knight_land");
+	AddSound("Resources/AudioClip/FalseKnight/false_knight_land_1st_time.wav", L"knight_land2");
+	AddSound("Resources/AudioClip/FalseKnight/false_knight_jump.wav", L"knight_jump");
+	AddSound("Resources/AudioClip/FalseKnight/false_knight_damage_armour.wav", L"damage_armour");
+	AddSound("Resources/AudioClip/FalseKnight/false_knight_damage_armour_final.wav", L"damage_armour_final");
+	AddSound("Resources/AudioClip/FalseKnight/Fknight_hit_01.wav", L"Fknight_hit");
+	AddSound("Resources/AudioClip/FalseKnight/FKnight_death.wav", L"FKnight_death");
 }
 
 void SoundManager::AddSound(std::string path, std::wstring id)
