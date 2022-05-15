@@ -117,7 +117,7 @@ void Player::Update(float dt)
 		lodingTime -= dt;
 		gravity = 0.f;
 	}
-
+	ddt = dt;
 	positionTemp = position;
 	collisionTime -= dt; // 맞는거 딜레이를 위해서 필요함	
 
@@ -147,7 +147,7 @@ void Player::Update(float dt)
 	/**********************************
 	* 공격 방향 설정
 	**********************************/
-	
+
 	{
 		if (v == -1.f)
 		{
@@ -176,10 +176,10 @@ void Player::Update(float dt)
 			effectString = "Slash";
 			AttackDir = 0;
 		}
-		
+
 	}
 	/******************  knockback test  ****************/
-	
+
 	{
 		if (isKnockback)
 		{
@@ -221,7 +221,6 @@ void Player::Update(float dt)
 	/**********************************
 	* 좌우 방향 이동
 	**********************************/
-	
 	{
 
 		if (!isDash)
@@ -272,7 +271,6 @@ void Player::Update(float dt)
 	/**********************************
 	* 중력 및 점프
 	**********************************/
-	
 	{
 		if (isFalling && lodingTime < 0.f)
 		{
@@ -283,34 +281,32 @@ void Player::Update(float dt)
 		{
 			gravity = 1000.f;
 		}
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z) && canJump)
+		{
+			SoundManager::GetInstance().PlaySound(L"jump");
+			animation.Play("Jump");
+			animation.PlayQueue("Jumping");
+			gravity = -500.f;
+			canJump = false;
+		}
+		if (InputManager::GetInstance().GetKeyUp(Keyboard::Z))
+		{
+			jumpTime = 0.5f;
+		}
+		if (InputManager::GetInstance().GetKey(Keyboard::Z))
+		{
+			jumpTime += dt;
+			if (jumpTime < 0.5f)
+			{
+				gravity -= GRAVITY * dt * 1.2f;
+			}
+		}
 
-			if (InputManager::GetInstance().GetKeyDown(Keyboard::Z) && canJump)
-			{
-				SoundManager::GetInstance().PlaySound(L"jump");
-				animation.Play("Jump");
-				animation.PlayQueue("Jumping");
-				gravity = -500.f;
-				canJump = false;
-			}
-			if (InputManager::GetInstance().GetKeyUp(Keyboard::Z))
-			{
-				jumpTime = 0.5f;
-			}
-			if (InputManager::GetInstance().GetKey(Keyboard::Z))
-			{
-				jumpTime += dt;
-				if (jumpTime < 0.5f)
-				{
-					gravity -= GRAVITY * dt * 1.2f;
-				}
-			}
-		
 		delta.y = gravity * dt;
 	}
 	/**********************************
 	* 대쉬
 	**********************************/
-	
 	{
 		dashDelay -= dt;
 		if (dashDelay < 0.f)
@@ -349,7 +345,7 @@ void Player::Update(float dt)
 	}
 	/**********************************
 	* 공격
-	**********************************/	
+	**********************************/
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::X) && !isAttack)
 		{
@@ -373,7 +369,6 @@ void Player::Update(float dt)
 	/**********************************
 	* 체력 회복
 	**********************************/
-
 	if (knockbackX != 0.f)
 	{
 		delta.x += knockbackX;
@@ -386,15 +381,15 @@ void Player::Update(float dt)
 	}
 	if (InputManager::GetInstance().GetKey(Keyboard::A) && isFocus)	//P: Life��
 	{
-		if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) || 
+		if (InputManager::GetInstance().GetKeyDown(Keyboard::Right) ||
 			InputManager::GetInstance().GetKeyDown(Keyboard::Left))
 		{
 			isFocus = false;
 			animation.Play(string);
+			healDeltaTime = 0;
 		}
 		delta.x = 0.f;
 		healDeltaTime += dt;
-
 		if (healDeltaTime >= 2.f)
 		{
 			hitEffect.SetDraw("Hit");
@@ -408,10 +403,15 @@ void Player::Update(float dt)
 	}
 	if (InputManager::GetInstance().GetKeyUp(Keyboard::A))
 	{
-		animation.Play(string);
 		isFocus = false;
+		animation.Play(string);
+		healDeltaTime = 0;
 	}
-	position += delta;
+
+	if (isAlive)
+	{
+		position += delta;
+	}
 
 	sprite.setPosition(position);
 	attackBox.setPosition(position);
@@ -422,6 +422,17 @@ void Player::Update(float dt)
 	dashDffect.Update(position, dt);
 	hitEffect.Update(position, dt);
 	focusEffect.Update(position, dt);
+
+	if (health == 0)
+	{
+		animation.Play("Death");
+		isAlive = false;
+	}
+	if (health <= 0)
+	{
+		//animation.Play("Death");
+		Respawn();
+	}
 }
 
 void Player::Render(RenderWindow& window)
@@ -521,13 +532,15 @@ void Player::OnHitted(Vector2f pos)
 	isDash = false;
 	slowTick = 0;
 
-	if (health == 1)
-	{
-		Respawn();
-		return;
-	}
+	//if (health == 0)
+	//{
+	//	isAlive = false;
+	//	//animation.Play("Death");
+	//	//Respawn();
+	//	return;
+	//}
 
-	if (collisionTime < 0.f)
+	if (collisionTime < 0.f && isAlive)
 	{
 		gravity = -500.f;
 		if (position.x > pos.x)
@@ -702,6 +715,14 @@ float Player::SlowDT(float dt)
 
 void Player::Respawn()
 {
+	deathTime += ddt;
+	if(deathTime < 2.5f)
+	{
+		return;
+	}
+
+	isAlive = true;
+	deathTime = 0.f;
 	collisionTime = 0.f;
 	MapManager::GetInstance().LoadMap(PlayerDataManager::GetInstance().GetSavePointMap());
 	SetPosition(PlayerDataManager::GetInstance().GetBenchPoint());
