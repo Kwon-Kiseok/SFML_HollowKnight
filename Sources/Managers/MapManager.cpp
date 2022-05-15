@@ -53,6 +53,12 @@ void MapManager::Update(float dt)
 		isDebugMode = !isDebugMode;
 	}
 
+	// ÇÇ°Ý ½Ã ¸Ê ¾÷µ¥ÀÌÆ® ¼Óµµ ÀÚÃ¼¸¦ ´ÊÃã
+	if (player->GetPlayerAnimController().IsPlaying("Stun"))
+	{
+		dt = player->SlowDT(dt);
+	}
+
 	map->Update(dt);
 	map->CheckCollisions(dt);
 }

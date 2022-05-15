@@ -37,11 +37,11 @@ void InputManager::HorizontalInit()
 	info.value = 0.05f;
 	info.positiveKeys.clear();
 	info.positiveKeys.push_back(Keyboard::Right);
-	info.positiveKeys.push_back(Keyboard::D);
+	//info.positiveKeys.push_back(Keyboard::D);
 
 	info.negativeKeys.clear();
 	info.negativeKeys.push_back(Keyboard::Left);
-	info.negativeKeys.push_back(Keyboard::A);
+	//info.negativeKeys.push_back(Keyboard::A);
 	mapAxis[info.axis] = info;
 }
 
@@ -56,11 +56,11 @@ void InputManager::VerticalInit()
 	info.value = 0.05f;
 	info.positiveKeys.clear();
 	info.positiveKeys.push_back(Keyboard::Down);
-	info.positiveKeys.push_back(Keyboard::S);
+	//info.positiveKeys.push_back(Keyboard::S);
 
 	info.negativeKeys.clear();
 	info.negativeKeys.push_back(Keyboard::Up);
-	info.negativeKeys.push_back(Keyboard::W);
+	//info.negativeKeys.push_back(Keyboard::W);
 	mapAxis[info.axis] = info;
 }
 
