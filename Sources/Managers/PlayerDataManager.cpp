@@ -27,7 +27,7 @@ void PlayerDataManager::SavePlayerData(Player& player)
 	UpdatePlayerData(player);
 
 	playerDataFile << hp << "," << mp << "," << coin << "," << static_cast<int>(currentMap) << "," << lastPosition.x << "," << lastPosition.y << std::endl;
-
+	savePointMap = currentMap;
 }
 
 void PlayerDataManager::LoadPlayerData(Player& player)
@@ -71,6 +71,21 @@ int PlayerDataManager::GetPlayerCoin()
 MAP_TYPE PlayerDataManager::GetPlayerCurrentMap()
 {
 	return currentMap;
+}
+
+MAP_TYPE PlayerDataManager::GetSavePointMap()
+{
+	return savePointMap;
+}
+
+void PlayerDataManager::SaveBenchPoint(Vector2f pos)
+{
+	lastBenchPos = pos;
+}
+
+Vector2f PlayerDataManager::GetBenchPoint()
+{
+	return lastBenchPos;
 }
 
 int PlayerDataManager::AddCoin(int value)

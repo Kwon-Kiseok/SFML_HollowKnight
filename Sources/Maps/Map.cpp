@@ -280,9 +280,9 @@ void Map::CheckCollisions(float dt)
 			**********************************************************/
 			if ((*it)->CompareTag(TAG::TRAP))
 			{
+				(*it)->Interaction(*player);
 				player->OnHitted((*it)->GetPosition());
 				player->SetHP();
-				(*it)->Interaction(*player);
 			}
 		}		
 	}

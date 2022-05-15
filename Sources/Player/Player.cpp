@@ -110,7 +110,7 @@ void Player::Init()
 
 void Player::Update(float dt)
 {
-	
+
 	if (lodingTime > 0.f)
 	{
 		lodingTime -= dt;
@@ -178,6 +178,7 @@ void Player::Update(float dt)
 		
 	}
 	/******************  knockback test  ****************/
+	
 	{
 		if (isKnockback)
 		{
@@ -486,6 +487,12 @@ void Player::OnHitted(Vector2f pos)
 	isDash = false;
 	slowTick = 0;
 
+	if (health == 1)
+	{
+		Respawn();
+		return;
+	}
+
 	if (collisionTime < 0.f)
 	{
 		gravity = -500.f;
@@ -657,4 +664,15 @@ float Player::SlowDT(float dt)
 	}
 
 	return dt;
+}
+
+void Player::Respawn()
+{
+	collisionTime = 0.f;
+	MapManager::GetInstance().LoadMap(PlayerDataManager::GetInstance().GetSavePointMap());
+	SetPosition(PlayerDataManager::GetInstance().GetBenchPoint());
+	health = 5;
+	coin = 0;
+	animation.Play("Sit");
+	PlayerDataManager::GetInstance().SavePlayerData(*this);
 }

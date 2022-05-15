@@ -13,6 +13,8 @@ private:
 	int hp = MAX_HEALTH;
 	int mp;
 	int coin;
+	MAP_TYPE savePointMap;
+	Vector2f lastBenchPos;
 	MAP_TYPE currentMap;
 	Vector2f lastPosition;
 	int profileNumber = 0;
@@ -28,6 +30,9 @@ public:
 	int GetPlayerMP();
 	int GetPlayerCoin();
 	MAP_TYPE GetPlayerCurrentMap();
+	MAP_TYPE GetSavePointMap();
+	void SaveBenchPoint(Vector2f pos);
+	Vector2f GetBenchPoint();
 	int AddCoin(int value);
 };
 
