@@ -103,6 +103,15 @@ bool AnimationController::IsPlaying()
 	return isPlaying;
 }
 
+bool AnimationController::IsPlaying(std::string clipId)
+{
+	if (currentClip->id == clipId)
+	{
+		return isPlaying;
+	}
+	return false;
+}
+
 void AnimationController::SetSpeed(float speed)
 {
 	this->speed = speed;

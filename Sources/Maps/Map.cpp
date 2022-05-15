@@ -282,6 +282,7 @@ void Map::CheckCollisions(float dt)
 			{
 				player->OnHitted((*it)->GetPosition());
 				player->SetHP();
+				(*it)->Interaction(*player);
 			}
 		}		
 	}
