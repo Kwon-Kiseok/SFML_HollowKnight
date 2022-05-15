@@ -66,6 +66,9 @@ private:
 
 	float collisionTime;						// 맞는 딜레이
 
+	float healDeltaTime;
+	int slowTick;
+
 public:
 	Player();
 	virtual void Init() override;
@@ -101,5 +104,8 @@ public:
 
 	void Interaction_Stable(Stable* otherObj);
 	void Interaction_Portal(Portal* portal);
+
+	AnimationController& GetPlayerAnimController();
+	float SlowDT(float dt);
 };
 

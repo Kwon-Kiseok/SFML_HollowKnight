@@ -36,6 +36,7 @@ public:
 	void Stop();	// 정지
 	// 밖에서 사용할 Get함수들
 	bool IsPlaying();
+	bool IsPlaying(std::string clipId);
 
 	void SetSpeed(float speed);
 

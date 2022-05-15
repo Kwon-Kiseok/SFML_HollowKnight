@@ -20,6 +20,7 @@ Player::Player()
 	collisionTime = 1.f;
 	knockbackTime = 0.3f;
 
+	slowTick = 0;
 	knockbackX = 0.f;
 }
 
@@ -109,6 +110,7 @@ void Player::Init()
 
 void Player::Update(float dt)
 {
+	
 	if (lodingTime > 0.f)
 	{
 		lodingTime -= dt;
@@ -137,43 +139,43 @@ void Player::Update(float dt)
 
 
 	Vector2f delta;
+
 	float h = InputManager::GetInstance().GetAxisRaw(Axis::Horizontal);	// -1 0 1
 	float v = InputManager::GetInstance().GetAxisRaw(Axis::Vertical);	// -1 0 1
 
 	/**********************************
 	* 공격 방향 설정
 	**********************************/
+	
 	{
-		if (!isAttack)
+		if (v == -1.f)
 		{
-			if (v == -1.f)
-			{
-				attackBox.setSize(Vector2f(140, 120));
-				attackBox.setOrigin(Vector2f(70, 180));
-				attackBox.setPosition(position);
-				attackString = "UpSlash";
-				effectString = "UpSlash";
-				AttackDir = -1;
-			}
-			else if (v == 1.f && !canJump)
-			{
-				attackBox.setSize(Vector2f(140, 140));
-				attackBox.setOrigin(Vector2f(70, 50));
-				attackBox.setPosition(position);
-				attackString = "DownSlash";
-				effectString = "DownSlash";
-				AttackDir = 1;
-			}
-			else
-			{
-				attackBox.setSize(Vector2f(140, 90));
-				attackBox.setOrigin(Vector2f(0, 100));
-				attackBox.setPosition(position);
-				attackString = "Slash";
-				effectString = "Slash";
-				AttackDir = 0;
-			}
+			attackBox.setSize(Vector2f(140, 120));
+			attackBox.setOrigin(Vector2f(70, 180));
+			attackBox.setPosition(position);
+			attackString = "UpSlash";
+			effectString = "UpSlash";
+			AttackDir = -1;
 		}
+		else if (v == 1.f && !canJump)
+		{
+			attackBox.setSize(Vector2f(140, 140));
+			attackBox.setOrigin(Vector2f(70, 50));
+			attackBox.setPosition(position);
+			attackString = "DownSlash";
+			effectString = "DownSlash";
+			AttackDir = 1;
+		}
+		else
+		{
+			attackBox.setSize(Vector2f(140, 90));
+			attackBox.setOrigin(Vector2f(0, 100));
+			attackBox.setPosition(position);
+			attackString = "Slash";
+			effectString = "Slash";
+			AttackDir = 0;
+		}
+		
 	}
 	/******************  knockback test  ****************/
 	{
@@ -217,6 +219,7 @@ void Player::Update(float dt)
 	/**********************************
 	* 좌우 방향 이동
 	**********************************/
+	
 	{
 
 		if (!isDash)
@@ -251,7 +254,6 @@ void Player::Update(float dt)
 				animation.Play("StartMove");
 				animation.PlayQueue("Move");
 				string = "Move";
-				//
 				SoundManager::GetInstance().PlaySound(L"walk");
 			}
 			if (move != 0 && h == 0)
@@ -268,6 +270,7 @@ void Player::Update(float dt)
 	/**********************************
 	* 중력 및 점프
 	**********************************/
+	
 	{
 		if (isFalling && lodingTime < 0.f)
 		{
@@ -278,35 +281,34 @@ void Player::Update(float dt)
 		{
 			gravity = 1000.f;
 		}
-		if (InputManager::GetInstance().GetKeyDown(Keyboard::Z) && canJump)
-		{
-			SoundManager::GetInstance().PlaySound(L"jump");
-			animation.Play("Jump");
-			animation.PlayQueue("Jumping");
-			gravity = -500.f;
-			canJump = false;
-		}
-		if (InputManager::GetInstance().GetKeyUp(Keyboard::Z))
-		{
-			jumpTime = 0.5f;
-		}
-		if (InputManager::GetInstance().GetKey(Keyboard::Z))
-		{
-			jumpTime += dt;
-			if (jumpTime < 0.5f)
-			{
-				gravity -= GRAVITY * dt * 1.2f;
-			}
-			else
-			{
 
+			if (InputManager::GetInstance().GetKeyDown(Keyboard::Z) && canJump)
+			{
+				SoundManager::GetInstance().PlaySound(L"jump");
+				animation.Play("Jump");
+				animation.PlayQueue("Jumping");
+				gravity = -500.f;
+				canJump = false;
 			}
-		}
+			if (InputManager::GetInstance().GetKeyUp(Keyboard::Z))
+			{
+				jumpTime = 0.5f;
+			}
+			if (InputManager::GetInstance().GetKey(Keyboard::Z))
+			{
+				jumpTime += dt;
+				if (jumpTime < 0.5f)
+				{
+					gravity -= GRAVITY * dt * 1.2f;
+				}
+			}
+		
 		delta.y = gravity * dt;
 	}
 	/**********************************
 	* 대쉬
 	**********************************/
+	
 	{
 		dashDelay -= dt;
 		if (dashDelay < 0.f)
@@ -346,6 +348,7 @@ void Player::Update(float dt)
 	/**********************************
 	* 공격
 	**********************************/
+	
 	{
 		if (InputManager::GetInstance().GetKeyDown(Keyboard::X) && !isAttack)
 		{
@@ -367,14 +370,17 @@ void Player::Update(float dt)
 		}
 	}
 
-	if (InputManager::GetInstance().GetKeyDown(Keyboard::L) && (health > 0))	//L: Life����
+	// 체력 회복
+	if (InputManager::GetInstance().GetKey(Keyboard::A) && (health < 5))	//P: Life��
 	{
-		health--;
-	}
+		healDeltaTime += dt;
 
-	else if (InputManager::GetInstance().GetKeyDown(Keyboard::P) && (health < 5))	//P: Life��
-	{
-		health++;
+		if (healDeltaTime >= 2.f)
+		{
+			health++;
+			healDeltaTime = 0;
+			return;
+		}
 	}
 
 	if (knockbackX != 0.f)
@@ -478,6 +484,8 @@ void Player::UpdateCollision(int type)
 void Player::OnHitted(Vector2f pos)
 {
 	isDash = false;
+	slowTick = 0;
+
 	if (collisionTime < 0.f)
 	{
 		gravity = -500.f;
@@ -611,7 +619,6 @@ void Player::Interaction_Stable(Stable* otherObj)
 	// 플레이어-벤치 상호작용
 	if (otherObj->CompareTag(TAG::BENCH))
 	{
-		gravity = 0.f;
 		animation.Play("Sit");
 		(otherObj)->SetInteractable(true);
 		(otherObj)->Interaction(*this);
@@ -634,4 +641,20 @@ void Player::Interaction_Portal(Portal* portal)
 {
 	if ((portal)->IsInteractable())
 		(portal)->Interaction(*this);
+}
+
+AnimationController& Player::GetPlayerAnimController()
+{
+	return animation;
+}
+
+float Player::SlowDT(float dt)
+{
+	if (slowTick < 60)
+	{
+		dt /= 60;
+		++slowTick;
+	}
+
+	return dt;
 }

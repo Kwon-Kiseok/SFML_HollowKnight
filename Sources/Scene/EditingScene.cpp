@@ -791,7 +791,7 @@ void EditingScene::SetManual()
 void EditingScene::Save()
 {
 	ofstream dataFile;
-	dataFile.open("data_tables/maps/CrossRoad_map_data.csv");
+	dataFile.open("data_tables/maps/BossRoom_map_data.csv");
 	if (dataFile.fail())
 	{
 		cout << "File load Failed" << endl;
@@ -811,7 +811,7 @@ void EditingScene::Save()
 
 void EditingScene::Load()
 {
-	rapidcsv::Document dataFile("data_tables/maps/CrossRoad_map_data.csv");
+	rapidcsv::Document dataFile("data_tables/maps/BossRoom_map_data.csv");
 
 	vector<string> colName = dataFile.GetColumn<string>("NAME");
 	vector<int> colIndex = dataFile.GetColumn<int>("INDEX");
