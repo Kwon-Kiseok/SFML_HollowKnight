@@ -117,7 +117,6 @@ void Player::Update(float dt)
 		lodingTime -= dt;
 		gravity = 0.f;
 	}
-	ddt = dt;
 	positionTemp = position;
 	collisionTime -= dt; // 맞는거 딜레이를 위해서 필요함	
 
@@ -431,7 +430,7 @@ void Player::Update(float dt)
 	if (health <= 0)
 	{
 		//animation.Play("Death");
-		Respawn();
+		Respawn(dt);
 	}
 }
 
@@ -714,9 +713,9 @@ float Player::SlowDT(float dt)
 	return dt;
 }
 
-void Player::Respawn()
+void Player::Respawn(float dt)
 {
-	deathTime += ddt;
+	deathTime += dt;
 	if(deathTime < 2.5f)
 	{
 		return;
